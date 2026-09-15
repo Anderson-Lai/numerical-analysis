@@ -1,7 +1,16 @@
+#include <vector>
+
 class Parser
 {
 private:
-    int m_length;
+    std::vector<std::string> m_tokens;
+private:
+    void ReadTokens();
+private:
+    void LogTokens();
 public:
-    Parser(int length);
+    Parser();
+    double Differentiation();
+    double Integration();
+    void Cleanup();
 };
