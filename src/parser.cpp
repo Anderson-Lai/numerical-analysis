@@ -1,7 +1,8 @@
-#include "parser.hpp"
 #include <iostream>
+#include "parser.hpp"
 
-Parser::Parser()
+
+Parser::Parser() : m_integrator(Integrator()), m_differentiator(Differentiator())
 {
 
 }
@@ -26,6 +27,7 @@ void Parser::ReadTokens()
             token += static_cast<char>(res);
         }
     }
+
     if (!token.empty())
     {
         m_tokens.push_back(token);
@@ -44,13 +46,13 @@ double Parser::Differentiation()
 {
     ReadTokens();
     LogTokens();
-    return 0.0;
+    return this->m_differentiator.Differentiate();
 }
 
 double Parser::Integration()
 {
     ReadTokens();
-    return 0.0;
+    return this->m_integrator.Integrate();
 }
 
 void Parser::Cleanup()

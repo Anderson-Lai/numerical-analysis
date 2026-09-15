@@ -5,6 +5,7 @@ int main(int argc, char* argv[])
 {
     Parser parser;
     std::string input;
+    
     while (true)
     {
         std::cin >> input;
@@ -22,7 +23,6 @@ int main(int argc, char* argv[])
         }
         parser.Cleanup();
     }
-
 
     return 0;
 }
