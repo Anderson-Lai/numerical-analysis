@@ -8,8 +8,13 @@ int main(int argc, char* argv[])
     while (true)
     {
         Lexer lexer;
-        std::cin >> input;
 
+#ifdef DEBUG_BUILD
+        lexer.Differentiation();
+#endif
+
+#ifndef DEBUG_BUILD
+        std::cin >> input;
         switch (std::stoi(input)) 
         {
             case 1:
@@ -23,6 +28,7 @@ int main(int argc, char* argv[])
                 break;
         }
         lexer.Cleanup();
+#endif
     }
 
     return 0;

@@ -17,12 +17,3 @@ public:
     Variable(char name);
     char GetName() const;
 };
-
-class Logarithm
-{
-private:
-    double m_base;
-public:
-    Logarithm(double base);
-    double GetBase() const;
-};

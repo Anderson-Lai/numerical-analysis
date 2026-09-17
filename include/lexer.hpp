@@ -52,7 +52,7 @@ enum class TokenType
 class Lexer
 {
 private:
-    std::vector<std::variant<TokenType, Number, Variable, Logarithm>> m_tokens;
+    std::vector<std::variant<TokenType, Number, Variable>> m_tokens;
     Integrator m_integrator;
     Differentiator m_differentiator;
 private:
@@ -89,6 +89,9 @@ private:
                     break;
                 case TokenType::EXPONENTIATION:
                     tokenTypeStr = "EXPONENTIATION";
+                    break;
+                case TokenType::SUBSCRIPT:
+                    tokenTypeStr = "SUBSCRIPT";
                     break;
                 case TokenType::NUMBER:
                     tokenTypeStr = "NUMBER";
@@ -150,6 +153,9 @@ private:
                 case TokenType::NATURAL_LOGARITHM:
                     tokenTypeStr = "NATURAL_LOGARITHM";
                     break;
+                case TokenType::LOGARITHM:
+                    tokenTypeStr = "LOGARITHM";
+                    break;
                 case TokenType::EXPONENTIAL:
                     tokenTypeStr = "EXPONENTIAL";
                     break;
@@ -167,7 +173,7 @@ private:
             }
             else if (std::holds_alternative<Variable>(token))
             {
-                std::cout << "Character: " << std::get<Variable>(token).GetName() << "\n";
+                std::cout << "Variable: " << std::get<Variable>(token).GetName() << "\n";
             }
         }
     }

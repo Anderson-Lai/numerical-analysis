@@ -19,13 +19,3 @@ char Variable::GetName() const
 {
     return m_name;
 }
-
-Logarithm::Logarithm(double base) : m_base(base)
-{
-
-}
-
-double Logarithm::GetBase() const
-{
-    return m_base;
-}
