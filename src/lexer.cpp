@@ -9,19 +9,19 @@ Lexer::Lexer() : m_integrator(Integrator()), m_differentiator(Differentiator())
 
 std::variant<Token, char> Lexer::ReadUsefulCharacter() const
 {
-    const CharacterOrWhitespace temp = ReadCharacter();
-    if (IsLinebreak(temp))
+    const CharacterOrWhitespace character = ReadCharacter();
+    if (IsLinebreak(character))
     {
         return TokenType::LINE_BREAK;
     }
-    else if (IsSpace(temp))
+    else if (IsSpace(character))
     {
         return TokenType::SPACE;
     }
 
-    if (std::holds_alternative<char>(temp))
+    if (std::holds_alternative<char>(character))
     {
-        return std::get<char>(temp);
+        return std::get<char>(character);
     }
 
     throw std::runtime_error("Something other than a character, space, or linebreak was parsed. Exiting...");
@@ -290,11 +290,11 @@ CharacterOrWhitespace Lexer::ReadCharacter() const
     return character;
 }
 
-bool Lexer::IsLinebreak(const CharacterOrWhitespace &character) const
+bool Lexer::IsLinebreak(const CharacterOrWhitespace& character) const
 {
     if (std::holds_alternative<TokenType>(character))
     {
-        const TokenType &stored = std::get<TokenType>(character);
+        const TokenType& stored = std::get<TokenType>(character);
 
         if (stored == TokenType::LINE_BREAK)
         {
@@ -304,11 +304,11 @@ bool Lexer::IsLinebreak(const CharacterOrWhitespace &character) const
     return false;
 }
 
-bool Lexer::IsSpace(const CharacterOrWhitespace &character) const
+bool Lexer::IsSpace(const CharacterOrWhitespace& character) const
 {
     if (std::holds_alternative<TokenType>(character))
     {
-        const TokenType &stored = std::get<TokenType>(character);
+        const TokenType& stored = std::get<TokenType>(character);
 
         if (stored == TokenType::LINE_BREAK)
         {
