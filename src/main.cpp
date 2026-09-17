@@ -1,27 +1,28 @@
-#include "parser.hpp"
+#include "lexer.hpp"
 #include <iostream>
 
 int main(int argc, char* argv[])
 {
-    Parser parser;
     std::string input;
-    
+
     while (true)
     {
+        Lexer lexer;
         std::cin >> input;
+
         switch (std::stoi(input)) 
         {
             case 1:
-                parser.Differentiation();
+                lexer.Differentiation();
                 break;
             case 2:
-                parser.Integration();
+                lexer.Integration();
                 break;
             default:
                 std::cout << "Invalid input\n";
                 break;
         }
-        parser.Cleanup();
+        lexer.Cleanup();
     }
 
     return 0;
