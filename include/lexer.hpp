@@ -19,8 +19,8 @@ enum class TokenType
 
     NUMBER,
 
-    BRACKET_OPEN,
-    BRACKET_CLOSE,
+    PARANTHESES_OPEN,
+    PARANTHESES_CLOSE,
 
     VARIABLE,
 
@@ -45,24 +45,38 @@ enum class TokenType
     DIFFERENTIATION,
     INTEGRATION,
     DIFFERENTIAL,
+
+    SPACE,
+    LINE_BREAK,
     
     INVALID
 };
 
+typedef std::variant<TokenType, Number, Variable> Token;
+typedef std::variant<char, TokenType> CharacterOrWhitespace;
+
 class Lexer
 {
 private:
-    std::vector<std::variant<TokenType, Number, Variable>> m_tokens;
+    std::vector<Token> m_tokens;
     Integrator m_integrator;
     Differentiator m_differentiator;
 private:
     void ReadTokens();
-    char AssignToken(char character);
+    std::vector<Token> Tokenize(const char character) const;
+private:
+    // replaces getchar()
+    std::variant<Token, char> ReadUsefulCharacter() const;
 public:
     Lexer();
     double Differentiation();
     double Integration();
     void Cleanup();
+// helper functions
+private:
+    CharacterOrWhitespace ReadCharacter() const;
+    bool IsLinebreak(const CharacterOrWhitespace &character) const;
+    bool IsSpace(const CharacterOrWhitespace &character) const;
 
 #ifdef DEBUG_BUILD
 private:
@@ -96,11 +110,11 @@ private:
                 case TokenType::NUMBER:
                     tokenTypeStr = "NUMBER";
                     break;
-                case TokenType::BRACKET_OPEN:
-                    tokenTypeStr = "BRACKET_OPEN";
+                case TokenType::PARANTHESES_OPEN:
+                    tokenTypeStr = "PARANTHESES_OPEN";
                     break;
-                case TokenType::BRACKET_CLOSE:
-                    tokenTypeStr = "BRACKET_CLOSE";
+                case TokenType::PARANTHESES_CLOSE:
+                    tokenTypeStr = "PARANTHESES_CLOSE";
                     break;
                 case TokenType::VARIABLE:
                     tokenTypeStr = "VARIABLE";

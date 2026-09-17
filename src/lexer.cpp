@@ -7,35 +7,47 @@ Lexer::Lexer() : m_integrator(Integrator()), m_differentiator(Differentiator())
 
 }
 
-char Lexer::AssignToken(char character)
+std::variant<Token, char> Lexer::ReadUsefulCharacter() const
+{
+    const CharacterOrWhitespace temp = ReadCharacter();
+    if (IsLinebreak(temp))
+    {
+        return TokenType::LINE_BREAK;
+    }
+    else if (IsSpace(temp))
+    {
+        return TokenType::SPACE;
+    }
+
+    if (std::holds_alternative<char>(temp))
+    {
+        return std::get<char>(temp);
+    }
+
+    throw std::runtime_error("Something other than a character, space, or linebreak was parsed. Exiting...");
+};
+
+std::vector<Token> Lexer::Tokenize(const char character) const
 {
     std::string token;
     switch (character)
     {
         case '+':
-            m_tokens.push_back(TokenType::ADDITION);
-            return getchar();
+            return std::vector<Token>(1, TokenType::ADDITION);
         case '-':
-            m_tokens.push_back(TokenType::SUBTRACTION);
-            return getchar();
+            return std::vector<Token>(1, TokenType::SUBTRACTION);
         case '/':
-            m_tokens.push_back(TokenType::DIVISION);
-            return getchar();
+            return std::vector<Token>(1, TokenType::DIVISION);
         case '*':
-            m_tokens.push_back(TokenType::MULTIPLICATION);
-            return getchar();
+            return std::vector<Token>(1, TokenType::MULTIPLICATION);
         case '^':
-            m_tokens.push_back(TokenType::EXPONENTIATION);
-            return getchar();
+            return std::vector<Token>(1, TokenType::EXPONENTIATION);
         case '_':
-            m_tokens.push_back(TokenType::SUBSCRIPT);
-            return getchar();
+            return std::vector<Token>(1, TokenType::SUBSCRIPT);
         case '(':
-            m_tokens.push_back(TokenType::BRACKET_OPEN);
-            return getchar();
+            return std::vector<Token>(1, TokenType::PARANTHESES_OPEN);
         case ')':
-            m_tokens.push_back(TokenType::BRACKET_CLOSE);
-            return getchar();
+            return std::vector<Token>(1, TokenType::PARANTHESES_CLOSE);
         case '1':
         case '2':
         case '3':
@@ -46,170 +58,198 @@ char Lexer::AssignToken(char character)
         case '8':
         case '9':
         case '0':
-            do
-            {
-                token += static_cast<char>(character);
-                character = getchar();
-            } while (isdigit(character) || character == '.');
-            m_tokens.emplace_back(Number(std::stod(token)));
-
-            return character;
+            return std::vector<Token>(1, Number( std::stod(std::string(1, character)) ));
         case 's':
             token += static_cast<char>(character);
-            for (int i = 0; i < 2; ++i)
+
+            // check if it is sin/sec, if not, treat it as a variable
+            for (int i = 0; i < 2; i++)
             {
-                token += static_cast<char>(getchar());
+                const auto nextCharacter = ReadUsefulCharacter();
+                if (std::holds_alternative<Token>(nextCharacter))
+                {
+                    return std::vector<Token>{token, std::get<Token>(nextCharacter)};
+                }
+
+                token += std::get<char>(nextCharacter);
             }
 
             if (token == "sin")
             {
-                m_tokens.push_back(TokenType::SINE);
+                return std::vector<Token>{TokenType::SINE};
             }
             else if (token == "sec")
             {
-                m_tokens.push_back(TokenType::SECANT);
-            }
-            else
-            {
-                for (const auto& character : token)
-                {
-                    m_tokens.emplace_back(Variable(character));
-                }
+                return std::vector<Token>{TokenType::SECANT};
             }
 
-            return getchar();
+            return std::vector<Token>{Variable(token)};
         case 'c':
             token += static_cast<char>(character);
-            for (int i = 0; i < 2; ++i)
+
+            for (int i = 0; i < 2; i++)
             {
-                token += static_cast<char>(getchar());
+                const auto nextCharacter = ReadUsefulCharacter();
+                if (std::holds_alternative<Token>(nextCharacter))
+                {
+                    return std::vector<Token>{token, std::get<Token>(nextCharacter)};
+                }
+
+                token += std::get<char>(nextCharacter);
             }
 
             if (token == "cos")
             {
-                m_tokens.push_back(TokenType::COSINE);
+                return std::vector<Token>(1, TokenType::COSINE);
             }
             else if (token == "csc")
             {
-                m_tokens.push_back(TokenType::COSECANT);
+                return std::vector<Token>(1, TokenType::COSECANT);
             }
             else if (token == "cot")
             {
-                m_tokens.push_back(TokenType::COTANGENT);
-            }
-            else
-            {
-                for (const auto& character : token)
-                {
-                    m_tokens.emplace_back(Variable(character));
-                }
+                return std::vector<Token>(1, TokenType::COTANGENT);
             }
 
-            return getchar();
+            return std::vector<Token>(1, (Variable(token)));
         case 't':
             token += static_cast<char>(character);
-            for (int i = 0; i < 2; ++i)
+
+            for (int i = 0; i < 2; i++)
             {
-                token += static_cast<char>(getchar());
+                const auto nextCharacter = ReadUsefulCharacter();
+                if (std::holds_alternative<Token>(nextCharacter))
+                {
+                    return std::vector<Token>{token, std::get<Token>(nextCharacter)};
+                }
+
+                token += std::get<char>(nextCharacter);
             }
 
             if (token == "tan")
             {
-                m_tokens.push_back(TokenType::TANGENT);
+                return std::vector<Token>(1, TokenType::TANGENT);
             }
-            else
-            {
-                for (const auto& character : token)
-                {
-                    m_tokens.emplace_back(Variable(character));
-                }
-            }
-
-            return getchar();
+            
+            return std::vector<Token>(1, (Variable(token)));
         case 'a':
             token += static_cast<char>(character);
-            for (int i = 0; i < 5; ++i)
+
+            // check if it really is an 'arc' function, if not, treat it as a variable
+            for (int i = 0; i < 5; i++)
             {
-                token += static_cast<char>(getchar());
+                const auto nextCharacter = ReadUsefulCharacter();
+                if (std::holds_alternative<Token>(nextCharacter))
+                {
+                    return std::vector<Token>{token, std::get<Token>(nextCharacter)};
+                }
+
+                token += std::get<char>(nextCharacter);
             }
 
             if (token == "arcsin")
             {
-                m_tokens.push_back(TokenType::ASINE);
+                return std::vector<Token>(1, TokenType::ASINE);
             }
             else if (token == "arccos")
             {
-                m_tokens.push_back(TokenType::ACOSINE);
+                return std::vector<Token>(1, TokenType::ACOSINE);
             }
             else if (token == "arctan")
             {
-                m_tokens.push_back(TokenType::ATANGENT);
+                return std::vector<Token>(1, TokenType::ATANGENT);
             }
             else if (token == "arccot")
             {
-                m_tokens.push_back(TokenType::ACOTANGENT);
+                return std::vector<Token>(1, TokenType::ACOTANGENT);
             }
             else if (token == "arcsec")
             {
-                m_tokens.push_back(TokenType::ASECANT);
+                return std::vector<Token>(1, TokenType::ASECANT);
             }
             else if (token == "arccsc")
             {
-                m_tokens.push_back(TokenType::ACOSECANT);
+                return std::vector<Token>(1, TokenType::ACOSECANT);
             }
-            else
-            {
-                for (const auto& character : token)
-                {
-                    m_tokens.emplace_back(Variable(character));
-                }
-            }
+
+            return std::vector<Token>(1, (Variable(token)));
         case ' ':
-            while (true)
-            {
-                character = getchar();
-                if (character != ' ')
-                {
-                    return character;
-                }
-            }
+            return std::vector<Token>(1, TokenType::SPACE);
+        case '\n':
+            return std::vector<Token>(1, TokenType::LINE_BREAK);
         case 'l':
             token += static_cast<char>(character);
-            token += static_cast<char>(getchar());
+
+            {
+                const auto nextCharacter = ReadUsefulCharacter();
+                if (std::holds_alternative<Token>(nextCharacter))
+                {
+                    return std::vector<Token>{token, std::get<Token>(nextCharacter)};
+                }
+
+                token += std::get<char>(nextCharacter);
+            }
+
             if (token == "ln")
             {
-                m_tokens.push_back(TokenType::NATURAL_LOGARITHM);
-                return getchar();
+                return std::vector<Token>(1, TokenType::NATURAL_LOGARITHM);
             }
-            token += static_cast<char>(getchar());
+
+            {
+                const auto nextCharacter = ReadUsefulCharacter();
+                if (std::holds_alternative<Token>(nextCharacter))
+                {
+                    return std::vector<Token>{token, std::get<Token>(nextCharacter)};
+                }
+
+                token += std::get<char>(nextCharacter);
+            }
+
             if (token == "log")
             {
-                m_tokens.push_back(TokenType::LOGARITHM);
-                return getchar();
+                return std::vector<Token>(1, TokenType::LOGARITHM);
             }
-            for (const auto& character : token)
-            {
-                m_tokens.emplace_back(Variable(character));
-            }
-            return getchar();
+
+            return std::vector<Token>(1, Variable(token));
         case 'e':
-            m_tokens.push_back(TokenType::EXPONENTIAL);
-            return getchar();
+            return std::vector<Token>(1, TokenType::EXPONENTIAL);
         default:
-            m_tokens.emplace_back(Variable(character));
-            return getchar();
+            return std::vector<Token>(1, Variable(std::string(1, character)));
     }
 }
 
 void Lexer::ReadTokens()
 {
-    int character = getchar();
-    std::string token;
-
-    while (character != '\n')
+    bool running = true;
+    while (running)
     {
-        character = AssignToken(character);
-    }
+        const std::vector<Token> returnedToken = Tokenize(getchar());
+
+        for (const Token& token : returnedToken)
+        {
+            if (std::holds_alternative<TokenType>(token))
+            {
+                const TokenType& stored = std::get<TokenType>(token);
+
+                if (stored == TokenType::LINE_BREAK)
+                {
+                    running = false;
+                    break;
+                }
+                else if (stored == TokenType::SPACE)
+                {
+                    continue;
+                }
+                else if (stored == TokenType::INVALID)
+                {
+                    std::cout << "Invalid token encountered. Exiting...\n";
+                    std::exit(EXIT_FAILURE);
+                }
+            }
+
+            m_tokens.push_back(std::move(token));
+        }
+    };
 }
 
 double Lexer::Differentiation()
@@ -233,4 +273,47 @@ double Lexer::Integration()
 void Lexer::Cleanup()
 {
     m_tokens.clear();
+}
+
+CharacterOrWhitespace Lexer::ReadCharacter() const
+{
+    char character = getchar();
+    if (character == ' ')
+    {
+        return TokenType::SPACE;
+    }
+    else if (character == '\n')
+    {
+        return TokenType::LINE_BREAK;
+    }
+
+    return character;
+}
+
+bool Lexer::IsLinebreak(const CharacterOrWhitespace &character) const
+{
+    if (std::holds_alternative<TokenType>(character))
+    {
+        const TokenType &stored = std::get<TokenType>(character);
+
+        if (stored == TokenType::LINE_BREAK)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Lexer::IsSpace(const CharacterOrWhitespace &character) const
+{
+    if (std::holds_alternative<TokenType>(character))
+    {
+        const TokenType &stored = std::get<TokenType>(character);
+
+        if (stored == TokenType::LINE_BREAK)
+        {
+            return true;
+        }
+    }
+    return false;
 }

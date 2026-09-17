@@ -10,12 +10,12 @@ double Number::GetValue() const
     return m_value;
 }
 
-Variable::Variable(char name) : m_name(name) 
+Variable::Variable(const std::string& name) : m_name(name) 
 {
 
 }
 
-char Variable::GetName() const
+const std::string& Variable::GetName() const
 {
     return m_name;
 }
