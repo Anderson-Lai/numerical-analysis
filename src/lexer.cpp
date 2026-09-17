@@ -27,6 +27,9 @@ char Lexer::AssignToken(char character)
         case '^':
             m_tokens.push_back(TokenType::EXPONENTIATION);
             return getchar();
+        case '_':
+            m_tokens.push_back(TokenType::SUBSCRIPT);
+            return getchar();
         case '(':
             m_tokens.push_back(TokenType::BRACKET_OPEN);
             return getchar();
@@ -170,6 +173,28 @@ char Lexer::AssignToken(char character)
                     return character;
                 }
             }
+        case 'l':
+            token += static_cast<char>(character);
+            token += static_cast<char>(getchar());
+            if (token == "ln")
+            {
+                m_tokens.push_back(TokenType::NATURAL_LOGARITHM);
+                return getchar();
+            }
+            token += static_cast<char>(getchar());
+            if (token == "log")
+            {
+                m_tokens.push_back(TokenType::LOGARITHM);
+                return getchar();
+            }
+            for (const auto& character : token)
+            {
+                m_tokens.emplace_back(Variable(character));
+            }
+            return getchar();
+        case 'e':
+            m_tokens.push_back(TokenType::EXPONENTIAL);
+            return getchar();
         default:
             m_tokens.emplace_back(Variable(character));
             return getchar();
