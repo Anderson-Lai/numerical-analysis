@@ -75,8 +75,8 @@ public:
 // helper functions
 private:
     CharacterOrWhitespace ReadCharacter() const;
-    bool IsLinebreak(const CharacterOrWhitespace &character) const;
-    bool IsSpace(const CharacterOrWhitespace &character) const;
+    bool IsLinebreak(const CharacterOrWhitespace& character) const;
+    bool IsSpace(const CharacterOrWhitespace& character) const;
 
 #ifdef DEBUG_BUILD
 private:
