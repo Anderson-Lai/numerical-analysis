@@ -66,7 +66,7 @@ private:
     std::vector<Token> Tokenize(const char character) const;
 private:
     // replaces getchar()
-    std::variant<Token, char> ReadUsefulCharacter() const;
+    std::variant<TokenType, char> ReadUsefulCharacter() const;
 public:
     Lexer();
     double Differentiation();

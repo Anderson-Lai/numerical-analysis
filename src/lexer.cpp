@@ -7,7 +7,7 @@ Lexer::Lexer() : m_integrator(Integrator()), m_differentiator(Differentiator())
 
 }
 
-std::variant<Token, char> Lexer::ReadUsefulCharacter() const
+std::variant<TokenType, char> Lexer::ReadUsefulCharacter() const
 {
     const CharacterOrWhitespace character = ReadCharacter();
     if (IsLinebreak(character))
