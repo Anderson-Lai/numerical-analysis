@@ -4,9 +4,7 @@
 #include <variant>
 #include "differentiator.hpp"
 #include "integrator.hpp"
-#include <iostream>
 #include "types.hpp"
-#include <utility>
 
 enum class TokenType
 {
@@ -77,6 +75,7 @@ public:
     void Cleanup();
 
 #ifdef DEBUG_BUILD
+#include <iostream>
 private:
     void PrintTokens()
     {
