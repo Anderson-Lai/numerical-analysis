@@ -3,13 +3,6 @@
 #include <array>
 #include <ranges>
 
-const std::array<char, 20> NON_LETTER =
-{
-    '+', '-', '/', '*', '^', '_', '(', ')',
-    '1', '2', '3', '4', '5', '6', '7', '8',
-    '9', '0', ' ', '\n'
-};
-
 Lexer::Lexer() : m_integrator(Integrator()), m_differentiator(Differentiator())
 {
 
@@ -116,14 +109,15 @@ std::vector<Token> Lexer::DeterminePossibleToken(const std::string& token) const
             }
 
             return std::vector<Token>{Variable(token)};
-        // derivative
-        case 4:
-            if (std::string_view(token.c_str(), 3) == "d/d")
-            {
-                return std::vector<Token>{TokenType::DIFFERENTIATION, Variable(std::string{token.back()})};
-            }
+        // removed here since can not parse through the '/' symbol
+        // // derivative
+        // case 4:
+        //     if (std::string_view(token.c_str(), 3) == "d/d")
+        //     {
+        //         return std::vector<Token>{TokenType::DIFFERENTIATION, Variable(std::string{token.back()})};
+        //     }
 
-            return std::vector<Token>{Variable(token)};
+        //     return std::vector<Token>{Variable(token)};
         // inverse trig
         case 6:
             if (token == "arcsin")

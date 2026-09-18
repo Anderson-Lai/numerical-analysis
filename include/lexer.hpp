@@ -9,6 +9,7 @@
 #include "differentiator.hpp"
 #include "integrator.hpp"
 #include "types.hpp"
+#include <array>
 
 enum class TokenType
 {
@@ -64,6 +65,13 @@ private:
     std::vector<Token> m_tokens;
     Integrator m_integrator;
     Differentiator m_differentiator;
+private:
+    const std::array<char, 20> NON_LETTER =
+        {
+            '+', '-', '/', '*', '^', '_', '(', ')',
+            '1', '2', '3', '4', '5', '6', '7', '8',
+            '9', '0', ' ', '\n'
+        };
 private:
     void ReadTokens();
     std::vector<Token> Tokenize(const char character) const;
