@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef DEBUG_BUILD
+#include <iostream>
+#endif
+
 #include <vector>
 #include <variant>
 #include "differentiator.hpp"
@@ -75,7 +79,6 @@ public:
     void Cleanup();
 
 #ifdef DEBUG_BUILD
-#include <iostream>
 private:
     void PrintTokens()
     {
