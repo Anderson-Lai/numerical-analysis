@@ -53,7 +53,7 @@ enum class TokenType
 };
 
 typedef std::variant<TokenType, Number, Variable> Token;
-typedef std::variant<char, TokenType> CharacterOrWhitespace;
+typedef std::variant<TokenType, char> CharacterOrWhitespace;
 
 class Lexer
 {
@@ -66,7 +66,7 @@ private:
     std::vector<Token> Tokenize(const char character) const;
 private:
     // replaces getchar()
-    std::variant<TokenType, char> ReadUsefulCharacter() const;
+    CharacterOrWhitespace ReadUsefulCharacter() const;
 public:
     Lexer();
     double Differentiation();
