@@ -16,7 +16,7 @@ Lexer::Lexer() : m_integrator(Integrator()), m_differentiator(Differentiator())
 
 }
 
-std::variant<Token, char> Lexer::ReadConsecutiveLetter() const
+std::variant<Token, char> Lexer::ReadConsecutiveCharacter() const
 {
     const char character = getchar();
 
@@ -219,41 +219,33 @@ std::vector<Token> Lexer::Tokenize(const char character) const
                     token.clear();
                 }
 
-                const std::variant<Token, char> letter = ReadConsecutiveLetter();
-                if (std::holds_alternative<Token>(letter))
-                {
-                    const std::vector<Token> possibility = DeterminePossibleToken(token);
+                const std::variant<Token, char> nextCharacter = ReadConsecutiveCharacter();
 
-                    if (std::holds_alternative<TokenType>(possibility.front()))
+                // if typeof(nextCharacter) == Token, then an important character (e.g., ')', a number, etc.)
+                // was read and the keyword has ended
+                if (std::holds_alternative<Token>(nextCharacter))
+                {
+                    // ex: 'cos(' : after 'cos' is turned into a token, 'token' is now "", 
+                    // so there is no point in determining if it is a possible token
+                    if (token == "")
                     {
-                        for (const auto& tok : possibility)
-                        {
-                            result.push_back(tok);
-                        }
-                        token.clear();
+                        result.push_back(std::get<Token>(nextCharacter));
                         return result;
                     }
 
-                    // 'possibility' is either Number or Variable here
-                    if (std::holds_alternative<Variable>(possibility.front()))
+                    // certainToken.front() could be a Variable/Number as well,
+                    // not just a TokenType
+                    const std::vector<Token> certainToken = DeterminePossibleToken(token);
+                    for (const auto& tok : certainToken)
                     {
-                        const Variable& stored = std::get<Variable>(possibility.front());
-
-                        if (stored.GetName() != "")
-                        {
-                            result.push_back(stored);
-                        }
-                    }
-                    else
-                    {
-                        result.push_back(possibility.front());
+                        result.push_back(tok);
                     }
 
-                    result.push_back(std::get<Token>(letter));
+                    result.push_back(std::get<Token>(nextCharacter));
                     return result;
                 }
 
-                token += std::get<char>(letter);
+                token += std::get<char>(nextCharacter);
             }
 
             return std::vector<Token>{Variable(token)};

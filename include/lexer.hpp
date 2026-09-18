@@ -65,9 +65,10 @@ private:
 private:
     void ReadTokens();
     std::vector<Token> Tokenize(const char character) const;
+// helper functions
 private:
     // replaces getchar()
-    std::variant<Token, char> ReadConsecutiveLetter() const;
+    std::variant<Token, char> ReadConsecutiveCharacter() const;
     std::vector<Token> DeterminePossibleToken(const std::string& token) const;
 public:
     Lexer();
