@@ -6,6 +6,7 @@
 #include "integrator.hpp"
 #include <iostream>
 #include "types.hpp"
+#include <utility>
 
 enum class TokenType
 {
@@ -66,17 +67,13 @@ private:
     std::vector<Token> Tokenize(const char character) const;
 private:
     // replaces getchar()
-    CharacterOrWhitespace ReadUsefulCharacter() const;
+    std::variant<Token, char> ReadConsecutiveLetter() const;
+    std::vector<Token> DeterminePossibleToken(const std::string& token) const;
 public:
     Lexer();
     double Differentiation();
     double Integration();
     void Cleanup();
-// helper functions
-private:
-    CharacterOrWhitespace ReadCharacter() const;
-    bool IsLinebreak(const CharacterOrWhitespace& character) const;
-    bool IsSpace(const CharacterOrWhitespace& character) const;
 
 #ifdef DEBUG_BUILD
 private:
