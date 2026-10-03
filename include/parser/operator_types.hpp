@@ -1,6 +1,8 @@
 #pragma once
 
 #include "operator.hpp"
+#include "statement.hpp"
+#include <memory>
 
 class BinaryOperator : Operator
 {
@@ -10,7 +12,7 @@ public:
 public:
     BinaryOperator() = default;
     ~BinaryOperator() = default;
-    std::unique_ptr<Statement> Evaluate() const override = 0;
+    Number Evaluate() const override = 0;
 };
 
 class UnaryOperator : Operator
@@ -20,5 +22,5 @@ private:
 public:
     UnaryOperator() = default;
     ~UnaryOperator() = default;
-    std::unique_ptr<Statement> Evaluate() const override = 0;
+    Number Evaluate() const override = 0;
 };

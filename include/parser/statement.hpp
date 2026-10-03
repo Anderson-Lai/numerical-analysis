@@ -1,11 +1,11 @@
 #pragma once
 
-#include <memory>
+#include "lexer/types.hpp"
 
 class Statement
 {
 public:
     Statement() = default;
     virtual ~Statement() = default;
-    virtual std::unique_ptr<Statement> Evaluate() const = 0;
+    virtual Number Evaluate() const = 0;
 };

@@ -9,6 +9,8 @@ private:
 public:
     Number(const double value);
     double GetValue() const;
+    Number operator+(const Number& other) const;
+    Number Concatenate(const Number& other) const;
 };
 
 class Variable

@@ -14,7 +14,7 @@ add_executable(${PROJECT_NAME}
     ${CMAKE_CURRENT_SOURCE_DIR}/src/calculus/differentiator.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/calculus/integrator.cpp
     
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/binaryoperators.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/binary_operators.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE

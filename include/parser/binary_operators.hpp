@@ -1,13 +1,13 @@
 #pragma once
 
-#include "operators.hpp"
+#include "operator_types.hpp"
 
 class Addition : BinaryOperator
 {
 public:
     Addition() = default;
     ~Addition() = default;
-    std::unique_ptr<Statement> Evaluate() const override;
+    Number Evaluate() const override;
 };
 
 class Subtraction : BinaryOperator
@@ -15,7 +15,7 @@ class Subtraction : BinaryOperator
 public:
     Subtraction() = default;
     ~Subtraction() = default;
-    std::unique_ptr<Statement> Evaluate() const override;
+    Number Evaluate() const override;
 };
 
 class Multiplication : BinaryOperator
@@ -23,7 +23,7 @@ class Multiplication : BinaryOperator
 public:
     Multiplication() = default;
     ~Multiplication() = default;
-    std::unique_ptr<Statement> Evaluate() const override;
+    Number Evaluate() const override;
 };
 
 class Division : BinaryOperator
@@ -31,7 +31,7 @@ class Division : BinaryOperator
 public:
     Division() = default;
     ~Division() = default;
-    std::unique_ptr<Statement> Evaluate() const override;
+    Number Evaluate() const override;
 };
 
 class Exponentiation : BinaryOperator
@@ -39,5 +39,5 @@ class Exponentiation : BinaryOperator
 public:
     Exponentiation() = default;
     ~Exponentiation() = default;
-    std::unique_ptr<Statement> Evaluate() const override;
+    Number Evaluate() const override;
 };
