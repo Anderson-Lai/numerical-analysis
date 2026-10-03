@@ -20,6 +20,10 @@ public:
     StatementNumber Evaluate() const override;
 public:
     StatementNumber operator+(const StatementNumber& other) const;
+    StatementNumber operator-(const StatementNumber& other) const;
+    StatementNumber operator*(const StatementNumber& other) const;
+    StatementNumber operator/(const StatementNumber& other) const;
+    StatementNumber operator^(const StatementNumber& other) const;
 
 #ifdef DEBUG_BUILD
     void PrintValue() const {
