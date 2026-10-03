@@ -16,3 +16,15 @@ Logarithm::Logarithm(const std::vector<std::shared_ptr<Statement>>& arguments) :
         throw std::invalid_argument("Logarithm base must be positive and not equal to 1.");
     }
 }
+
+StatementNumber Logarithm::Evaluate() const
+{
+    if (m_arguments.size() != 1)
+    {
+        throw std::runtime_error("Logarithm function requires exactly one argument for evaluation.");
+    }
+    
+    const StatementNumber value = m_arguments.front()->Evaluate();
+    double result = std::log(value.GetValue()) / std::log(m_base);
+    return StatementNumber(result);
+}
