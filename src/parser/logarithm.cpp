@@ -1,6 +1,5 @@
 #include "parser/statements/functions/logarithm.hpp"
-#include "statements/statement_number.hpp"
-
+#include "parser/statements/statement_number.hpp"
 Logarithm::Logarithm(const std::vector<std::shared_ptr<Statement>>& arguments) : Function(std::vector{arguments.back()})
 {
     if (arguments.size() != 2)
@@ -23,7 +22,7 @@ StatementNumber Logarithm::Evaluate() const
     {
         throw std::runtime_error("Logarithm function requires exactly one argument for evaluation.");
     }
-    
+
     const StatementNumber value = m_arguments.front()->Evaluate();
     double result = std::log(value.GetValue()) / std::log(m_base);
     return StatementNumber(result);
