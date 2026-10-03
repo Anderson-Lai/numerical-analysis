@@ -1,5 +1,6 @@
 #include "parser/statements/functions/logarithm.hpp"
 #include "parser/statements/statement_number.hpp"
+
 Logarithm::Logarithm(const std::vector<std::shared_ptr<Statement>>& arguments) : Function(std::vector{arguments.back()})
 {
     if (arguments.size() != 2)
