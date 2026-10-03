@@ -1,7 +1,7 @@
 #include "parser/operators/binary_operators.hpp"
 
 // only do addition for now
-Number Addition::Evaluate() const
+StatementNumber Addition::Evaluate() const
 {
     return m_leftOperand->Evaluate() + m_rightOperand->Evaluate();
 }

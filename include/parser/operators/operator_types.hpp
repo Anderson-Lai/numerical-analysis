@@ -7,20 +7,22 @@
 class BinaryOperator : public Operator
 {
 protected:
-    std::unique_ptr<Statement> m_leftOperand;
-    std::unique_ptr<Statement> m_rightOperand;
+    std::shared_ptr<Statement> m_leftOperand;
+    std::shared_ptr<Statement> m_rightOperand;
+
 public:
     BinaryOperator() = default;
     ~BinaryOperator() = default;
-    Number Evaluate() const override = 0;
+    StatementNumber Evaluate() const override = 0;
 };
 
 class UnaryOperator : public Operator
 {
 protected:
-    std::unique_ptr<Statement> m_operand;
+    std::shared_ptr<Statement> m_operand;
+
 public:
     UnaryOperator() = default;
     ~UnaryOperator() = default;
-    Number Evaluate() const override = 0;
+    StatementNumber Evaluate() const override = 0;
 };

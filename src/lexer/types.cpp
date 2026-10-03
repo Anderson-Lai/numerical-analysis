@@ -10,11 +10,6 @@ double Number::GetValue() const
     return m_value;
 }
 
-Number Number::operator+(const Number& other) const
-{
-    return Number(m_value + other.m_value);
-}
-
 Number Number::Concatenate(const Number& other) const
 {
     return Number(m_value * 10 + other.m_value);

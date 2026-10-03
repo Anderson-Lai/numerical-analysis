@@ -1,11 +1,12 @@
 #pragma once
 
 #include "lexer/types.hpp"
+#include "parser/statements/statement_number.hpp"
 
 class Operator
 {
 public:
     Operator() = default;
     virtual ~Operator() = default;
-    virtual Number Evaluate() const = 0;
+    virtual StatementNumber Evaluate() const = 0;
 };

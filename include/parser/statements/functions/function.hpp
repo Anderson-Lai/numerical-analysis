@@ -1,14 +1,14 @@
 #pragma once
 
 #include <vector>
-#include "statements/statement.hpp"
+#include "parser/statements/statement.hpp"
 
-class Function : Statement
+class Function : public Statement
 {
 protected:
-    std::vector<std::unique_ptr<Statement>> m_arguments;
+    std::vector<std::shared_ptr<Statement>> m_arguments;
 public:
-    Function() = default;
+    Function(const std::vector<std::shared_ptr<Statement>>& arguments);
     virtual ~Function() = default;
-    virtual Number Evaluate() const override = 0;
+    virtual StatementNumber Evaluate() const override = 0;
 };
