@@ -9,7 +9,6 @@ class BinaryOperator : public Operator
 protected:
     std::shared_ptr<Statement> m_leftOperand;
     std::shared_ptr<Statement> m_rightOperand;
-
 public:
     BinaryOperator() = default;
     ~BinaryOperator() = default;
@@ -20,7 +19,6 @@ class UnaryOperator : public Operator
 {
 protected:
     std::shared_ptr<Statement> m_operand;
-
 public:
     UnaryOperator() = default;
     ~UnaryOperator() = default;
