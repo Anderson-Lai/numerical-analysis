@@ -1,4 +1,4 @@
-#include "types.hpp"
+#include "lexer/types.hpp"
 
 Number::Number(double value) : m_value(value)
 {

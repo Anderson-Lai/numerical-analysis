@@ -1,12 +1,12 @@
 #pragma once
 
 #include "operator.hpp"
-#include "statement.hpp"
+#include "parser/statements/statement.hpp"
 #include <memory>
 
-class BinaryOperator : Operator
+class BinaryOperator : public Operator
 {
-public:
+protected:
     std::unique_ptr<Statement> m_leftOperand;
     std::unique_ptr<Statement> m_rightOperand;
 public:
@@ -15,9 +15,9 @@ public:
     Number Evaluate() const override = 0;
 };
 
-class UnaryOperator : Operator
+class UnaryOperator : public Operator
 {
-private:
+protected:
     std::unique_ptr<Statement> m_operand;
 public:
     UnaryOperator() = default;

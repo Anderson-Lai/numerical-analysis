@@ -1,5 +1,5 @@
 #include <iostream>
-#include "lexer.hpp"
+#include "lexer/lexer.hpp"
 #include <array>
 #include <ranges>
 

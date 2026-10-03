@@ -19,9 +19,9 @@ add_executable(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include/
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/lexer/
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/parser/
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/calculus/
+    # ${CMAKE_CURRENT_SOURCE_DIR}/include/lexer/
+    # ${CMAKE_CURRENT_SOURCE_DIR}/include/parser/
+    # ${CMAKE_CURRENT_SOURCE_DIR}/include/calculus/
 )
 
 # define DEBUG_BUILD macro for Debug build type

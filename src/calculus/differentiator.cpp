@@ -1,4 +1,4 @@
-#include "differentiator.hpp"
+#include "calculus/differentiator.hpp"
 
 Differentiator::Differentiator()
 {

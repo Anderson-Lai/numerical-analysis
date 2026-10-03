@@ -6,9 +6,9 @@
 
 #include <vector>
 #include <variant>
-#include "differentiator.hpp"
-#include "integrator.hpp"
-#include "types.hpp"
+#include "calculus/differentiator.hpp"
+#include "calculus/integrator.hpp"
+#include "lexer/types.hpp"
 #include <array>
 
 enum class TokenType

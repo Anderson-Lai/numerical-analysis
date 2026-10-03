@@ -1,4 +1,4 @@
-#include "binary_operators.hpp"
+#include "parser/operators/binary_operators.hpp"
 
 // only do addition for now
 Number Addition::Evaluate() const

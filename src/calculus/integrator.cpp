@@ -1,4 +1,4 @@
-#include "integrator.hpp"
+#include "calculus/integrator.hpp"
 
 Integrator::Integrator()
 {

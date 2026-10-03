@@ -2,7 +2,7 @@
 
 #include "operator_types.hpp"
 
-class Addition : BinaryOperator
+class Addition final : public BinaryOperator
 {
 public:
     Addition() = default;
@@ -10,7 +10,7 @@ public:
     Number Evaluate() const override;
 };
 
-class Subtraction : BinaryOperator
+class Subtraction final : public BinaryOperator
 {
 public:
     Subtraction() = default;
@@ -18,7 +18,7 @@ public:
     Number Evaluate() const override;
 };
 
-class Multiplication : BinaryOperator
+class Multiplication final : public BinaryOperator
 {
 public:
     Multiplication() = default;
@@ -26,7 +26,7 @@ public:
     Number Evaluate() const override;
 };
 
-class Division : BinaryOperator
+class Division final : public BinaryOperator
 {
 public:
     Division() = default;
@@ -34,7 +34,7 @@ public:
     Number Evaluate() const override;
 };
 
-class Exponentiation : BinaryOperator
+class Exponentiation final : public BinaryOperator
 {
 public:
     Exponentiation() = default;
