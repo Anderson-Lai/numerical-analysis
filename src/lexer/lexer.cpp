@@ -213,7 +213,9 @@ std::vector<Token> Lexer::Tokenize(const char character) const
                     {
                         result.push_back(tok);
                     }
+                    
                     token.clear();
+                    return result;
                 }
 
                 const std::variant<Token, char> nextCharacter = ReadConsecutiveCharacter();
