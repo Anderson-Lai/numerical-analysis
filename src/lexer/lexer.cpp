@@ -281,6 +281,37 @@ void Lexer::ReadTokens()
     };
 }
 
+void Lexer::CleanTokens()
+{
+    m_cleanedTokens.reserve(m_tokens.size());
+    Number runningNumber(0.0);
+    
+    for (size_t i = 0; i < m_tokens.size(); i++)
+    {
+        if (std::holds_alternative<Number>(m_tokens[i]))
+        {
+            runningNumber = runningNumber.Concatenate(std::get<Number>(m_tokens[i]));
+            i++;
+            while (i < m_tokens.size() && std::holds_alternative<Number>(m_tokens[i]))
+            {
+                runningNumber = runningNumber.Concatenate(std::get<Number>(m_tokens[i]));
+                i++;
+            }
+            m_cleanedTokens.push_back(runningNumber);
+            runningNumber = Number(0.0);
+
+            if (i < m_tokens.size())
+            {
+                m_cleanedTokens.push_back(m_tokens[i]);
+            }
+        }
+        else
+        {
+            m_cleanedTokens.push_back(m_tokens[i]);
+        }
+    }
+}
+
 double Lexer::Differentiation()
 {
     ReadTokens();
@@ -302,4 +333,5 @@ double Lexer::Integration()
 void Lexer::Cleanup()
 {
     m_tokens.clear();
+    m_cleanedTokens.clear();
 }

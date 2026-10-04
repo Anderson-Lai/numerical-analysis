@@ -63,6 +63,7 @@ class Lexer
 {
 private:
     std::vector<Token> m_tokens;
+    std::vector<Token> m_cleanedTokens;
     Integrator m_integrator;
     Differentiator m_differentiator;
 private:
@@ -75,6 +76,7 @@ private:
 private:
     void ReadTokens();
     std::vector<Token> Tokenize(const char character) const;
+    void CleanTokens();
 // helper functions
 private:
     // replaces getchar()
