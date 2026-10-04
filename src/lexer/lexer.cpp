@@ -206,7 +206,6 @@ std::vector<Token> Lexer::Tokenize(const char character) const
 
             while (true)
             {
-
                 const std::vector<Token> possibleToken = DeterminePossibleToken(token);
                 if (std::holds_alternative<TokenType>(possibleToken.front()))
                 {
