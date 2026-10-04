@@ -71,6 +71,10 @@ std::vector<Token> Lexer::DeterminePossibleToken(const std::string& token) const
             {
                 return std::vector<Token>{TokenType::NATURAL_LOGARITHM};
             }
+            else if (token == "pi")
+            {
+                return std::vector<Token>{TokenType::PI};
+            }
 
             return std::vector<Token>{Variable(token)};
         // trig / log / int(egral):

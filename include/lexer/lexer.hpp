@@ -46,6 +46,8 @@ enum class TokenType
     NATURAL_LOGARITHM,
     EXPONENTIAL,
 
+    PI,
+
     DIFFERENTIATION,
     INTEGRATION,
     DIFFERENTIAL,
@@ -185,6 +187,9 @@ private:
                     break;
                 case TokenType::INVALID:
                     tokenTypeStr = "INVALID";
+                    break;
+                case TokenType::PI:
+                    tokenTypeStr = "PI";
                     break;
                 default:
                     tokenTypeStr = "UNKNOWN";
