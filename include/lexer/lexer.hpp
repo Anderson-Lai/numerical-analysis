@@ -69,7 +69,7 @@ private:
     Integrator m_integrator;
     Differentiator m_differentiator;
 private:
-    const std::array<char, 20> NON_LETTER =
+    static constexpr std::array<char, 20> NON_LETTER =
         {
             '+', '-', '/', '*', '^', '_', '(', ')',
             '1', '2', '3', '4', '5', '6', '7', '8',
@@ -94,7 +94,7 @@ public:
 private:
     void PrintTokens()
     {
-        for (const auto &token : m_tokens)
+        for (const auto& token : m_tokens)
         {
             if (std::holds_alternative<TokenType>(token))
             {

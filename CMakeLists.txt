@@ -18,8 +18,12 @@ add_executable(${PROJECT_NAME}
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/function.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/trigonometry.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/statement_number.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/logarithm.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/statement_number.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/parser.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/tree.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
