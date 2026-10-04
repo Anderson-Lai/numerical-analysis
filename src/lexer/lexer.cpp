@@ -199,6 +199,7 @@ std::vector<Token> Lexer::Tokenize(const char character) const
         case 't':
         case 'l':
         case 'e':
+        case 'p':
         case 'd':
         case 'i':
             token += static_cast<char>(character);
