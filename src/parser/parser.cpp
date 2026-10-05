@@ -5,6 +5,7 @@
 #include "parser/operators/binary_operators.hpp"
 #include "parser/statements/statement_function.hpp"
 #include "parser/statements/functions/trigonometry.hpp"
+#include <cmath>
 
 void Parser::Parse(const std::vector<Token>& tokens)
 {
@@ -15,6 +16,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
 {
     auto node = std::make_shared<TreeNode>(nullptr, nullptr, nullptr, nullptr);
     auto left = std::make_shared<TreeNode>(nullptr, nullptr, node, nullptr);
+    node->SetLeft(left);
 
     const Token& currentToken = tokens[index];
     int currentBindingPower = GetOperatorBindingPower(currentToken);
@@ -146,6 +148,15 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
                         std::make_shared<Arccotangent>(std::vector{0})));
                     node->SetRight(ReadExpression(tokens, ++index, 0));
+                    break;
+                case TokenType::PI:
+                    // std::acos(-1.0f) = pi since cos(pi) = -1.0
+                    left->SetValue(std::make_shared<StatementNumber>(std::acos(-1.0f)));
+                    index++;
+                    break;
+                case TokenType::EXPONENTIAL:
+                    left->SetValue(std::make_shared<StatementNumber>(std::exp(1.0f)));
+                    index++;
                     break;
                 default:
                     throw std::runtime_error("Unexpected token");
