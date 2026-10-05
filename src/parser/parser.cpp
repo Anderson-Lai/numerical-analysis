@@ -5,6 +5,7 @@
 #include "parser/operators/binary_operators.hpp"
 #include "parser/statements/statement_function.hpp"
 #include "parser/statements/functions/trigonometry.hpp"
+#include "parser/statements/functions/logarithm.hpp"
 #include <cmath>
 
 void Parser::Parse(const std::vector<Token>& tokens)
@@ -63,6 +64,9 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     node->SetValue(std::make_shared<DivisionOperator>());
                     node->SetLeft(left);
                     node->SetRight(ReadExpression(tokens, ++index, currentBindingPower));
+                    break;
+                // to implement later; subscript is a UNARY operator
+                case TokenType::SUBSCRIPT:
                     break;
                 case TokenType::EXPONENTIATION:
                     node->SetValue(std::make_shared<ExponentiationOperator>());
@@ -157,6 +161,16 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                 case TokenType::EXPONENTIAL:
                     left->SetValue(std::make_shared<StatementNumber>(std::exp(1.0f)));
                     index++;
+                    break;
+                // does not matter since these are placeholder initializations
+                // only the instantiation of a 'Logarithm' matters, not its
+                // exact member variables as of now
+                case TokenType::LOGARITHM:
+                case TokenType::NATURAL_LOGARITHM:
+                    node->SetValue(std::make_shared<StatementFunction>());
+                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
+                        std::make_shared<Logarithm>(std::vector{std::exp(1.0f), std::exp(1.0f)})));
+                    node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 default:
                     throw std::runtime_error("Unexpected token");

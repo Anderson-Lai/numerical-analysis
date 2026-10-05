@@ -15,7 +15,8 @@ private:
         {TokenType::SUBTRACTION, 10},
         {TokenType::DIVISION, 20},
         {TokenType::MULTIPLICATION, 20},
-        {TokenType::EXPONENTIATION, 30}
+        {TokenType::SUBSCRIPT, 30},
+        {TokenType::EXPONENTIATION, 40}
     };
 public:
     Parser() = default;
