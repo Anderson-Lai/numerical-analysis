@@ -13,4 +13,4 @@ public:
     StatementVariable(const std::string& name);
     ~StatementVariable() override = default;
     StatementNumber Evaluate() const override;
-}
+};

@@ -1,26 +1,26 @@
 #include "parser/operators/binary_operators.hpp"
 
-StatementNumber Addition::Evaluate() const
+StatementNumber AdditionOperator::Evaluate() const
 {
     return m_leftOperand->Evaluate() + m_rightOperand->Evaluate();
 }
 
-StatementNumber Subtraction::Evaluate() const
+StatementNumber SubtractionOperator::Evaluate() const
 {
     return m_leftOperand->Evaluate() - m_rightOperand->Evaluate();
 }
 
-StatementNumber Multiplication::Evaluate() const
+StatementNumber MultiplicationOperator::Evaluate() const
 {
     return m_leftOperand->Evaluate() * m_rightOperand->Evaluate();
 }
 
-StatementNumber Division::Evaluate() const
+StatementNumber DivisionOperator::Evaluate() const
 {
     return m_leftOperand->Evaluate() / m_rightOperand->Evaluate();
 }
 
-StatementNumber Exponentiation::Evaluate() const
+StatementNumber ExponentiationOperator::Evaluate() const
 {
     return m_leftOperand->Evaluate() ^ m_rightOperand->Evaluate();
 }

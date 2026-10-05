@@ -5,17 +5,20 @@
 class TreeNode
 {
 private:
-    std::shared_ptr<Statement> m_left;
-    std::shared_ptr<Statement> m_right;
-    std::shared_ptr<Statement> m_parent;
+    std::shared_ptr<TreeNode> m_left;
+    std::shared_ptr<TreeNode> m_right;
+    std::shared_ptr<TreeNode> m_parent;
+    std::shared_ptr<Statement> m_value;
 public:
-    TreeNode(const std::shared_ptr<Statement>& left, const std::shared_ptr<Statement>& right, const std::shared_ptr<Statement>& parent);
+    TreeNode(const std::shared_ptr<TreeNode>& left, const std::shared_ptr<TreeNode>& right, const std::shared_ptr<TreeNode>& parent, const std::shared_ptr<Statement>& value);
     ~TreeNode() = default;
 public:
-    void SetLeft(const std::shared_ptr<Statement>& left);
-    void SetRight(const std::shared_ptr<Statement>& right);
-    void SetParent(const std::shared_ptr<Statement>& parent);
-    std::shared_ptr<Statement> GetLeft() const;
-    std::shared_ptr<Statement> GetRight() const;
-    std::shared_ptr<Statement> GetParent() const;
+    void SetLeft(const std::shared_ptr<TreeNode>& left);
+    void SetRight(const std::shared_ptr<TreeNode>& right);
+    void SetParent(const std::shared_ptr<TreeNode>& parent);
+    void SetValue(const std::shared_ptr<Statement>& value);
+    std::shared_ptr<TreeNode> GetLeft() const;
+    std::shared_ptr<TreeNode> GetRight() const;
+    std::shared_ptr<TreeNode> GetParent() const;
+    std::shared_ptr<Statement> GetValue() const;
 };

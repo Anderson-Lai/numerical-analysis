@@ -16,7 +16,6 @@ private:
         {TokenType::DIVISION, 20},
         {TokenType::MULTIPLICATION, 20},
         {TokenType::EXPONENTIATION, 30},
-        {TokenType::SUBSCRIPT, 40},
         {TokenType::PARANTHESES_OPEN, 50},
         {TokenType::PARANTHESES_CLOSE, 50}
     };

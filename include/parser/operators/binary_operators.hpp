@@ -2,42 +2,42 @@
 
 #include "operator_types.hpp"
 
-class Addition final : public BinaryOperator
+class AdditionOperator final : public BinaryOperator
 {
 public:
-    Addition() = default;
-    ~Addition() = default;
+    AdditionOperator() = default;
+    ~AdditionOperator() = default;
     StatementNumber Evaluate() const override;
 };
 
-class Subtraction final : public BinaryOperator
+class SubtractionOperator final : public BinaryOperator
 {
 public:
-    Subtraction() = default;
-    ~Subtraction() = default;
+    SubtractionOperator() = default;
+    ~SubtractionOperator() = default;
     StatementNumber Evaluate() const override;
 };
 
-class Multiplication final : public BinaryOperator
+class MultiplicationOperator final : public BinaryOperator
 {
 public:
-    Multiplication() = default;
-    ~Multiplication() = default;
+    MultiplicationOperator() = default;
+    ~MultiplicationOperator() = default;
     StatementNumber Evaluate() const override;
 };
 
-class Division final : public BinaryOperator
+class DivisionOperator final : public BinaryOperator
 {
 public:
-    Division() = default;
-    ~Division() = default;
+    DivisionOperator() = default;
+    ~DivisionOperator() = default;
     StatementNumber Evaluate() const override;
 };
 
-class Exponentiation final : public BinaryOperator
+class ExponentiationOperator final : public BinaryOperator
 {
 public:
-    Exponentiation() = default;
-    ~Exponentiation() = default;
+    ExponentiationOperator() = default;
+    ~ExponentiationOperator() = default;
     StatementNumber Evaluate() const override;
 };
