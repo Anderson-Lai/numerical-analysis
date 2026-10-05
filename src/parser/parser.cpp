@@ -3,6 +3,8 @@
 #include "parser/statements/statement_variable.hpp"
 #include "parser/statements/statement_number.hpp"
 #include "parser/operators/binary_operators.hpp"
+#include "parser/statements/statement_function.hpp"
+#include "parser/statements/functions/trigonometry.hpp"
 
 void Parser::Parse(const std::vector<Token>& tokens)
 {
@@ -11,8 +13,8 @@ void Parser::Parse(const std::vector<Token>& tokens)
 
 std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& tokens, size_t& index, const int minBindingPower)
 {
-    auto left = std::make_shared<TreeNode>(nullptr, nullptr, nullptr, nullptr);
-    auto node = std::make_shared<TreeNode>(left, nullptr, nullptr, nullptr);
+    auto node = std::make_shared<TreeNode>(nullptr, nullptr, nullptr, nullptr);
+    auto left = std::make_shared<TreeNode>(nullptr, nullptr, node, nullptr);
 
     const Token& currentToken = tokens[index];
     int currentBindingPower = GetOperatorBindingPower(currentToken);
@@ -67,6 +69,83 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     break;
                 case TokenType::PARANTHESES_OPEN:
                     node->SetValue(ReadExpression(tokens, ++index, 0)->GetValue());
+                    if (index > tokens.size() || !std::holds_alternative<TokenType>(tokens[index])
+                        || std::get<TokenType>(tokens[index]) != TokenType::PARANTHESES_CLOSE)
+                    {
+                        throw std::runtime_error("Missing closing paranthesis");
+                    }
+                    break;
+                case TokenType::SINE:
+                    node->SetValue(std::make_shared<StatementFunction>());
+                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node, 
+                        std::make_shared<Sine>(std::vector{0})));
+                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    break;
+                case TokenType::COSINE:
+                    node->SetValue(std::make_shared<StatementFunction>());
+                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node, 
+                        std::make_shared<Cosine>(std::vector{0})));
+                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    break;
+                case TokenType::TANGENT:
+                    node->SetValue(std::make_shared<StatementFunction>());
+                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
+                        std::make_shared<Tangent>(std::vector{0})));
+                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    break;
+                case TokenType::SECANT:
+                    node->SetValue(std::make_shared<StatementFunction>());
+                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
+                        std::make_shared<Secant>(std::vector{0})));
+                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    break;
+                case TokenType::COSECANT:
+                    node->SetValue(std::make_shared<StatementFunction>());
+                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
+                        std::make_shared<Cosecant>(std::vector{0})));
+                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    break;
+                case TokenType::COTANGENT:
+                    node->SetValue(std::make_shared<StatementFunction>());
+                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
+                        std::make_shared<Cotangent>(std::vector{0})));
+                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    break;
+                case TokenType::ASINE:
+                    node->SetValue(std::make_shared<StatementFunction>());
+                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
+                        std::make_shared<Arcsine>(std::vector{0})));
+                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    break;
+                case TokenType::ACOSINE:
+                    node->SetValue(std::make_shared<StatementFunction>());
+                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
+                        std::make_shared<Arccosine>(std::vector{0})));
+                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    break;
+                case TokenType::ATANGENT:
+                    node->SetValue(std::make_shared<StatementFunction>());
+                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
+                        std::make_shared<Arctangent>(std::vector{0})));
+                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    break;
+                case TokenType::ASECANT:
+                    node->SetValue(std::make_shared<StatementFunction>());
+                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
+                        std::make_shared<Arcsecant>(std::vector{0})));
+                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    break;
+                case TokenType::ACOSECANT:
+                    node->SetValue(std::make_shared<StatementFunction>());
+                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
+                        std::make_shared<Arccosecant>(std::vector{0})));
+                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    break;
+                case TokenType::ACOTANGENT:
+                    node->SetValue(std::make_shared<StatementFunction>());
+                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
+                        std::make_shared<Arccotangent>(std::vector{0})));
+                    node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 default:
                     throw std::runtime_error("Unexpected token");
