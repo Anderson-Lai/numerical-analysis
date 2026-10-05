@@ -35,6 +35,9 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
         else if (std::holds_alternative<TokenType>(currentToken))
         {
             const TokenType& currentTokenType = std::get<TokenType>(currentToken);
+            // since exponentiation is right associative
+            int associativity = (currentTokenType == TokenType::EXPONENTIATION) ? 1 : 0;
+
             switch (currentTokenType)
             {
                 case TokenType::ADDITION:
@@ -60,9 +63,6 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                 case TokenType::EXPONENTIATION:
                     node->SetValue(std::make_shared<ExponentiationOperator>());
                     node->SetLeft(left);
-
-                    // since exponentiation is right associative
-                    int associativity = (currentTokenType == TokenType::EXPONENTIATION) ? 1 : 0;
                     node->SetRight(ReadExpression(tokens, ++index, currentBindingPower + associativity));
                     break;
                 case TokenType::PARANTHESES_OPEN:
