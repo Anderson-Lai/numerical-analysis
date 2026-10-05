@@ -84,73 +84,97 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                 case TokenType::SINE:
                     node->SetValue(std::make_shared<StatementFunction>());
                     node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node, 
-                        std::make_shared<Sine>(std::vector{0})));
+                        std::make_shared<Sine>(
+                            std::vector<std::shared_ptr<Statement>>{std::make_shared<StatementNumber>(0.0)}
+                        )));
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::COSINE:
                     node->SetValue(std::make_shared<StatementFunction>());
-                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node, 
-                        std::make_shared<Cosine>(std::vector{0})));
+                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
+                        std::make_shared<Cosine>(
+                            std::vector<std::shared_ptr<Statement>>{std::make_shared<StatementNumber>(0.0)}
+                        )));
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::TANGENT:
                     node->SetValue(std::make_shared<StatementFunction>());
                     node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
-                        std::make_shared<Tangent>(std::vector{0})));
+                        std::make_shared<Tangent>(
+                            std::vector<std::shared_ptr<Statement>>{std::make_shared<StatementNumber>(0.0)}
+                        )));
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::SECANT:
                     node->SetValue(std::make_shared<StatementFunction>());
                     node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
-                        std::make_shared<Secant>(std::vector{0})));
+                        std::make_shared<Secant>(
+                            std::vector<std::shared_ptr<Statement>>{std::make_shared<StatementNumber>(0.0)}
+                        )));
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::COSECANT:
                     node->SetValue(std::make_shared<StatementFunction>());
                     node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
-                        std::make_shared<Cosecant>(std::vector{0})));
+                        std::make_shared<Cosecant>(
+                            std::vector<std::shared_ptr<Statement>>{std::make_shared<StatementNumber>(0.0)}
+                        )));
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::COTANGENT:
                     node->SetValue(std::make_shared<StatementFunction>());
                     node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
-                        std::make_shared<Cotangent>(std::vector{0})));
+                        std::make_shared<Cotangent>(
+                            std::vector<std::shared_ptr<Statement>>{std::make_shared<StatementNumber>(0.0)}
+                        )));
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::ASINE:
                     node->SetValue(std::make_shared<StatementFunction>());
                     node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
-                        std::make_shared<Arcsine>(std::vector{0})));
+                        std::make_shared<Arcsine>(
+                            std::vector<std::shared_ptr<Statement>>{std::make_shared<StatementNumber>(0.0)}
+                        )));
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::ACOSINE:
                     node->SetValue(std::make_shared<StatementFunction>());
                     node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
-                        std::make_shared<Arccosine>(std::vector{0})));
+                        std::make_shared<Arccosine>(
+                            std::vector<std::shared_ptr<Statement>>{std::make_shared<StatementNumber>(0.0)}
+                        )));
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::ATANGENT:
                     node->SetValue(std::make_shared<StatementFunction>());
                     node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
-                        std::make_shared<Arctangent>(std::vector{0})));
+                        std::make_shared<Arctangent>(
+                            std::vector<std::shared_ptr<Statement>>{std::make_shared<StatementNumber>(0.0)}
+                        )));
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::ASECANT:
                     node->SetValue(std::make_shared<StatementFunction>());
                     node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
-                        std::make_shared<Arcsecant>(std::vector{0})));
+                        std::make_shared<Arcsecant>(
+                            std::vector<std::shared_ptr<Statement>>{std::make_shared<StatementNumber>(0.0)}
+                        )));
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::ACOSECANT:
                     node->SetValue(std::make_shared<StatementFunction>());
                     node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
-                        std::make_shared<Arccosecant>(std::vector{0})));
+                        std::make_shared<Arccosecant>(
+                            std::vector<std::shared_ptr<Statement>>{std::make_shared<StatementNumber>(0.0)}
+                        )));
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::ACOTANGENT:
                     node->SetValue(std::make_shared<StatementFunction>());
                     node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
-                        std::make_shared<Arccotangent>(std::vector{0})));
+                        std::make_shared<Arccotangent>(
+                            std::vector<std::shared_ptr<Statement>>{std::make_shared<StatementNumber>(0.0)}
+                        )));
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::PI:
@@ -162,14 +186,16 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     left->SetValue(std::make_shared<StatementNumber>(std::exp(1.0f)));
                     index++;
                     break;
-                // does not matter since these are placeholder initializations
-                // only the instantiation of a 'Logarithm' matters, not its
-                // exact member variables as of now
+                // does not matter since these are placeholder initializations;
+                // only the instantiation of a 'Logarithm' matters
                 case TokenType::LOGARITHM:
                 case TokenType::NATURAL_LOGARITHM:
                     node->SetValue(std::make_shared<StatementFunction>());
                     node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
-                        std::make_shared<Logarithm>(std::vector{std::exp(1.0f), std::exp(1.0f)})));
+                        std::make_shared<Logarithm>(
+                            std::vector<std::shared_ptr<Statement>>
+                            {std::make_shared<StatementNumber>(0.0), std::make_shared<StatementNumber>(0.0)}
+                        )));
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 default:
