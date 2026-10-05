@@ -10,7 +10,13 @@
 
 void Parser::Parse(const std::vector<Token>& tokens)
 {
-    m_root = std::make_shared<TreeNode>(nullptr, nullptr, nullptr, nullptr);
+    if (tokens.empty())
+    {
+        throw std::runtime_error("No tokens in expression");
+    }
+
+    size_t index = 0;
+    m_root = ReadExpression(tokens, index, 0);
 }
 
 std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& tokens, size_t& index, const int minBindingPower)
@@ -19,11 +25,13 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
     auto left = std::make_shared<TreeNode>(nullptr, nullptr, node, nullptr);
     node->SetLeft(left);
 
-    const Token& currentToken = tokens[index];
+    Token currentToken = tokens[index];
     int currentBindingPower = GetOperatorBindingPower(currentToken);
 
-    while (index < tokens.size() && minBindingPower < currentBindingPower)
+    while (index < tokens.size() && (minBindingPower < currentBindingPower || currentBindingPower == -1))
     {
+        currentToken = tokens[index];
+
         // implement implicit multiplication later
         if (std::holds_alternative<Number>(currentToken))
         {
@@ -81,6 +89,8 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                         throw std::runtime_error("Missing closing paranthesis");
                     }
                     break;
+                case TokenType::PARANTHESES_CLOSE:
+                    return node;
                 case TokenType::SINE:
                     node->SetValue(std::make_shared<StatementFunction>());
                     node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node, 

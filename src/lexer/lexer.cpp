@@ -3,7 +3,7 @@
 #include <array>
 #include <ranges>
 
-Lexer::Lexer() : m_integrator(Integrator()), m_differentiator(Differentiator())
+Lexer::Lexer() : m_integrator(Integrator()), m_differentiator(Differentiator()), m_parser(Parser())
 {
 
 }
@@ -319,8 +319,10 @@ void Lexer::CleanTokens()
 double Lexer::Differentiation()
 {
     ReadTokens();
+    CleanTokens();
 #ifdef DEBUG_BUILD
     PrintTokens();
+    m_parser.Parse(m_cleanedTokens);
 #endif
     return this->m_differentiator.Differentiate();
 }

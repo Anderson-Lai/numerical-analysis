@@ -10,62 +10,15 @@
 #include "calculus/integrator.hpp"
 #include "lexer/types.hpp"
 #include <array>
-
-enum class TokenType
-{
-    ADDITION,
-    SUBTRACTION,
-    DIVISION,
-    MULTIPLICATION,
-
-    SUBSCRIPT,
-    EXPONENTIATION,
-
-    NUMBER,
-
-    PARANTHESES_OPEN,
-    PARANTHESES_CLOSE,
-
-    VARIABLE,
-
-    SINE,
-    COSINE,
-    TANGENT,
-    COTANGENT,
-    SECANT,
-    COSECANT,
-
-    ASINE,
-    ACOSINE,
-    ATANGENT,
-    ACOTANGENT,
-    ASECANT,
-    ACOSECANT,
-
-    LOGARITHM,
-    NATURAL_LOGARITHM,
-    EXPONENTIAL,
-
-    PI,
-
-    DIFFERENTIATION,
-    INTEGRATION,
-    DIFFERENTIAL,
-
-    SPACE,
-    LINE_BREAK,
-    
-    INVALID
-};
-
-typedef std::variant<TokenType, Number, Variable> Token;
-typedef std::variant<TokenType, char> CharacterOrWhitespace;
+#include "token.hpp"
+#include "parser/parser.hpp"
 
 class Lexer
 {
 private:
     std::vector<Token> m_tokens;
     std::vector<Token> m_cleanedTokens;
+    Parser m_parser;
     Integrator m_integrator;
     Differentiator m_differentiator;
 private:
