@@ -194,7 +194,10 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node,
                         std::make_shared<Logarithm>(
                             std::vector<std::shared_ptr<Statement>>
-                            {std::make_shared<StatementNumber>(0.0), std::make_shared<StatementNumber>(0.0)}
+                            {
+                                std::make_shared<StatementNumber>(std::exp(1.0f)), 
+                                std::make_shared<StatementNumber>(std::exp(1.0f))
+                            }
                         )));
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
