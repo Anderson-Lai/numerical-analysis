@@ -3,7 +3,7 @@
 #include "lexer/types.hpp"
 #include "parser/statements/statement_number.hpp"
 
-class Operator
+class Operator : public Statement
 {
 public:
     Operator() = default;
