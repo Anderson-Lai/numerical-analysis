@@ -13,4 +13,10 @@ public:
     StatementVariable(const std::string& name);
     ~StatementVariable() override = default;
     StatementNumber Evaluate() const override;
+#ifdef DEBUG_BUILD
+    void LogConcreteType() const override
+    {
+        std::cout << "StatementVariable";
+    }
+#endif
 };

@@ -11,4 +11,10 @@ public:
     StatementFunction() = default;
     ~StatementFunction() override = default;
     StatementNumber Evaluate() const override;
+#ifdef DEBUG_BUILD
+    void LogConcreteType() const override
+    {
+        std::cout << "StatementFunction";
+    }
+#endif
 };

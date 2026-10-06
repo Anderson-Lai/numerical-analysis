@@ -26,4 +26,43 @@ public:
 private:
     int GetOperatorBindingPower(const Token& tokenType) const;
     std::shared_ptr<TreeNode> ReadExpression(const std::vector<Token>& tokens, size_t& index, const int minBindingPower);
+#ifdef DEBUG_BUILD
+public:
+    void PrintAST() const
+    {
+        std::vector<std::vector<std::shared_ptr<TreeNode>>> res;
+        auto curr = m_root;
+        PrintASTHelper(curr, 0, res);
+        for (int i = 0; i < res.size(); i++)
+        {
+            std::cout << "Depth: " << i << std::endl;
+            for (int j = 0; j < res[i].size(); j++)
+            {
+                res[i][j]->GetValue()->LogConcreteType();
+                std::cout << "\t";
+            }
+            std::cout << std::endl << std::endl;
+        }
+    }
+private:
+    void PrintASTHelper(std::shared_ptr<TreeNode> curr, int level, 
+        std::vector<std::vector<std::shared_ptr<TreeNode>>>& res) const
+    {
+        if (!curr)
+            return;
+        if (level >= res.size())
+        {
+            res.push_back(std::vector<std::shared_ptr<TreeNode>>());
+        }
+        res[level].push_back(curr);
+        if (curr->GetLeft())
+        {
+            PrintASTHelper(curr->GetLeft(), level + 1, res);
+        }
+        if (curr->GetRight())
+        {
+            PrintASTHelper(curr->GetRight(), level + 1, res);
+        }
+    }
+#endif
 };

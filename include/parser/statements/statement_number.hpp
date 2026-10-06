@@ -26,8 +26,13 @@ public:
     StatementNumber operator^(const StatementNumber& other) const;
 
 #ifdef DEBUG_BUILD
-    void PrintValue() const {
-        std::cout << "StatementNumber: " << m_value << std::endl;
+    void PrintValue() const 
+    {
+        std::cout << "StatementNumber: " << m_value;
+    }
+    void LogConcreteType() const override
+    {
+        std::cout << "StatementNumber";
     }
 #endif
 };

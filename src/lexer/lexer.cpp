@@ -323,6 +323,8 @@ double Lexer::Differentiation()
 #ifdef DEBUG_BUILD
     PrintTokens();
     m_parser.Parse(m_cleanedTokens);
+    std::cout << std::endl << std::endl;
+    m_parser.PrintAST();
 #endif
     return this->m_differentiator.Differentiate();
 }

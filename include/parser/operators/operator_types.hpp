@@ -13,6 +13,12 @@ public:
     BinaryOperator() = default;
     ~BinaryOperator() = default;
     StatementNumber Evaluate() const override = 0;
+#ifdef DEBUG_BUILD
+    virtual void LogConcreteType() const override
+    {
+        std::cout << "BinaryOperator";
+    }
+#endif
 };
 
 class UnaryOperator : public Operator
@@ -23,4 +29,10 @@ public:
     UnaryOperator() = default;
     ~UnaryOperator() = default;
     StatementNumber Evaluate() const override = 0;
+#ifdef DEBUG_BUILD
+    virtual void LogConcreteType() const override
+    {
+        std::cout << "UnaryOperator";
+    }
+#endif
 };

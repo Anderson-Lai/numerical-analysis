@@ -18,15 +18,15 @@ void Parser::Parse(const std::vector<Token>& tokens)
     size_t index = 0;
     m_root = ReadExpression(tokens, index, 0);
     // not sure if this is needed; further testing needs to be done
-    // index++;
+    index++;
 
-    // while (index < tokens.size())
-    // {
-    //     auto result = ReadExpression(tokens, index, 0);
-    //     index++;
-    //     result->SetLeft(m_root);
-    //     m_root = result;
-    // }
+    while (index < tokens.size())
+    {
+        auto result = ReadExpression(tokens, index, 0);
+        index++;
+        result->SetLeft(m_root);
+        m_root = result;
+    }
 }
 
 std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& tokens, size_t& index, const int minBindingPower)

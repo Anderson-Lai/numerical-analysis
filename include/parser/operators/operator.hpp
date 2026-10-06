@@ -8,5 +8,11 @@ class Operator : public Statement
 public:
     Operator() = default;
     virtual ~Operator() = default;
-    virtual StatementNumber Evaluate() const = 0;
+    virtual StatementNumber Evaluate() const override = 0;
+#ifdef DEBUG_BUILD
+    virtual void LogConcreteType() const override
+    {
+        std::cout << "Operator";
+    }
+#endif
 };
