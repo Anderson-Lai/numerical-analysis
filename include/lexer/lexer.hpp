@@ -47,7 +47,7 @@ public:
 private:
     void PrintTokens()
     {
-        for (const auto& token : m_tokens)
+        for (const auto& token : m_cleanedTokens)
         {
             if (std::holds_alternative<TokenType>(token))
             {

@@ -83,11 +83,13 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     break;
                 case TokenType::PARANTHESES_OPEN:
                     node->SetValue(ReadExpression(tokens, ++index, 0)->GetValue());
-                    if (index > tokens.size() || !std::holds_alternative<TokenType>(tokens[index])
+                    if (index >= tokens.size() || !std::holds_alternative<TokenType>(tokens[index])
                         || std::get<TokenType>(tokens[index]) != TokenType::PARANTHESES_CLOSE)
                     {
                         throw std::runtime_error("Missing closing paranthesis");
                     }
+                    // since we are at a ')' right now
+                    index++;
                     break;
                 case TokenType::PARANTHESES_CLOSE:
                     return node;
