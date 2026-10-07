@@ -46,7 +46,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
         {
             const TokenType& currentTokenType = std::get<TokenType>(currentToken);
             // since exponentiation is right associative
-            int associativity = (currentTokenType == TokenType::EXPONENTIATION) ? 1 : 0;
+            int associativity = (currentTokenType == TokenType::EXPONENTIATION) ? -1 : 0;
 
             switch (currentTokenType)
             {
