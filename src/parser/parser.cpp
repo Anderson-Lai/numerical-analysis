@@ -65,6 +65,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
             switch (currentTokenType)
             {
                 case TokenType::ADDITION:
+                    // unitary addition (no-op)
                     if (!node->GetValue())
                     {
                         node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, nullptr,
@@ -79,6 +80,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     node->SetRight(ReadExpression(tokens, ++index, currentBindingPower));
                     break;
                 case TokenType::SUBTRACTION:
+                    // unitary subtraction (negation)
                     if (!node->GetValue())
                     {
                         node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, nullptr,
