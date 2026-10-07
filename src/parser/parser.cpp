@@ -17,6 +17,16 @@ void Parser::Parse(const std::vector<Token>& tokens)
 
     size_t index = 0;
     m_root = ReadExpression(tokens, index, 0);
+
+    // no need for 'index++' since it would have happend in 'ReadExpression'
+    // before the function returned
+    while (index < tokens.size())
+    {
+        auto result = ReadExpression(tokens, index, 0);
+        result->SetLeft(std::make_shared<TreeNode>(*m_root));
+        m_root = result;
+        index++;
+    }
 }
 
 std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& tokens, 
