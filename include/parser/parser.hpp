@@ -25,7 +25,8 @@ public:
     void Parse(const std::vector<Token>& tokens);
 private:
     int GetOperatorBindingPower(const Token& tokenType) const;
-    std::shared_ptr<TreeNode> ReadExpression(const std::vector<Token>& tokens, size_t& index, const int minBindingPower);
+    std::shared_ptr<TreeNode> ReadExpression(const std::vector<Token>& tokens, 
+        size_t& index, const int minBindingPower);
 #ifdef DEBUG_BUILD
 public:
     void PrintAST() const
@@ -38,7 +39,14 @@ public:
             std::cout << "Depth: " << i << std::endl;
             for (int j = 0; j < res[i].size(); j++)
             {
-                res[i][j]->GetValue()->LogConcreteType();
+                if (res[i][j]->GetValue())
+                {
+                    res[i][j]->GetValue()->LogConcreteType();
+                }
+                else
+                {
+                    std::cout << "nullptr";
+                }
                 std::cout << "\t";
             }
             std::cout << std::endl << std::endl;

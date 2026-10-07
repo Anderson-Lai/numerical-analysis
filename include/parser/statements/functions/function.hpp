@@ -8,6 +8,7 @@ class Function : public Statement
 protected:
     std::vector<std::shared_ptr<Statement>> m_arguments;
 public:
+    Function() = default;
     Function(const std::vector<std::shared_ptr<Statement>>& arguments);
     virtual ~Function() = default;
     virtual StatementNumber Evaluate() const override = 0;
