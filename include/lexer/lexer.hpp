@@ -42,7 +42,6 @@ public:
     double Differentiation();
     double Integration();
     void Cleanup();
-
 #ifdef DEBUG_BUILD
 private:
     void PrintTokens()

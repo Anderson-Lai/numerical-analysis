@@ -18,39 +18,37 @@ void Parser::Parse(const std::vector<Token>& tokens)
     size_t index = 0;
     m_root = ReadExpression(tokens, index, 0);
     // not sure if this is needed; further testing needs to be done
-    index++;
+    // index++;
 
-    while (index < tokens.size())
-    {
-        auto result = ReadExpression(tokens, index, 0);
-        index++;
-        result->SetLeft(m_root);
-        m_root = result;
-    }
+    // while (index < tokens.size())
+    // {
+    //     // std::cout << "in a weird loop\n";
+    //     auto result = ReadExpression(tokens, index, 0);
+    //     index++;
+    //     result->SetLeft(m_root);
+    //     m_root = result;
+    // }
 }
 
-std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& tokens, size_t& index, const int minBindingPower)
+std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& tokens, 
+    size_t& index, const int minBindingPower)
 {
     auto node = std::make_shared<TreeNode>(nullptr, nullptr, nullptr, nullptr);
-    auto data = std::make_shared<TreeNode>(nullptr, nullptr, nullptr, nullptr);
 
     Token currentToken = tokens[index];
     int currentBindingPower = GetOperatorBindingPower(currentToken);
 
     while (index < tokens.size() && (minBindingPower < currentBindingPower || currentBindingPower == -1))
     {
-        currentToken = tokens[index];
-        currentBindingPower = GetOperatorBindingPower(currentToken);
-
         // implement implicit multiplication later
         if (std::holds_alternative<Number>(currentToken))
         {
-            data->SetValue(std::make_shared<StatementNumber>(std::get<Number>(currentToken)));
+            node->SetValue(std::make_shared<StatementNumber>(std::get<Number>(currentToken)));
             index++;
         }
         else if (std::holds_alternative<Variable>(currentToken))
         {
-            data->SetValue(std::make_shared<StatementVariable>(std::get<Variable>(currentToken)));
+            node->SetValue(std::make_shared<StatementVariable>(std::get<Variable>(currentToken)));
             index++;
         }
 
@@ -64,22 +62,22 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
             switch (currentTokenType)
             {
                 case TokenType::ADDITION:
-                    node->SetLeft(data);
+                    node->SetLeft(std::make_shared<TreeNode>(*node));
                     node->SetValue(std::make_shared<AdditionOperator>());
                     node->SetRight(ReadExpression(tokens, ++index, currentBindingPower));
                     break;
                 case TokenType::SUBTRACTION:
-                    node->SetLeft(data);
+                    node->SetLeft(std::make_shared<TreeNode>(*node));
                     node->SetValue(std::make_shared<SubtractionOperator>());
                     node->SetRight(ReadExpression(tokens, ++index, currentBindingPower));
                     break;
                 case TokenType::MULTIPLICATION:
-                    node->SetLeft(data);
+                    node->SetLeft(std::make_shared<TreeNode>(*node));
                     node->SetValue(std::make_shared<MultiplicationOperator>());
                     node->SetRight(ReadExpression(tokens, ++index, currentBindingPower));
                     break;
                 case TokenType::DIVISION:
-                    node->SetLeft(data);
+                    node->SetLeft(std::make_shared<TreeNode>(*node));
                     node->SetValue(std::make_shared<DivisionOperator>());
                     node->SetRight(ReadExpression(tokens, ++index, currentBindingPower));
                     break;
@@ -87,7 +85,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                 case TokenType::SUBSCRIPT:
                     break;
                 case TokenType::EXPONENTIATION:
-                    node->SetLeft(data);
+                    node->SetLeft(std::make_shared<TreeNode>(*node));
                     node->SetValue(std::make_shared<ExponentiationOperator>());
                     node->SetRight(ReadExpression(tokens, ++index, currentBindingPower + associativity));
                     break;
@@ -102,12 +100,10 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     }
                     // since we are at a ')' right now
                     index++;
-                    break;
+
+                    // since an "expression" has ended
+                    return node;
                 case TokenType::PARANTHESES_CLOSE:
-                    if (data->GetValue() && !node->GetValue())
-                    {
-                        return data;
-                    }
                     return node;
                 case TokenType::SINE:
                     node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, node, 
@@ -237,11 +233,14 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
         {
             throw std::runtime_error("Unexpected token");
         }
-    }
 
-    if (data->GetValue() && !node->GetValue())
-    {
-        return data;
+        if (index >= tokens.size())
+        {
+            break;
+        }
+
+        currentToken = tokens[index];
+        currentBindingPower = GetOperatorBindingPower(currentToken);
     }
 
     return node;
