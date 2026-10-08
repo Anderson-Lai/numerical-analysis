@@ -30,9 +30,10 @@ public:
         const StatementNumber& value) const;
     std::shared_ptr<TreeNode> GetRoot() const;
 private:
+    std::shared_ptr<TreeNode> ReadExpression(const std::vector<Token> &tokens,
+        size_t &index, const int minBindingPower);
     int GetOperatorBindingPower(const Token& tokenType) const;
-    std::shared_ptr<TreeNode> ReadExpression(const std::vector<Token>& tokens, 
-        size_t& index, const int minBindingPower);
+    bool IsFunctionIdentifier(const Token& token) const;
 #ifdef DEBUG_BUILD
 public:
     void PrintAST() const

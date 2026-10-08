@@ -370,3 +370,19 @@ int Parser::GetOperatorBindingPower(const Token& tokenType) const
     }
     return -1;
 }
+
+bool Parser::IsFunctionIdentifier(const Token& token) const
+{
+    if (!std::holds_alternative<TokenType>(token))
+    {
+        return false;
+    }
+
+    const TokenType& tokenType = std::get<TokenType>(token);
+    return (tokenType == TokenType::SINE || tokenType == TokenType::COSINE || tokenType == TokenType::TANGENT
+        || tokenType == TokenType::COTANGENT || tokenType == TokenType::SECANT || tokenType == TokenType::COSECANT
+        || tokenType == TokenType::ASINE || tokenType == TokenType::ACOSINE || tokenType == TokenType::ATANGENT
+        || tokenType == TokenType::ACOTANGENT || tokenType == TokenType::ASECANT || tokenType == TokenType::ACOSECANT
+        || tokenType == TokenType::SQUARE_ROOT || tokenType == TokenType::CUBE_ROOT
+        || tokenType == TokenType::LOGARITHM || tokenType == TokenType::NATURAL_LOGARITHM);
+}
