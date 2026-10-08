@@ -18,6 +18,7 @@ add_executable(${PROJECT_NAME}
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/trigonometry.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/logarithm.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/sqrt_cbrt.cpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/statement_number.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/statement_variable.cpp

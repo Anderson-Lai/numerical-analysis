@@ -1,3 +1,5 @@
+#include <ranges>
+
 #include "lexer/lexer.hpp"
 
 #include "parser/statements/statement_number.hpp"
@@ -68,7 +70,7 @@ std::vector<Token> Lexer::DeterminePossibleToken(const std::string& token) const
             }
 
             return std::vector<Token>{Variable(token)};
-        // ln
+        // ln / pi
         case 2:
             if (token == "ln")
             {
@@ -116,15 +118,24 @@ std::vector<Token> Lexer::DeterminePossibleToken(const std::string& token) const
             }
 
             return std::vector<Token>{Variable(token)};
-        // removed here since can not parse through the '/' symbol
-        // // derivative
-        // case 4:
-        //     if (std::string_view(token.c_str(), 3) == "d/d")
-        //     {
-        //         return std::vector<Token>{TokenType::DIFFERENTIATION, Variable(std::string{token.back()})};
-        //     }
-
-        //     return std::vector<Token>{Variable(token)};
+        // sqrt / cbrt
+        case 4:
+            if (token == "sqrt")
+            {
+                return std::vector<Token>{TokenType::SQUARE_ROOT};
+            }
+            else if (token == "cbrt")
+            {
+                return std::vector<Token>{TokenType::CUBE_ROOT};
+            }
+            // removed here since can not parse through the '/' symbol
+            // // derivative
+            //     if (std::string_view(token.c_str(), 3) == "d/d")
+            //     {
+            //         return std::vector<Token>{TokenType::DIFFERENTIATION, Variable(std::string{token.back()})};
+            //     }
+            
+            return std::vector<Token>{Variable(token)};
         // inverse trig
         case 6:
             if (token == "arcsin")
@@ -275,10 +286,6 @@ void Lexer::ReadTokens()
                 else if (stored == TokenType::SPACE)
                 {
                     continue;
-                }
-                else if (stored == TokenType::INVALID)
-                {
-                    throw std::runtime_error("Invalid token encountered. Exiting...");
                 }
             }
 

@@ -23,7 +23,7 @@ public:
     ~Sine() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
-    virtual void LogConcreteType() const override
+    void LogConcreteType() const override
     {
         std::cout << "Sine";
     }
@@ -37,7 +37,7 @@ public:
     ~Cosine() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
-    virtual void LogConcreteType() const override
+    void LogConcreteType() const override
     {
         std::cout << "Cosine";
     }
@@ -51,7 +51,7 @@ public:
     ~Tangent() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
-    virtual void LogConcreteType() const override
+    void LogConcreteType() const override
     {
         std::cout << "Tangent";
     }
@@ -65,7 +65,7 @@ public:
     ~Cosecant() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
-    virtual void LogConcreteType() const override
+    void LogConcreteType() const override
     {
         std::cout << "Cosecant";
     }
@@ -79,7 +79,7 @@ public:
     ~Secant() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
-    virtual void LogConcreteType() const override
+    void LogConcreteType() const override
     {
         std::cout << "Secant";
     }
@@ -93,7 +93,7 @@ public:
     ~Cotangent() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
-    virtual void LogConcreteType() const override
+    void LogConcreteType() const override
     {
         std::cout << "Cotangent";
     }
@@ -107,7 +107,7 @@ public:
     ~Arcsine() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
-    virtual void LogConcreteType() const override
+    void LogConcreteType() const override
     {
         std::cout << "Arcsine";
     }
@@ -121,7 +121,7 @@ public:
     ~Arccosine() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
-    virtual void LogConcreteType() const override
+    void LogConcreteType() const override
     {
         std::cout << "Arccosine";
     }
@@ -135,7 +135,7 @@ public:
     ~Arctangent() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
-    virtual void LogConcreteType() const override
+    void LogConcreteType() const override
     {
         std::cout << "Arctangent";
     }
@@ -149,7 +149,7 @@ public:
     ~Arccosecant() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
-    virtual void LogConcreteType() const override
+    void LogConcreteType() const override
     {
         std::cout << "Arccosecant";
     }
@@ -163,7 +163,7 @@ public:
     ~Arcsecant() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
-    virtual void LogConcreteType() const override
+    void LogConcreteType() const override
     {
         std::cout << "Arcsecant";
     }
@@ -177,7 +177,7 @@ public:
     ~Arccotangent() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
-    virtual void LogConcreteType() const override
+    void LogConcreteType() const override
     {
         std::cout << "Arccotangent";
     }

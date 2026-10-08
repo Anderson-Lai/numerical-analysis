@@ -2,6 +2,7 @@
 
 #include "parser/operators/binary_operators.hpp"
 #include "parser/statements/functions/logarithm.hpp"
+#include "parser/statements/functions/sqrt_cbrt.hpp"
 #include "parser/statements/functions/trigonometry.hpp"
 #include "parser/statements/statement_number.hpp"
 #include "parser/statements/statement_variable.hpp"
@@ -234,6 +235,14 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                         std::make_shared<StatementNumber>(std::exp(1.0f))
                     ));
                     node->SetValue(std::make_shared<Logarithm>());
+                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    break;
+                case TokenType::SQUARE_ROOT:
+                    node->SetValue(std::make_shared<SquareRoot>());
+                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    break;
+                case TokenType::CUBE_ROOT:
+                    node->SetValue(std::make_shared<CubeRoot>());
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 default:

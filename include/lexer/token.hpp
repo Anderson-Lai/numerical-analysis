@@ -14,12 +14,8 @@ enum class TokenType
     SUBSCRIPT,
     EXPONENTIATION,
 
-    NUMBER,
-
     PARANTHESES_OPEN,
     PARANTHESES_CLOSE,
-
-    VARIABLE,
 
     SINE,
     COSINE,
@@ -35,10 +31,13 @@ enum class TokenType
     ASECANT,
     ACOSECANT,
 
+    SQUARE_ROOT,
+    CUBE_ROOT,
+
     LOGARITHM,
     NATURAL_LOGARITHM,
-    EXPONENTIAL,
 
+    EXPONENTIAL,
     PI,
 
     DIFFERENTIATION,
@@ -46,9 +45,7 @@ enum class TokenType
     DIFFERENTIAL,
 
     SPACE,
-    LINE_BREAK,
-
-    INVALID
+    LINE_BREAK
 };
 
 typedef std::variant<TokenType, Number, Variable> Token;

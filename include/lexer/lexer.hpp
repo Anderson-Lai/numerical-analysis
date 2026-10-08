@@ -74,17 +74,11 @@ private:
                 case TokenType::SUBSCRIPT:
                     tokenTypeStr = "SUBSCRIPT";
                     break;
-                case TokenType::NUMBER:
-                    tokenTypeStr = "NUMBER";
-                    break;
                 case TokenType::PARANTHESES_OPEN:
                     tokenTypeStr = "PARANTHESES_OPEN";
                     break;
                 case TokenType::PARANTHESES_CLOSE:
                     tokenTypeStr = "PARANTHESES_CLOSE";
-                    break;
-                case TokenType::VARIABLE:
-                    tokenTypeStr = "VARIABLE";
                     break;
                 case TokenType::SINE:
                     tokenTypeStr = "SINE";
@@ -122,6 +116,12 @@ private:
                 case TokenType::ACOSECANT:
                     tokenTypeStr = "ACOSECANT";
                     break;
+                case TokenType::SQUARE_ROOT:
+                    tokenTypeStr = "SQUARE_ROOT";
+                    break;
+                case TokenType::CUBE_ROOT:
+                    tokenTypeStr = "CUBE_ROOT";
+                    break;
                 case TokenType::DIFFERENTIATION:
                     tokenTypeStr = "DIFFERENTIATION";
                     break;
@@ -131,17 +131,14 @@ private:
                 case TokenType::DIFFERENTIAL:
                     tokenTypeStr = "DIFFERENTIAL";
                     break;
-                case TokenType::NATURAL_LOGARITHM:
-                    tokenTypeStr = "NATURAL_LOGARITHM";
-                    break;
                 case TokenType::LOGARITHM:
                     tokenTypeStr = "LOGARITHM";
                     break;
+                case TokenType::NATURAL_LOGARITHM:
+                    tokenTypeStr = "NATURAL_LOGARITHM";
+                    break;
                 case TokenType::EXPONENTIAL:
                     tokenTypeStr = "EXPONENTIAL";
-                    break;
-                case TokenType::INVALID:
-                    tokenTypeStr = "INVALID";
                     break;
                 case TokenType::PI:
                     tokenTypeStr = "PI";
