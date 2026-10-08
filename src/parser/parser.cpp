@@ -97,7 +97,6 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     node->SetValue(std::make_shared<DivisionOperator>());
                     node->SetRight(ReadExpression(tokens, ++index, currentBindingPower));
                     break;
-                // to implement later; subscript is a UNARY operator
                 case TokenType::SUBSCRIPT:
                     node = ReadExpression(tokens, ++index, 0);
 
@@ -231,6 +230,9 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::NATURAL_LOGARITHM:
+                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr,
+                        std::make_shared<StatementNumber>(std::exp(1.0f))
+                    ));
                     node->SetValue(std::make_shared<Logarithm>());
                     node->SetRight(ReadExpression(tokens, ++index, 0));
                     break;
@@ -260,9 +262,14 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
 StatementNumber Parser::EvaluateAST(const std::shared_ptr<TreeNode> currentNode,
     const StatementNumber& value) const
 {
+    if (!currentNode)
+    {
+        throw std::invalid_argument("AST node is nullptr");
+    }
+
     // needed for unitary operators (addition / subtraction (negation)) since their left child will be nullptr
     // and so the BinaryOperator only 'has' one child, when it needs two to properly evaluate
-    if (!currentNode || !currentNode->GetValue())
+    if (!currentNode->GetValue())
     {
         return StatementNumber(0.0);
     }

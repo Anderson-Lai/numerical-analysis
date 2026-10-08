@@ -330,7 +330,7 @@ double Lexer::Differentiation()
     std::cout << std::endl << "AST: " << std::endl;
     m_parser.PrintAST();
 
-    double testInputs[] = {3.1415, 2.71828, 1, -1, 0 , 13, -6, 5};
+    double testInputs[] = { 3.1415, 2.71828, 1, -1, 0 , 13, -6, 5 };
 
     for (const double input : testInputs)
     {
