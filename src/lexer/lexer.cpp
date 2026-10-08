@@ -337,6 +337,7 @@ double Lexer::Differentiation()
         std::cout << "Result: " << m_parser.EvaluateAST(m_parser.GetRoot(), StatementNumber(input)).GetValue() 
             << std::endl;
     }
+    std::cout <<
 #endif
     return this->m_differentiator.Differentiate();
 }

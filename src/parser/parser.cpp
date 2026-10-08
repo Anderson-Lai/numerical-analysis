@@ -77,32 +77,12 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
             switch (currentTokenType)
             {
                 case TokenType::ADDITION:
-                    // unitary addition (no-op)
-                    if (!node->GetValue())
-                    {
-                        node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, nullptr,
-                            std::make_shared<StatementNumber>(0.0)
-                        ));
-                    }
-                    else
-                    {
-                        node->SetLeft(std::make_shared<TreeNode>(*node));
-                    }
+                    node->SetLeft(std::make_shared<TreeNode>(*node));
                     node->SetValue(std::make_shared<AdditionOperator>());
                     node->SetRight(ReadExpression(tokens, ++index, currentBindingPower));
                     break;
                 case TokenType::SUBTRACTION:
-                    // unitary subtraction (negation)
-                    if (!node->GetValue())
-                    {
-                        node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, nullptr,
-                            std::make_shared<StatementNumber>(0.0)
-                        ));
-                    }
-                    else
-                    {
-                        node->SetLeft(std::make_shared<TreeNode>(*node));
-                    }
+                    node->SetLeft(std::make_shared<TreeNode>(*node));
                     node->SetValue(std::make_shared<SubtractionOperator>());
                     node->SetRight(ReadExpression(tokens, ++index, currentBindingPower));
                     break;
@@ -279,9 +259,11 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
 StatementNumber Parser::EvaluateAST(const std::shared_ptr<TreeNode> currentNode,
     const StatementNumber& value) const
 {
+    // needed for unitary operators (addition / subtraction (negation)) since their left child will be nullptr
+    // and so the BinaryOperator only 'has' one child, when it needs two to properly evaluate
     if (!currentNode || !currentNode->GetValue())
     {
-        throw std::runtime_error("Invalid AST node encountered during evaluation");
+        return StatementNumber(0.0);
     }
 
     if (!currentNode->GetLeft() && !currentNode->GetRight())
