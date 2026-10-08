@@ -30,12 +30,12 @@ void Parser::Parse(const std::vector<Token>& tokens)
 
         // get to the leftmost node of the new subtree and attach the old root as its left child
         // to avoid accidentally erasing any tokens/information
-        auto temp = result;
-        while (temp->GetLeft() && temp->GetLeft()->GetValue())
+        auto traverser = result;
+        while (!traverser->GetChildren().empty() && traverser->GetChildren().front()->GetValue())
         {
-            temp = temp->GetLeft();
+            traverser = traverser->GetChildren().front();
         }
-        temp->SetLeft(std::make_shared<TreeNode>(*m_root));
+        traverser->SetChild(m_root, 0);
 
         m_root = result;
         index++;
@@ -53,7 +53,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
 
     Token currentToken = tokens[index];
     int currentBindingPower = GetOperatorBindingPower(currentToken);
-    auto node = std::make_shared<TreeNode>(nullptr, nullptr, nullptr);
+    auto node = std::make_shared<TreeNode>(nullptr);
 
     while (index < tokens.size() && (minBindingPower < currentBindingPower || currentBindingPower == -1))
     {
@@ -79,24 +79,24 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
             switch (currentTokenType)
             {
                 case TokenType::ADDITION:
-                    node->SetLeft(std::make_shared<TreeNode>(*node));
+                    node->SetChildren(std::vector<std::shared_ptr<TreeNode>>{std::make_shared<TreeNode>(*node)});
                     node->SetValue(std::make_shared<AdditionOperator>());
-                    node->SetRight(ReadExpression(tokens, ++index, currentBindingPower));
+                    node->AddChild(ReadExpression(tokens, ++index, currentBindingPower));
                     break;
                 case TokenType::SUBTRACTION:
-                    node->SetLeft(std::make_shared<TreeNode>(*node));
+                    node->SetChildren(std::vector<std::shared_ptr<TreeNode>>{std::make_shared<TreeNode>(*node)});
                     node->SetValue(std::make_shared<SubtractionOperator>());
-                    node->SetRight(ReadExpression(tokens, ++index, currentBindingPower));
+                    node->AddChild(ReadExpression(tokens, ++index, currentBindingPower));
                     break;
                 case TokenType::MULTIPLICATION:
-                    node->SetLeft(std::make_shared<TreeNode>(*node));
+                    node->SetChildren(std::vector<std::shared_ptr<TreeNode>>{std::make_shared<TreeNode>(*node)});
                     node->SetValue(std::make_shared<MultiplicationOperator>());
-                    node->SetRight(ReadExpression(tokens, ++index, currentBindingPower));
+                    node->AddChild(ReadExpression(tokens, ++index, currentBindingPower));
                     break;
                 case TokenType::DIVISION:
-                    node->SetLeft(std::make_shared<TreeNode>(*node));
+                    node->SetChildren(std::vector<std::shared_ptr<TreeNode>>{std::make_shared<TreeNode>(*node)});
                     node->SetValue(std::make_shared<DivisionOperator>());
-                    node->SetRight(ReadExpression(tokens, ++index, currentBindingPower));
+                    node->AddChild(ReadExpression(tokens, ++index, currentBindingPower));
                     break;
                 case TokenType::SUBSCRIPT:
                     node = ReadExpression(tokens, ++index, 0);
@@ -107,10 +107,11 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     }
                     return node;
                 case TokenType::EXPONENTIATION:
-                    node->SetLeft(std::make_shared<TreeNode>(*node));
+                    node->SetChildren(std::vector<std::shared_ptr<TreeNode>>{std::make_shared<TreeNode>(*node)});
                     node->SetValue(std::make_shared<ExponentiationOperator>());
-                    node->SetRight(ReadExpression(tokens, ++index, currentBindingPower + associativity));
+                    node->AddChild(ReadExpression(tokens, ++index, currentBindingPower + associativity));
                     break;
+                // need to change based on if previous token was a function identifier
                 case TokenType::PARANTHESES_OPEN:
                     // possible issues when adding implicit multiplication
                     // since 'node->m_value' is ignored here
@@ -140,51 +141,51 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                 // m_left is usually nullptr except for logarithms with a base
                 case TokenType::SINE:
                     node->SetValue(std::make_shared<Sine>());
-                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    node->AddChild(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::COSINE:
                     node->SetValue(std::make_shared<Cosine>());
-                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    node->AddChild(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::TANGENT:
                     node->SetValue(std::make_shared<Tangent>());
-                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    node->AddChild(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::SECANT:
                     node->SetValue(std::make_shared<Secant>());
-                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    node->AddChild(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::COSECANT:
                     node->SetValue(std::make_shared<Cosecant>());
-                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    node->AddChild(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::COTANGENT:
                     node->SetValue(std::make_shared<Cotangent>());
-                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    node->AddChild(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::ASINE:
                     node->SetValue(std::make_shared<Arcsine>());
-                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    node->AddChild(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::ACOSINE:
                     node->SetValue(std::make_shared<Arccosine>());
-                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    node->AddChild(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::ATANGENT:
                     node->SetValue(std::make_shared<Arctangent>());
-                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    node->AddChild(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::ASECANT:
                     node->SetValue(std::make_shared<Arcsecant>());
-                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    node->AddChild(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::ACOSECANT:
                     node->SetValue(std::make_shared<Arccosecant>());
-                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    node->AddChild(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::ACOTANGENT:
                     node->SetValue(std::make_shared<Arccotangent>());
-                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    node->AddChild(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::PI:
                     // std::acos(-1.0f) = pi since cos(pi) = -1.0
@@ -201,7 +202,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     if (index + 1 < tokens.size() && std::holds_alternative<TokenType>(tokens[index + 1]) 
                         && std::get<TokenType>(tokens[index + 1]) == TokenType::SUBSCRIPT)
                     {
-                        node->SetLeft(ReadExpression(tokens, ++index, 0));
+                        node->AddChild(ReadExpression(tokens, ++index, 0));
 
                         /*  
                         since we just read a base that ended with a parantheses, we are currently
@@ -222,28 +223,29 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     // 'log' should default to base 10 if no base is specified
                     else
                     {
-                        node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr,
-                            std::make_shared<StatementNumber>(10.0)
+                        node->AddChild(std::make_shared<TreeNode>(
+                            std::make_shared<StatementNumber>(10.0f)
                         ));
                     }
 
                     // '++index' is needed in case no base is specified
-                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    node->AddChild(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::NATURAL_LOGARITHM:
-                    node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr,
+                    node->AddChild(std::make_shared<TreeNode>(
                         std::make_shared<StatementNumber>(std::exp(1.0f))
                     ));
+
                     node->SetValue(std::make_shared<Logarithm>());
-                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    node->AddChild(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::SQUARE_ROOT:
                     node->SetValue(std::make_shared<SquareRoot>());
-                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    node->AddChild(ReadExpression(tokens, ++index, 0));
                     break;
                 case TokenType::CUBE_ROOT:
                     node->SetValue(std::make_shared<CubeRoot>());
-                    node->SetRight(ReadExpression(tokens, ++index, 0));
+                    node->AddChild(ReadExpression(tokens, ++index, 0));
                     break;
                 default:
                     throw std::runtime_error("Unexpected token");
@@ -284,19 +286,19 @@ StatementNumber Parser::EvaluateAST(const std::shared_ptr<TreeNode> currentNode,
         return StatementNumber(0.0);
     }
 
-    if (!currentNode->GetLeft() && !currentNode->GetRight())
+    // should be a 'variable' or 'number'
+    if (currentNode->GetChildren().empty())
     {
         return currentNode->GetValue()->Evaluate(std::vector<StatementNumber>{value});
     }
 
     std::vector<StatementNumber> parameters;
-    if (currentNode->GetLeft())
+    for (const auto& child : currentNode->GetChildren())
     {
-        parameters.push_back(EvaluateAST(currentNode->GetLeft(), value));
-    }
-    if (currentNode->GetRight())
-    {
-        parameters.push_back(EvaluateAST(currentNode->GetRight(), value));
+        if (child)
+        {
+            parameters.push_back(EvaluateAST(child, value));
+        }
     }
 
     return currentNode->GetValue()->Evaluate(parameters);

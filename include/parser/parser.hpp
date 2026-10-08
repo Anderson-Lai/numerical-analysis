@@ -69,13 +69,13 @@ private:
             res.push_back(std::vector<std::shared_ptr<TreeNode>>());
         }
         res[level].push_back(curr);
-        if (curr->GetLeft())
+
+        if (!curr->GetChildren().empty())
         {
-            PrintASTHelper(curr->GetLeft(), level + 1, res);
-        }
-        if (curr->GetRight())
-        {
-            PrintASTHelper(curr->GetRight(), level + 1, res);
+            for (const auto& child : curr->GetChildren())
+            {
+                PrintASTHelper(child, level + 1, res);
+            }
         }
     }
 #endif

@@ -1,20 +1,15 @@
 #include "parser/tree.hpp"
 
-TreeNode::TreeNode(const std::shared_ptr<TreeNode> &left, const std::shared_ptr<TreeNode> &right,
-    const std::shared_ptr<Statement> &value) 
-    : m_left(left), m_right(right), m_value(value)
+TreeNode::TreeNode(const std::shared_ptr<Statement>& value, const std::vector<std::shared_ptr<TreeNode>>& children) 
+    : m_value(value), m_children(children)
 {
 
 }
 
-void TreeNode::SetLeft(const std::shared_ptr<TreeNode>& left)
+TreeNode::TreeNode(const std::shared_ptr<Statement>& value) 
+    : m_value(value), m_children(std::vector<std::shared_ptr<TreeNode>>{})
 {
-    m_left = left;
-}
 
-void TreeNode::SetRight(const std::shared_ptr<TreeNode>& right)
-{
-    m_right = right;
 }
 
 void TreeNode::SetValue(const std::shared_ptr<Statement>& value)
@@ -22,17 +17,31 @@ void TreeNode::SetValue(const std::shared_ptr<Statement>& value)
     m_value = value;
 }
 
-std::shared_ptr<TreeNode> TreeNode::GetLeft() const
+void TreeNode::AddChild(const std::shared_ptr<TreeNode>& child)
 {
-    return m_left;
+    m_children.push_back(child);
 }
 
-std::shared_ptr<TreeNode> TreeNode::GetRight() const
+void TreeNode::SetChild(const std::shared_ptr<TreeNode>& child, const size_t index)
 {
-    return m_right;
+    if (index >= m_children.size())
+    {
+        throw std::out_of_range("Index is out of range for children vector");
+    }
+    m_children[index] = child;
 }
 
-std::shared_ptr<Statement> TreeNode::GetValue() const
+void TreeNode::SetChildren(const std::vector<std::shared_ptr<TreeNode>>& children)
+{
+    m_children = children;
+}
+
+const std::shared_ptr<Statement>& TreeNode::GetValue() const
 {
     return m_value;
+}
+
+const std::vector<std::shared_ptr<TreeNode>>& TreeNode::GetChildren() const
+{
+    return m_children;
 }
