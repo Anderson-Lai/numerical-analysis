@@ -12,7 +12,7 @@ public:
     StatementVariable(const Variable& variable);
     StatementVariable(const std::string& name);
     ~StatementVariable() override = default;
-    StatementNumber Evaluate() const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
     void LogConcreteType() const override
     {

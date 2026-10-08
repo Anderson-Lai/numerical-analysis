@@ -2,142 +2,122 @@
 #include "parser/statements/statement_number.hpp"
 #include <cmath>
 
-Trigonometry::Trigonometry(const std::vector<std::shared_ptr<Statement>>&argument) : Function(argument)
+StatementNumber Sine::Evaluate(const std::vector<StatementNumber>& parameters) const
 {
-    if (argument.size() != 1)
+    if (parameters.size() != 1)
     {
-        throw std::invalid_argument("Trigonometric functions require exactly one argument.");
+        throw std::invalid_argument("Sine function requires exactly one parameter.");
     }
-}
-
-Sine::Sine(const std::vector<std::shared_ptr<Statement>>& argument) : Trigonometry(argument)
-{
-
-}
-
-StatementNumber Sine::Evaluate() const
-{
-    const StatementNumber argumentValue = m_arguments.front()->Evaluate();
+    const StatementNumber argumentValue = parameters.front();
     return StatementNumber(std::sin(argumentValue.GetValue()));
 }
 
-Cosine::Cosine(const std::vector<std::shared_ptr<Statement>>& argument) : Trigonometry(argument)
+StatementNumber Cosine::Evaluate(const std::vector<StatementNumber>& parameters) const
 {
-
-}
-
-StatementNumber Cosine::Evaluate() const
-{
-    const StatementNumber argumentValue = m_arguments.front()->Evaluate();
+    if (parameters.size() != 1)
+    {
+        throw std::invalid_argument("Cosine function requires exactly one parameter.");
+    }
+    const StatementNumber argumentValue = parameters.front();
     return StatementNumber(std::cos(argumentValue.GetValue()));
 }
 
-Tangent::Tangent(const std::vector<std::shared_ptr<Statement>>& argument) : Trigonometry(argument)
+StatementNumber Tangent::Evaluate(const std::vector<StatementNumber>& parameters) const
 {
-
-}
-
-StatementNumber Tangent::Evaluate() const
-{
-    const StatementNumber argumentValue = m_arguments.front()->Evaluate();
+    if (parameters.size() != 1)
+    {
+        throw std::invalid_argument("Tangent function requires exactly one parameter.");
+    }
+    const StatementNumber argumentValue = parameters.front();
     return StatementNumber(std::tan(argumentValue.GetValue()));
 }
 
-Cosecant::Cosecant(const std::vector<std::shared_ptr<Statement>>& argument) : Trigonometry(argument)
+StatementNumber Cosecant::Evaluate(const std::vector<StatementNumber>& parameters) const
 {
-
-}
-
-StatementNumber Cosecant::Evaluate() const
-{
-    const StatementNumber argumentValue = m_arguments.front()->Evaluate();
+    if (parameters.size() != 1)
+    {
+        throw std::invalid_argument("Cosecant function requires exactly one parameter.");
+    }
+    const StatementNumber argumentValue = parameters.front();
     return StatementNumber(1.0 / std::sin(argumentValue.GetValue()));
 }
 
-Secant::Secant(const std::vector<std::shared_ptr<Statement>>& argument) : Trigonometry(argument)
+StatementNumber Secant::Evaluate(const std::vector<StatementNumber>& parameters) const
 {
-
-}
-
-StatementNumber Secant::Evaluate() const
-{
-    const StatementNumber argumentValue = m_arguments.front()->Evaluate();
+    if (parameters.size() != 1)
+    {
+        throw std::invalid_argument("Secant function requires exactly one parameter.");
+    }
+    const StatementNumber argumentValue = parameters.front();
     return StatementNumber(1.0 / std::cos(argumentValue.GetValue()));
 }
 
-Cotangent::Cotangent(const std::vector<std::shared_ptr<Statement>>& argument) : Trigonometry(argument)
+StatementNumber Cotangent::Evaluate(const std::vector<StatementNumber>& parameters) const
 {
-
-}
-
-StatementNumber Cotangent::Evaluate() const
-{
-    const StatementNumber argumentValue = m_arguments.front()->Evaluate();
+    if (parameters.size() != 1)
+    {
+        throw std::invalid_argument("Cotangent function requires exactly one parameter.");
+    }
+    const StatementNumber argumentValue = parameters.front();
     return StatementNumber(1.0 / std::tan(argumentValue.GetValue()));
 }
 
-Arcsine::Arcsine(const std::vector<std::shared_ptr<Statement>>& argument) : Trigonometry(argument)
+StatementNumber Arcsine::Evaluate(const std::vector<StatementNumber>& parameters) const
 {
-
-}
-
-StatementNumber Arcsine::Evaluate() const
-{
-    const StatementNumber argumentValue = m_arguments.front()->Evaluate();
+    if (parameters.size() != 1)
+    {
+        throw std::invalid_argument("Arcsine function requires exactly one parameter.");
+    }
+    const StatementNumber argumentValue = parameters.front();
     return StatementNumber(std::asin(argumentValue.GetValue()));
 }
 
-Arccosine::Arccosine(const std::vector<std::shared_ptr<Statement>>& argument) : Trigonometry(argument)
+StatementNumber Arccosine::Evaluate(const std::vector<StatementNumber>& parameters) const
 {
-
-}
-
-StatementNumber Arccosine::Evaluate() const
-{
-    const StatementNumber argumentValue = m_arguments.front()->Evaluate();
+    if (parameters.size() != 1)
+    {
+        throw std::invalid_argument("Arccosine function requires exactly one parameter.");
+    }
+    const StatementNumber argumentValue = parameters.front();
     return StatementNumber(std::acos(argumentValue.GetValue()));
 }
 
-Arctangent::Arctangent(const std::vector<std::shared_ptr<Statement>>& argument) : Trigonometry(argument)
+StatementNumber Arctangent::Evaluate(const std::vector<StatementNumber>& parameters) const
 {
-
-}
-
-StatementNumber Arctangent::Evaluate() const
-{
-    const StatementNumber argumentValue = m_arguments.front()->Evaluate();
+    if (parameters.size() != 1)
+    {
+        throw std::invalid_argument("Arctangent function requires exactly one parameter.");
+    }
+    const StatementNumber argumentValue = parameters.front();
     return StatementNumber(std::atan(argumentValue.GetValue()));
 }
 
-Arccosecant::Arccosecant(const std::vector<std::shared_ptr<Statement>>& argument) : Trigonometry(argument)
+StatementNumber Arccosecant::Evaluate(const std::vector<StatementNumber>& parameters) const
 {
-
-}
-
-StatementNumber Arccosecant::Evaluate() const
-{
-    const StatementNumber argumentValue = m_arguments.front()->Evaluate();
+    if (parameters.size() != 1)
+    {
+        throw std::invalid_argument("Arccosecant function requires exactly one parameter.");
+    }
+    const StatementNumber argumentValue = parameters.front();
     return StatementNumber(std::asin(1.0 / argumentValue.GetValue()));
 }
 
-Arcsecant::Arcsecant(const std::vector<std::shared_ptr<Statement>>& argument) : Trigonometry(argument)
+StatementNumber Arcsecant::Evaluate(const std::vector<StatementNumber>& parameters) const
 {
-
-}
-
-StatementNumber Arcsecant::Evaluate() const
-{
-    const StatementNumber argumentValue = m_arguments.front()->Evaluate();
+    if (parameters.size() != 1)
+    {
+        throw std::invalid_argument("Arcsecant function requires exactly one parameter.");
+    }
+    const StatementNumber argumentValue = parameters.front();
     return StatementNumber(std::acos(1.0 / argumentValue.GetValue()));
 }
 
-Arccotangent::Arccotangent(const std::vector<std::shared_ptr<Statement>>& argument) : Trigonometry(argument)
+StatementNumber Arccotangent::Evaluate(const std::vector<StatementNumber>& parameters) const
 {
-
-}
-
-StatementNumber Arccotangent::Evaluate() const
-{
-    const StatementNumber argumentValue = m_arguments.front()->Evaluate();
+    if (parameters.size() != 1)
+    {
+        throw std::invalid_argument("Arccotangent function requires exactly one parameter.");
+    }
+    const StatementNumber argumentValue = parameters.front();
     return StatementNumber(std::atan(1.0 / argumentValue.GetValue()));
 }

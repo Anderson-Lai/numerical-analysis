@@ -6,10 +6,8 @@ class Trigonometry : public Function
 {
 public:
     Trigonometry() = default;
-    // argument.size() must be 1
-    Trigonometry(const std::vector<std::shared_ptr<Statement>>& argument);
     virtual ~Trigonometry() = default;
-    virtual StatementNumber Evaluate() const override = 0;
+    virtual StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override = 0;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -22,9 +20,8 @@ class Sine final : public Trigonometry
 {
 public:
     Sine() = default;
-    Sine(const std::vector<std::shared_ptr<Statement>>& argument);
     ~Sine() override = default;
-    StatementNumber Evaluate() const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -37,9 +34,8 @@ class Cosine final : public Trigonometry
 {
 public:
     Cosine() = default;
-    Cosine(const std::vector<std::shared_ptr<Statement>>& argument);
     ~Cosine() override = default;
-    StatementNumber Evaluate() const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -52,9 +48,8 @@ class Tangent final : public Trigonometry
 {
 public:
     Tangent() = default;
-    Tangent(const std::vector<std::shared_ptr<Statement>>& argument);
     ~Tangent() override = default;
-    StatementNumber Evaluate() const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -67,9 +62,8 @@ class Cosecant final : public Trigonometry
 {
 public:
     Cosecant() = default;
-    Cosecant(const std::vector<std::shared_ptr<Statement>>& argument);
     ~Cosecant() override = default;
-    StatementNumber Evaluate() const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -82,9 +76,8 @@ class Secant final : public Trigonometry
 {
 public:
     Secant() = default;
-    Secant(const std::vector<std::shared_ptr<Statement>>& argument);
     ~Secant() override = default;
-    StatementNumber Evaluate() const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -97,9 +90,8 @@ class Cotangent final : public Trigonometry
 {
 public:
     Cotangent() = default;
-    Cotangent(const std::vector<std::shared_ptr<Statement>>& argument);
     ~Cotangent() override = default;
-    StatementNumber Evaluate() const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -112,9 +104,8 @@ class Arcsine final : public Trigonometry
 {
 public:
     Arcsine() = default;
-    Arcsine(const std::vector<std::shared_ptr<Statement>>& argument);
     ~Arcsine() override = default;
-    StatementNumber Evaluate() const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -127,9 +118,8 @@ class Arccosine final : public Trigonometry
 {
 public:
     Arccosine() = default;
-    Arccosine(const std::vector<std::shared_ptr<Statement>>& argument);
     ~Arccosine() override = default;
-    StatementNumber Evaluate() const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -142,9 +132,8 @@ class Arctangent final : public Trigonometry
 {
 public:
     Arctangent() = default;
-    Arctangent(const std::vector<std::shared_ptr<Statement>>& argument);
     ~Arctangent() override = default;
-    StatementNumber Evaluate() const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -157,9 +146,8 @@ class Arccosecant final : public Trigonometry
 {
 public:
     Arccosecant() = default;
-    Arccosecant(const std::vector<std::shared_ptr<Statement>>& argument);
     ~Arccosecant() override = default;
-    StatementNumber Evaluate() const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -172,9 +160,8 @@ class Arcsecant final : public Trigonometry
 {
 public:
     Arcsecant() = default;
-    Arcsecant(const std::vector<std::shared_ptr<Statement>>& argument);
     ~Arcsecant() override = default;
-    StatementNumber Evaluate() const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -187,9 +174,8 @@ class Arccotangent final : public Trigonometry
 {
 public:
     Arccotangent() = default;
-    Arccotangent(const std::vector<std::shared_ptr<Statement>>& argument);
     ~Arccotangent() override = default;
-    StatementNumber Evaluate() const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {

@@ -12,7 +12,7 @@ protected:
 public:
     BinaryOperator() = default;
     ~BinaryOperator() = default;
-    StatementNumber Evaluate() const override = 0;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override = 0;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -21,6 +21,7 @@ public:
 #endif
 };
 
+// currently unused
 class UnaryOperator : public Operator
 {
 protected:
@@ -28,7 +29,7 @@ protected:
 public:
     UnaryOperator() = default;
     ~UnaryOperator() = default;
-    StatementNumber Evaluate() const override = 0;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override = 0;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {

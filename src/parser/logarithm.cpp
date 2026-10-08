@@ -1,30 +1,25 @@
 #include "parser/statements/functions/logarithm.hpp"
 #include "parser/statements/statement_number.hpp"
 
-Logarithm::Logarithm(const std::vector<std::shared_ptr<Statement>>& arguments) : Function(std::vector{arguments.back()})
+StatementNumber Logarithm::Evaluate(const std::vector<StatementNumber>& parameters) const
 {
-    if (arguments.size() != 2)
+    if (parameters.size() != 2)
     {
-        throw std::invalid_argument("Logarithm function requires exactly two arguments: the value and the base.");
+        throw std::invalid_argument("Logarithm function requires exactly two parameters: the value and the base.");
     }
 
-    const StatementNumber baseValue = m_arguments.front()->Evaluate();
-    m_base = baseValue.GetValue();
+    const double base = parameters.front().GetValue();
+    const double value = parameters.back().GetValue();
 
-    if (m_base <= 0.0 || m_base == 1.0)
+    if (base <= 0.0 || base == 1.0)
     {
-        throw std::invalid_argument("Logarithm base must be positive and not equal to 1.");
+        throw std::domain_error("Logarithm base must be positive and not equal to 1.");
     }
-}
-
-StatementNumber Logarithm::Evaluate() const
-{
-    if (m_arguments.size() != 1)
+    if (value <= 0.0)
     {
-        throw std::runtime_error("Logarithm function requires exactly one argument for evaluation.");
+        throw std::domain_error("Logarithm value must be positive.");
     }
 
-    const StatementNumber value = m_arguments.front()->Evaluate();
-    double result = std::log(value.GetValue()) / std::log(m_base);
+    double result = std::log(value) / std::log(base);
     return StatementNumber(result);
 }

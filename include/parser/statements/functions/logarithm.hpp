@@ -2,15 +2,12 @@
 
 #include "function.hpp"
 
-class Logarithm final : public Function
+class Logarithm : public Function
 {
-private:
-    double m_base;
 public:
     Logarithm() = default;
-    Logarithm(const std::vector<std::shared_ptr<Statement>>& arguments);
     ~Logarithm() override = default;
-    StatementNumber Evaluate() const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {

@@ -1,7 +1,8 @@
 #include "parser/statements/statement_number.hpp"
+#include "vector"
 #include <cmath>
 
-StatementNumber::StatementNumber(const Number& value) : m_value(value.GetValue())
+StatementNumber::StatementNumber(const Number& value) : StatementNumber(value.GetValue())
 {
 
 }
@@ -16,7 +17,7 @@ double StatementNumber::GetValue() const
     return m_value;
 }
 
-StatementNumber StatementNumber::Evaluate() const
+StatementNumber StatementNumber::Evaluate(const std::vector<StatementNumber>& parameters) const
 {
     return StatementNumber(m_value);
 }

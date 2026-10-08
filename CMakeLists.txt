@@ -16,13 +16,11 @@ add_executable(${PROJECT_NAME}
     
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/binary_operators.cpp
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/function.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/trigonometry.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/logarithm.cpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/statement_number.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/statement_variable.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/statement_function.cpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/parser.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/tree.cpp
@@ -30,9 +28,6 @@ add_executable(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include/
-    # ${CMAKE_CURRENT_SOURCE_DIR}/include/lexer/
-    # ${CMAKE_CURRENT_SOURCE_DIR}/include/parser/
-    # ${CMAKE_CURRENT_SOURCE_DIR}/include/calculus/
 )
 
 target_compile_options(${PROJECT_NAME} PRIVATE

@@ -1,7 +1,7 @@
 #include <iostream>
 #include "lexer/lexer.hpp"
 #include <array>
-#include <ranges>
+#include "parser/statements/statement_number.hpp"
 
 Lexer::Lexer() : m_integrator(Integrator()), m_differentiator(Differentiator()), m_parser(Parser())
 {
@@ -321,10 +321,22 @@ double Lexer::Differentiation()
     ReadTokens();
     CleanTokens();
 #ifdef DEBUG_BUILD
+    std::cout << std::endl << "Tokens: " << std::endl;
     PrintTokens();
+
     m_parser.Parse(m_cleanedTokens);
-    std::cout << std::endl << std::endl;
+    std::cout << std::endl << "AST: " << std::endl;
     m_parser.PrintAST();
+
+    double testInputs[] = {3.1415, 2.71828, 1, -1, 0 , 13, -6, 5};
+
+    for (const double input : testInputs)
+    {
+        std::cout << std::endl;
+        std::cout << "Input: " << input << std::endl;
+        std::cout << "Result: " << m_parser.EvaluateAST(m_parser.GetRoot(), StatementNumber(input)).GetValue() 
+            << std::endl;
+    }
 #endif
     return this->m_differentiator.Differentiate();
 }

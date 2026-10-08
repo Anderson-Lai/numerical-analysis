@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include "lexer/token.hpp"
 #include <vector>
+#include "parser/statements/statement_number.hpp"
 
 class Parser
 {
@@ -23,6 +24,9 @@ public:
     Parser() = default;
     ~Parser() = default;
     void Parse(const std::vector<Token>& tokens);
+    StatementNumber EvaluateAST(const std::shared_ptr<TreeNode> currentNode,
+        const StatementNumber& value) const;
+    std::shared_ptr<TreeNode> GetRoot() const;
 private:
     int GetOperatorBindingPower(const Token& tokenType) const;
     std::shared_ptr<TreeNode> ReadExpression(const std::vector<Token>& tokens, 

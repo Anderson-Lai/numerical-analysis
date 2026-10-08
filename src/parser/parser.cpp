@@ -3,7 +3,6 @@
 #include "parser/statements/statement_variable.hpp"
 #include "parser/statements/statement_number.hpp"
 #include "parser/operators/binary_operators.hpp"
-#include "parser/statements/statement_function.hpp"
 #include "parser/statements/functions/trigonometry.hpp"
 #include "parser/statements/functions/logarithm.hpp"
 #include <cmath>
@@ -22,7 +21,20 @@ void Parser::Parse(const std::vector<Token>& tokens)
     while (index < tokens.size())
     {
         auto result = ReadExpression(tokens, index, 0);
-        result->SetLeft(std::make_shared<TreeNode>(*m_root));
+        if (!result)
+        {
+            throw std::runtime_error("Invalid expression detected");
+        }
+
+        // get to the leftmost node of the new subtree and attach the old root as its left child
+        // to avoid accidentally erasing any tokens/information
+        auto temp = result;
+        while (temp->GetLeft() && temp->GetLeft()->GetValue())
+        {
+            temp = temp->GetLeft();
+        }
+        temp->SetLeft(std::make_shared<TreeNode>(*m_root));
+
         m_root = result;
         index++;
     }
@@ -31,7 +43,6 @@ void Parser::Parse(const std::vector<Token>& tokens)
 std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& tokens, 
     size_t& index, const int minBindingPower)
 {
-    auto node = std::make_shared<TreeNode>(nullptr, nullptr, nullptr, nullptr);
 
     if (index >= tokens.size())
     {
@@ -40,6 +51,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
 
     Token currentToken = tokens[index];
     int currentBindingPower = GetOperatorBindingPower(currentToken);
+    auto node = std::make_shared<TreeNode>(nullptr, nullptr, nullptr, nullptr);
 
     while (index < tokens.size() && (minBindingPower < currentBindingPower || currentBindingPower == -1))
     {
@@ -262,6 +274,37 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
         return nullptr;
     }
     return node;
+}
+
+StatementNumber Parser::EvaluateAST(const std::shared_ptr<TreeNode> currentNode,
+    const StatementNumber& value) const
+{
+    if (!currentNode || !currentNode->GetValue())
+    {
+        throw std::runtime_error("Invalid AST node encountered during evaluation");
+    }
+
+    if (!currentNode->GetLeft() && !currentNode->GetRight())
+    {
+        return currentNode->GetValue()->Evaluate(std::vector<StatementNumber>{value});
+    }
+
+    std::vector<StatementNumber> parameters;
+    if (currentNode->GetLeft())
+    {
+        parameters.push_back(EvaluateAST(currentNode->GetLeft(), value));
+    }
+    if (currentNode->GetRight())
+    {
+        parameters.push_back(EvaluateAST(currentNode->GetRight(), value));
+    }
+
+    return currentNode->GetValue()->Evaluate(parameters);
+}
+
+std::shared_ptr<TreeNode> Parser::GetRoot() const
+{
+    return m_root;
 }
 
 int Parser::GetOperatorBindingPower(const Token& tokenType) const

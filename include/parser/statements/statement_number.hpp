@@ -17,14 +17,13 @@ public:
     ~StatementNumber() override = default;
 public:
     double GetValue() const;
-    StatementNumber Evaluate() const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
 public:
     StatementNumber operator+(const StatementNumber& other) const;
     StatementNumber operator-(const StatementNumber& other) const;
     StatementNumber operator*(const StatementNumber& other) const;
     StatementNumber operator/(const StatementNumber& other) const;
     StatementNumber operator^(const StatementNumber& other) const;
-
 #ifdef DEBUG_BUILD
     void PrintValue() const 
     {
