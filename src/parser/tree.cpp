@@ -7,7 +7,7 @@ TreeNode::TreeNode(const std::shared_ptr<Statement>& value, const std::vector<st
 }
 
 TreeNode::TreeNode(const std::shared_ptr<Statement>& value) 
-    : m_value(value), m_children(std::vector<std::shared_ptr<TreeNode>>{})
+    : TreeNode(value, std::vector<std::shared_ptr<TreeNode>>{})
 {
 
 }

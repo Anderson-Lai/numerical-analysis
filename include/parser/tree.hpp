@@ -17,9 +17,11 @@ public:
     ~TreeNode() = default;
 public:
     void SetValue(const std::shared_ptr<Statement>& value);
+
     void AddChild(const std::shared_ptr<TreeNode>& child);
     void SetChild(const std::shared_ptr<TreeNode>& child, const size_t index);
     void SetChildren(const std::vector<std::shared_ptr<TreeNode>>& children);
+    
     const std::shared_ptr<Statement>& GetValue() const;
     const std::vector<std::shared_ptr<TreeNode>>& GetChildren() const;
 };
