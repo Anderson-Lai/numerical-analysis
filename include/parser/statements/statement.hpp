@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "lexer/types.hpp"
 
 #ifdef DEBUG_BUILD

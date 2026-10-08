@@ -30,16 +30,15 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include/
 )
 
-target_compile_options(${PROJECT_NAME} PRIVATE
-    -fsanitize=address
-    -fno-omit-frame-pointer
-)
-
-target_link_options(${PROJECT_NAME} PRIVATE
-    -fsanitize=address
-)
-
-# define DEBUG_BUILD macro for Debug build type
+# define DEBUG_BUILD macro for Debug build type and also add address sanitizer
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_definitions(${PROJECT_NAME} PRIVATE DEBUG_BUILD)
+
+    target_compile_options(${PROJECT_NAME} PRIVATE
+        -fsanitize=address
+        -fno-omit-frame-pointer
+    )
+    target_link_options(${PROJECT_NAME} PRIVATE
+        -fsanitize=address
+    )
 endif()
