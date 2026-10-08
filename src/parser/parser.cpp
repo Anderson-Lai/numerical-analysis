@@ -267,8 +267,9 @@ StatementNumber Parser::EvaluateAST(const std::shared_ptr<TreeNode> currentNode,
         throw std::invalid_argument("AST node is nullptr");
     }
 
-    // needed for unitary operators (addition / subtraction (negation)) since their left child will be nullptr
-    // and so the BinaryOperator only 'has' one child, when it needs two to properly evaluate
+    // needed for unitary operators (addition / subtraction (negation)) since their left child's value
+    // (m_value) will be nullptr while the left child itself is NOT a nullptr; thus, 
+    //the BinaryOperator only 'has' one child, when it needs two children to properly evaluate the expression
     if (!currentNode->GetValue())
     {
         return StatementNumber(0.0);
