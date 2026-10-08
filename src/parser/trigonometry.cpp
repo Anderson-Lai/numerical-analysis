@@ -1,6 +1,7 @@
+#include <cmath>
+
 #include "parser/statements/functions/trigonometry.hpp"
 #include "parser/statements/statement_number.hpp"
-#include <cmath>
 
 StatementNumber Sine::Evaluate(const std::vector<StatementNumber>& parameters) const
 {

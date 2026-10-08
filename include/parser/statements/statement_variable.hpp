@@ -1,8 +1,10 @@
 #pragma once
 
-#include "statement.hpp"
-#include "lexer/types.hpp"
 #include <string>
+
+#include "lexer/types.hpp"
+
+#include "parser/statements/statement.hpp"
 
 class StatementVariable final : public Statement
 {

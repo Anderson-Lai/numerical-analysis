@@ -1,7 +1,8 @@
 #pragma once
 
-#include "statement.hpp"
 #include "lexer/types.hpp"
+
+#include "parser/statements/statement.hpp"
 
 #ifdef DEBUG_BUILD
 #include <iostream>
@@ -25,10 +26,6 @@ public:
     StatementNumber operator/(const StatementNumber& other) const;
     StatementNumber operator^(const StatementNumber& other) const;
 #ifdef DEBUG_BUILD
-    void PrintValue() const 
-    {
-        std::cout << "StatementNumber: " << m_value;
-    }
     void LogConcreteType() const override
     {
         std::cout << "StatementNumber";

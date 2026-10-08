@@ -1,11 +1,12 @@
+#include <cmath>
+
+#include "parser/operators/binary_operators.hpp"
+#include "parser/statements/functions/logarithm.hpp"
+#include "parser/statements/functions/trigonometry.hpp"
+#include "parser/statements/statement_number.hpp"
+#include "parser/statements/statement_variable.hpp"
 #include "parser/parser.hpp"
 #include "parser/tree.hpp"
-#include "parser/statements/statement_variable.hpp"
-#include "parser/statements/statement_number.hpp"
-#include "parser/operators/binary_operators.hpp"
-#include "parser/statements/functions/trigonometry.hpp"
-#include "parser/statements/functions/logarithm.hpp"
-#include <cmath>
 
 void Parser::Parse(const std::vector<Token>& tokens)
 {
@@ -51,7 +52,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
 
     Token currentToken = tokens[index];
     int currentBindingPower = GetOperatorBindingPower(currentToken);
-    auto node = std::make_shared<TreeNode>(nullptr, nullptr, nullptr, nullptr);
+    auto node = std::make_shared<TreeNode>(nullptr, nullptr, nullptr);
 
     while (index < tokens.size() && (minBindingPower < currentBindingPower || currentBindingPower == -1))
     {
@@ -221,7 +222,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     // 'log' should default to base 10 if no base is specified
                     else
                     {
-                        node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr, nullptr,
+                        node->SetLeft(std::make_shared<TreeNode>(nullptr, nullptr,
                             std::make_shared<StatementNumber>(10.0)
                         ));
                     }

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "operator_types.hpp"
 #include <vector>
+
+#include "parser/operators/operator_types.hpp"
 #include "parser/statements/statement_number.hpp"
 
 class AdditionOperator final : public BinaryOperator

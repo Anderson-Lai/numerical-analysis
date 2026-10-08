@@ -1,6 +1,6 @@
 #pragma once
 
-#include "function.hpp"
+#include "parser/statements/functions/function.hpp"
 
 class Trigonometry : public Function
 {

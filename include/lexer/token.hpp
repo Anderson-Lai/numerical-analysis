@@ -1,6 +1,7 @@
 #pragma once
 
 #include <variant>
+
 #include "lexer/types.hpp"
 
 enum class TokenType

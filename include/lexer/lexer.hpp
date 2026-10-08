@@ -1,17 +1,20 @@
 #pragma once
 
+#include <vector>
+#include <variant>
+#include <array>
+
+#include "calculus/differentiator.hpp"
+#include "calculus/integrator.hpp"
+
+#include "lexer/types.hpp"
+#include "lexer/token.hpp"
+
+#include "parser/parser.hpp"
+
 #ifdef DEBUG_BUILD
 #include <iostream>
 #endif
-
-#include <vector>
-#include <variant>
-#include "calculus/differentiator.hpp"
-#include "calculus/integrator.hpp"
-#include "lexer/types.hpp"
-#include <array>
-#include "token.hpp"
-#include "parser/parser.hpp"
 
 class Lexer
 {

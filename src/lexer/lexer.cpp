@@ -1,7 +1,10 @@
-#include <iostream>
 #include "lexer/lexer.hpp"
-#include <array>
+
 #include "parser/statements/statement_number.hpp"
+
+#ifdef DEBUG_BUILD
+#include <iostream>
+#endif
 
 Lexer::Lexer() : m_integrator(Integrator()), m_differentiator(Differentiator()), m_parser(Parser())
 {
@@ -275,8 +278,7 @@ void Lexer::ReadTokens()
                 }
                 else if (stored == TokenType::INVALID)
                 {
-                    std::cout << "Invalid token encountered. Exiting...\n";
-                    std::exit(EXIT_FAILURE);
+                    throw std::runtime_error("Invalid token encountered. Exiting...");
                 }
             }
 
@@ -337,7 +339,7 @@ double Lexer::Differentiation()
         std::cout << "Result: " << m_parser.EvaluateAST(m_parser.GetRoot(), StatementNumber(input)).GetValue() 
             << std::endl;
     }
-    std::cout <<
+    std::cout << std::endl;
 #endif
     return this->m_differentiator.Differentiate();
 }
@@ -345,9 +347,8 @@ double Lexer::Differentiation()
 double Lexer::Integration()
 {
     ReadTokens();
-#ifdef DEBUG_BUILD
-    PrintTokens();
-#endif
+    CleanTokens();
+    m_parser.Parse(m_cleanedTokens);
     return this->m_integrator.Integrate();
 }
 

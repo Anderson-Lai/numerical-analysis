@@ -1,6 +1,7 @@
-#include "parser/statements/statement_number.hpp"
-#include "vector"
 #include <cmath>
+#include <vector>
+
+#include "parser/statements/statement_number.hpp"
 
 StatementNumber::StatementNumber(const Number& value) : StatementNumber(value.GetValue())
 {

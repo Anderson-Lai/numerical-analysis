@@ -1,10 +1,12 @@
 #pragma once
 
-#include "tree.hpp"
-#include <unordered_map>
-#include "lexer/token.hpp"
 #include <vector>
+#include <unordered_map>
+
+#include "lexer/token.hpp"
+
 #include "parser/statements/statement_number.hpp"
+#include "parser/tree.hpp"
 
 class Parser
 {

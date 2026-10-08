@@ -1,6 +1,7 @@
 #pragma once
 
 #include "lexer/types.hpp"
+
 #include "parser/statements/statement_number.hpp"
 
 class Operator : public Statement

@@ -1,14 +1,12 @@
 #pragma once
 
-#include "operator.hpp"
-#include "parser/statements/statement.hpp"
 #include <memory>
+
+#include "parser/operators/operator.hpp"
+#include "parser/statements/statement.hpp"
 
 class BinaryOperator : public Operator
 {
-protected:
-    std::shared_ptr<Statement> m_leftOperand;
-    std::shared_ptr<Statement> m_rightOperand;
 public:
     BinaryOperator() = default;
     ~BinaryOperator() = default;

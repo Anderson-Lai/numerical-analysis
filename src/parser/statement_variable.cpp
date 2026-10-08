@@ -1,6 +1,7 @@
-#include "parser/statements/statement_variable.hpp"
-#include "parser/statements/statement_number.hpp"
 #include <vector>
+
+#include "parser/statements/statement_number.hpp"
+#include "parser/statements/statement_variable.hpp"
 
 StatementVariable::StatementVariable(const Variable& variable) : m_name(variable.GetName())
 {
