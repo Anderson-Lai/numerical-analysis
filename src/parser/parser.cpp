@@ -1,4 +1,5 @@
 #include <cmath>
+#include <climits>
 
 #include "parser/operators/binary_operators.hpp"
 #include "parser/statements/functions/logarithm.hpp"
@@ -34,10 +35,17 @@ void Parser::Parse(const std::vector<Token>& tokens)
         {
             traverser = traverser->GetChildren().front();
         }
-        traverser->SetChild(m_root, 0);
+
+        if (traverser->GetChildren().empty())
+        {
+            traverser->AddChild(std::make_shared<TreeNode>(*m_root));
+        }
+        else
+        {
+            traverser->SetChild(std::make_shared<TreeNode>(*m_root), 0);
+        }
 
         m_root = result;
-        index++;
     }
 }
 
@@ -79,6 +87,17 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
             {
                 // --- BINARY OPERATORS ---
                 case TokenType::ADDITION:
+                    // unary addition; do not let the addition bind to anything else
+                    if (!node->GetValue())
+                    {
+                        node->SetValue(std::make_shared<AdditionOperator>());
+                        node->SetChildren(std::vector<std::shared_ptr<TreeNode>>{
+                            std::make_shared<TreeNode>(nullptr),
+                            ReadExpression(tokens, ++index, INT32_MAX)
+                        });
+                        return node;
+                    }
+
                     // we can't just add 'node' as another child since it is a vector of children, 
                     // not just a singular left/right child now. thus, if we had added 'node' as a child instead of
                     // replacing all the children with 'node', then there would be at least 2 arguments 
@@ -91,6 +110,16 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     node->AddChild(ReadExpression(tokens, ++index, currentBindingPower));
                     break;
                 case TokenType::SUBTRACTION:
+                    if (!node->GetValue())
+                    {
+                        node->SetValue(std::make_shared<SubtractionOperator>());
+                        node->SetChildren(std::vector<std::shared_ptr<TreeNode>>{
+                            std::make_shared<TreeNode>(nullptr),
+                            ReadExpression(tokens, ++index, INT32_MAX)
+                        });
+                        return node;
+                    }
+
                     node->SetChildren(std::vector<std::shared_ptr<TreeNode>>{
                         std::make_shared<TreeNode>(*node)
                     });
