@@ -34,12 +34,13 @@ private:
 private:
     void ReadTokens();
     std::vector<Token> Tokenize(const char character) const;
-    void CleanTokens();
 // helper functions
 private:
+    std::vector<Token> DeterminePossibleToken(const std::string& token) const;
     // replaces getchar()
     std::variant<Token, char> ReadConsecutiveCharacter() const;
-    std::vector<Token> DeterminePossibleToken(const std::string& token) const;
+private:
+    void CleanTokens();
 public:
     Lexer();
     double Differentiation();

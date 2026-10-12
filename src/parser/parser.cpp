@@ -34,6 +34,47 @@ void Parser::Parse(const std::vector<Token>& tokens)
     }
 }
 
+StatementNumber Parser::EvaluateAST(const std::shared_ptr<TreeNode> currentNode, 
+    const StatementNumber& value) const
+{
+    if (!currentNode)
+    {
+        throw std::invalid_argument("AST node is nullptr");
+    }
+
+    // needed for unitary operators (addition / subtraction (negation)) since their left child's value
+    // (m_value) will be nullptr while the left child itself is NOT a nullptr; thus,
+    // the BinaryOperator only 'has' one child, when it needs two children to properly evaluate the expression
+    if (!currentNode->GetValue())
+    {
+        return StatementNumber(0.0);
+    }
+
+    // should be a 'variable' or 'number'
+    if (currentNode->GetChildren().empty())
+    {
+        return currentNode->GetValue()->Evaluate(std::vector<StatementNumber>{value});
+    }
+
+    std::vector<StatementNumber> parameters;
+    for (const auto& child : currentNode->GetChildren())
+    {
+        // should be a redudant check since the 'traverser' in Parse() should have already gotten
+        // rid of all the nullptr's
+        if (child)
+        {
+            parameters.push_back(EvaluateAST(child, value));
+        }
+    }
+
+    return currentNode->GetValue()->Evaluate(parameters);
+}
+
+std::shared_ptr<TreeNode> Parser::GetRoot() const
+{
+    return m_root;
+}
+
 std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& tokens, 
     size_t& index, const int minBindingPower, const bool persistentParsing) const
 {
@@ -114,7 +155,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
 
                     auto child = GetFullChild(tokens, ++index, currentBindingPower, true);
                     node->AddChild(child);
-                    
+
                     break;
                 }
                 case TokenType::EXPONENTIATION:
@@ -335,47 +376,6 @@ std::shared_ptr<TreeNode> Parser::GetFullChild(const std::vector<Token>& tokens,
     }
 
     return child;
-}
-
-StatementNumber Parser::EvaluateAST(const std::shared_ptr<TreeNode> currentNode,
-    const StatementNumber& value) const
-{
-    if (!currentNode)
-    {
-        throw std::invalid_argument("AST node is nullptr");
-    }
-
-    // needed for unitary operators (addition / subtraction (negation)) since their left child's value
-    // (m_value) will be nullptr while the left child itself is NOT a nullptr; thus, 
-    //the BinaryOperator only 'has' one child, when it needs two children to properly evaluate the expression
-    if (!currentNode->GetValue())
-    {
-        return StatementNumber(0.0);
-    }
-
-    // should be a 'variable' or 'number'
-    if (currentNode->GetChildren().empty())
-    {
-        return currentNode->GetValue()->Evaluate(std::vector<StatementNumber>{value});
-    }
-
-    std::vector<StatementNumber> parameters;
-    for (const auto& child : currentNode->GetChildren())
-    {
-        // should be a redudant check since the 'traverser' in Parse() should have already gotten
-        // rid of all the nullptr's
-        if (child)
-        {
-            parameters.push_back(EvaluateAST(child, value));
-        }
-    }
-
-    return currentNode->GetValue()->Evaluate(parameters);
-}
-
-std::shared_ptr<TreeNode> Parser::GetRoot() const
-{
-    return m_root;
 }
 
 int Parser::GetOperatorBindingPower(const Token& tokenType) const

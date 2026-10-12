@@ -28,12 +28,15 @@ public:
     void Parse(const std::vector<Token>& tokens);
     StatementNumber EvaluateAST(const std::shared_ptr<TreeNode> currentNode,
         const StatementNumber& value) const;
+public:
     std::shared_ptr<TreeNode> GetRoot() const;
 private:
     std::shared_ptr<TreeNode> ReadExpression(const std::vector<Token>& tokens,
         size_t& index, const int minBindingPower, const bool persistentParsing = false) const;
+
     std::shared_ptr<TreeNode> GetFullChild(const std::vector<Token>& tokens, size_t& index, 
         const int operatorBindingPower, const bool persistentParsing) const;
+
     int GetOperatorBindingPower(const Token& tokenType) const;
     bool IsFunctionIdentifier(const Token& token) const;
 #ifdef DEBUG_BUILD
