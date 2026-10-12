@@ -76,7 +76,7 @@ std::shared_ptr<TreeNode> Parser::GetRoot() const
 }
 
 std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& tokens, 
-    size_t& index, const int minBindingPower, const bool persistentParsing) const
+    size_t& index, const int minBindingPower) const
 {
 
     if (index >= tokens.size())
@@ -182,30 +182,38 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                 case TokenType::PARANTHESES_OPEN:
                     // possible issues when adding implicit multiplication
                     // since 'node->m_value' is ignored here
-                    node = ReadExpression(tokens, ++index, 0, persistentParsing);
+                    node = ReadExpression(tokens, ++index, 0);
                     if (!node)
                     {
                         throw std::runtime_error("Invalid expression detected");
+                    }
+
+                    if (index >= tokens.size() || !std::holds_alternative<TokenType>(tokens[index]) 
+                        || std::get<TokenType>(tokens[index]) != TokenType::PARANTHESES_CLOSE)
+                    {
+                        throw std::runtime_error("Missing closing paranthesis");
                     }
                     
                     // since we are at a ')' right now
                     index++;
 
+                    return node;
+
                     // return only if we are not persistently parsing, i.e., we have not been called from
                     // a BinaryOperator
-                    if (!persistentParsing)
-                    {
-                        const size_t interestedIndex = index - 1;
-                        if (interestedIndex < 0 || interestedIndex >= tokens.size() 
-                            || !std::holds_alternative<TokenType>(tokens[interestedIndex]) 
-                            || std::get<TokenType>(tokens[interestedIndex]) != TokenType::PARANTHESES_CLOSE)
-                        {
-                            throw std::runtime_error("Missing closing paranthesis");
-                        }
+                    // if (!persistentParsing)
+                    // {
+                    //     const size_t interestedIndex = index - 1;
+                    //     if (interestedIndex < 0 || interestedIndex >= tokens.size() 
+                    //         || !std::holds_alternative<TokenType>(tokens[interestedIndex]) 
+                    //         || std::get<TokenType>(tokens[interestedIndex]) != TokenType::PARANTHESES_CLOSE)
+                    //     {
+                    //         throw std::runtime_error("Missing closing paranthesis");
+                    //     }
                         
-                        return node;
-                    }
-                    break;
+                    //     return node;
+                    // }
+                    // break;
                 case TokenType::PARANTHESES_CLOSE:
                     if (!node->GetValue())
                     {
@@ -351,7 +359,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
 std::shared_ptr<TreeNode> Parser::GetFullChild(const std::vector<Token>& tokens, size_t& index, 
     const int operatorBindingPower, const bool persistentParsing) const
 {
-    auto child = ReadExpression(tokens, index, operatorBindingPower, persistentParsing);
+    auto child = ReadExpression(tokens, index, operatorBindingPower);
     if (!child)
     {
         throw std::runtime_error("Invalid expression detected");
@@ -363,8 +371,9 @@ std::shared_ptr<TreeNode> Parser::GetFullChild(const std::vector<Token>& tokens,
     }
 
     // only keep going if the current token is a closing paranthesis; otherwise, we are done with this child
-    if (!std::holds_alternative<TokenType>(tokens[index]) 
-        || std::get<TokenType>(tokens[index]) != TokenType::PARANTHESES_CLOSE)
+    // if (!std::holds_alternative<TokenType>(tokens[index]) 
+    //     || std::get<TokenType>(tokens[index]) != TokenType::PARANTHESES_CLOSE)
+    if (!persistentParsing)
     {
         return child;
     }
@@ -372,7 +381,9 @@ std::shared_ptr<TreeNode> Parser::GetFullChild(const std::vector<Token>& tokens,
     const int currentBindingPower = GetOperatorBindingPower(tokens[index]);
     while (index < tokens.size() && operatorBindingPower < currentBindingPower)
     {
-        child->AttachAtBottomLeft(ReadExpression(tokens, ++index, operatorBindingPower, persistentParsing));
+        auto result = ReadExpression(tokens, index, operatorBindingPower);
+        result->AttachAtBottomLeft(child);
+        child = result;
     }
 
     return child;

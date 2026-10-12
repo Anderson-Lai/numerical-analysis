@@ -32,7 +32,7 @@ public:
     std::shared_ptr<TreeNode> GetRoot() const;
 private:
     std::shared_ptr<TreeNode> ReadExpression(const std::vector<Token>& tokens,
-        size_t& index, const int minBindingPower, const bool persistentParsing = false) const;
+        size_t& index, const int minBindingPower) const;
 
     std::shared_ptr<TreeNode> GetFullChild(const std::vector<Token>& tokens, size_t& index, 
         const int operatorBindingPower, const bool persistentParsing) const;
