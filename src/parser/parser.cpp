@@ -29,28 +29,13 @@ void Parser::Parse(const std::vector<Token>& tokens)
             throw std::runtime_error("Invalid expression detected");
         }
 
-        // get to the leftmost node of the new subtree and attach the old root as its leftmost child
-        auto traverser = result;
-        while (!traverser->GetChildren().empty() && traverser->GetChildren().front()->GetValue())
-        {
-            traverser = traverser->GetChildren().front();
-        }
-
-        if (traverser->GetChildren().empty())
-        {
-            traverser->AddChild(std::make_shared<TreeNode>(*m_root));
-        }
-        else
-        {
-            traverser->SetChild(std::make_shared<TreeNode>(*m_root), 0);
-        }
-
+        result->AttachAtBottomLeft(m_root);
         m_root = result;
     }
 }
 
 std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& tokens, 
-    size_t& index, const int minBindingPower)
+    size_t& index, const int minBindingPower, const bool persistentParsing) const
 {
 
     if (index >= tokens.size())
@@ -80,73 +65,70 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
         else if (std::holds_alternative<TokenType>(currentToken))
         {
             const TokenType& currentTokenType = std::get<TokenType>(currentToken);
-            // since exponentiation is right associative
-            int associativity = (currentTokenType == TokenType::EXPONENTIATION) ? -1 : 0;
-
             switch (currentTokenType)
             {
                 // --- BINARY OPERATORS ---
                 case TokenType::ADDITION:
-                    // unary addition; do not let the addition bind to anything else
-                    if (!node->GetValue())
-                    {
-                        node->SetValue(std::make_shared<AdditionOperator>());
-                        node->SetChildren(std::vector<std::shared_ptr<TreeNode>>{
-                            std::make_shared<TreeNode>(nullptr),
-                            ReadExpression(tokens, ++index, INT32_MAX)
-                        });
-                        return node;
-                    }
-
-                    // we can't just add 'node' as another child since it is a vector of children, 
+                {
+                    // we can't just add 'node' as another child since it is a vector of children,
                     // not just a singular left/right child now. thus, if we had added 'node' as a child instead of
-                    // replacing all the children with 'node', then there would be at least 2 arguments 
-                    // for the 'AdditionOperator' even before we called 'AddChild' 
+                    // replacing all the children with 'node', then there would be at least 2 arguments
+                    // for the 'AdditionOperator' even before we called 'AddChild'
                     // for the right side of the expression.
                     node->SetChildren(std::vector<std::shared_ptr<TreeNode>>{
-                        std::make_shared<TreeNode>(*node)
-                    });
+                        std::make_shared<TreeNode>(*node)});
                     node->SetValue(std::make_shared<AdditionOperator>());
-                    node->AddChild(ReadExpression(tokens, ++index, currentBindingPower));
-                    break;
-                case TokenType::SUBTRACTION:
-                    if (!node->GetValue())
-                    {
-                        node->SetValue(std::make_shared<SubtractionOperator>());
-                        node->SetChildren(std::vector<std::shared_ptr<TreeNode>>{
-                            std::make_shared<TreeNode>(nullptr),
-                            ReadExpression(tokens, ++index, INT32_MAX)
-                        });
-                        return node;
-                    }
 
+                    auto child = GetFullChild(tokens, ++index, currentBindingPower, true);
+                    node->AddChild(child);
+
+                    break;
+                }
+                case TokenType::SUBTRACTION:
+                {
                     node->SetChildren(std::vector<std::shared_ptr<TreeNode>>{
-                        std::make_shared<TreeNode>(*node)
-                    });
+                        std::make_shared<TreeNode>(*node)});
                     node->SetValue(std::make_shared<SubtractionOperator>());
-                    node->AddChild(ReadExpression(tokens, ++index, currentBindingPower));
+
+                    auto child = GetFullChild(tokens, ++index, currentBindingPower, true);
+                    node->AddChild(child);
+
                     break;
+                }
                 case TokenType::MULTIPLICATION:
+                {
                     node->SetChildren(std::vector<std::shared_ptr<TreeNode>>{
-                        std::make_shared<TreeNode>(*node)
-                    });
+                        std::make_shared<TreeNode>(*node)});
                     node->SetValue(std::make_shared<MultiplicationOperator>());
-                    node->AddChild(ReadExpression(tokens, ++index, currentBindingPower));
+
+                    auto child = GetFullChild(tokens, ++index, currentBindingPower, true);
+                    node->AddChild(child);
+
                     break;
+                }
                 case TokenType::DIVISION:
+                {
                     node->SetChildren(std::vector<std::shared_ptr<TreeNode>>{
-                        std::make_shared<TreeNode>(*node)
-                    });
+                        std::make_shared<TreeNode>(*node)});
                     node->SetValue(std::make_shared<DivisionOperator>());
-                    node->AddChild(ReadExpression(tokens, ++index, currentBindingPower));
+
+                    auto child = GetFullChild(tokens, ++index, currentBindingPower, true);
+                    node->AddChild(child);
+                    
                     break;
+                }
                 case TokenType::EXPONENTIATION:
+                {
                     node->SetChildren(std::vector<std::shared_ptr<TreeNode>>{
-                        std::make_shared<TreeNode>(*node)
-                    });
+                        std::make_shared<TreeNode>(*node)});
                     node->SetValue(std::make_shared<ExponentiationOperator>());
-                    node->AddChild(ReadExpression(tokens, ++index, currentBindingPower + associativity));
+
+                    // since exponentiation is right associative
+                    auto child = GetFullChild(tokens, ++index, currentBindingPower - 1, true);
+
+                    node->AddChild(child);
                     break;
+                }
                 case TokenType::SUBSCRIPT:
                     node = ReadExpression(tokens, ++index, 0);
 
@@ -159,21 +141,30 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                 case TokenType::PARANTHESES_OPEN:
                     // possible issues when adding implicit multiplication
                     // since 'node->m_value' is ignored here
-                    node = ReadExpression(tokens, ++index, 0);
-                    if (index >= tokens.size() || !std::holds_alternative<TokenType>(tokens[index])
-                        || std::get<TokenType>(tokens[index]) != TokenType::PARANTHESES_CLOSE)
+                    node = ReadExpression(tokens, ++index, 0, persistentParsing);
+                    if (!node)
                     {
-                        throw std::runtime_error("Missing closing paranthesis");
+                        throw std::runtime_error("Invalid expression detected");
                     }
+                    
                     // since we are at a ')' right now
                     index++;
 
-                    // since an "expression" has ended
-                    if (!node->GetValue())
+                    // return only if we are not persistently parsing, i.e., we have not been called from
+                    // a BinaryOperator
+                    if (!persistentParsing)
                     {
-                        return nullptr;
+                        const size_t interestedIndex = index - 1;
+                        if (interestedIndex < 0 || interestedIndex >= tokens.size() 
+                            || !std::holds_alternative<TokenType>(tokens[interestedIndex]) 
+                            || std::get<TokenType>(tokens[interestedIndex]) != TokenType::PARANTHESES_CLOSE)
+                        {
+                            throw std::runtime_error("Missing closing paranthesis");
+                        }
+                        
+                        return node;
                     }
-                    return node;
+                    break;
                 case TokenType::PARANTHESES_CLOSE:
                     if (!node->GetValue())
                     {
@@ -314,6 +305,36 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
         return nullptr;
     }
     return node;
+}
+
+std::shared_ptr<TreeNode> Parser::GetFullChild(const std::vector<Token>& tokens, size_t& index, 
+    const int operatorBindingPower, const bool persistentParsing) const
+{
+    auto child = ReadExpression(tokens, index, operatorBindingPower, persistentParsing);
+    if (!child)
+    {
+        throw std::runtime_error("Invalid expression detected");
+    }
+
+    if (index >= tokens.size())
+    {
+        return child;
+    }
+
+    // only keep going if the current token is a closing paranthesis; otherwise, we are done with this child
+    if (!std::holds_alternative<TokenType>(tokens[index]) 
+        || std::get<TokenType>(tokens[index]) != TokenType::PARANTHESES_CLOSE)
+    {
+        return child;
+    }
+
+    const int currentBindingPower = GetOperatorBindingPower(tokens[index]);
+    while (index < tokens.size() && operatorBindingPower < currentBindingPower)
+    {
+        child->AttachAtBottomLeft(ReadExpression(tokens, ++index, operatorBindingPower, persistentParsing));
+    }
+
+    return child;
 }
 
 StatementNumber Parser::EvaluateAST(const std::shared_ptr<TreeNode> currentNode,

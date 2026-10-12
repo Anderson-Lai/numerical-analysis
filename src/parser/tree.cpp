@@ -12,6 +12,35 @@ TreeNode::TreeNode(const std::shared_ptr<Statement>& value)
 
 }
 
+void TreeNode::AttachAtBottomLeft(const std::shared_ptr<TreeNode>& child)
+{
+    if (!m_value)
+    {
+        m_value = child->GetValue();
+        m_children = child->GetChildren();
+        return;
+    }
+
+    auto traverser = std::make_shared<TreeNode>(*this);
+    auto head = traverser;
+    while (!traverser->GetChildren().empty() && traverser->GetChildren().front()->GetValue())
+    {
+        traverser = traverser->GetChildren().front();
+    }
+
+    // if (traverser->GetChildren().empty())
+    // {
+    //     traverser->AddChild(child);
+    // }
+    // else
+    // {
+        traverser->SetChild(child, 0);
+    // }
+
+    this->SetValue(head->GetValue());
+    this->SetChildren(head->GetChildren());
+}
+
 void TreeNode::SetValue(const std::shared_ptr<Statement>& value)
 {
     m_value = value;
