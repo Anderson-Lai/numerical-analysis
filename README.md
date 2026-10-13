@@ -1,5 +1,5 @@
-# Numerical Calculus
-A command line tool to numerically approximate derivatives (at a point) and (finite) definite integrals.
+# Numerical Analysis
+A command line tool to numerically approximate (finite) limits, derivatives (at a point), (finite) definite integrals, and to evaluate functions at a point.
 
 > [!NOTE]
 > - Only use single letter variable names.
