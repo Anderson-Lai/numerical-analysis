@@ -1,5 +1,5 @@
 # Numerical Analysis
-A command line tool to numerically approximate (finite) limits, derivatives (at a point), (finite) definite integrals, and to evaluate functions at a point.
+A command line tool to numerically approximate (finite) limits, derivatives (at a point), (finite) definite integrals, and to evaluate functions at a point. It also contains a proprietarily developed lexer and parser for math expressions.
 
 > [!NOTE]
 > - Only use single letter variable names.
