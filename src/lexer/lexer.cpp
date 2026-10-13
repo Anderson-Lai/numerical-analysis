@@ -61,6 +61,8 @@ std::vector<Token> Lexer::Tokenize(const char character) const
         return std::vector<Token>{TokenType::EXPONENTIATION};
     case '_':
         return std::vector<Token>{TokenType::SUBSCRIPT};
+    case ',':
+        return std::vector<Token>{TokenType::COMMA};
     case '(':
         return std::vector<Token>{TokenType::PARANTHESES_OPEN};
     case ')':
@@ -117,7 +119,7 @@ std::vector<Token> Lexer::Tokenize(const char character) const
                     return result;
                 }
 
-                // certainToken.front() could be a Variable/Number as well,
+                // certainToken.front() could be a 'Variable' as well,
                 // not just a TokenType
                 const std::vector<Token> certainToken = DeterminePossibleToken(token);
                 for (const auto& tok : certainToken)
@@ -269,6 +271,8 @@ std::variant<Token, char> Lexer::ReadConsecutiveCharacter() const
                 return TokenType::EXPONENTIATION;
             case '_':
                 return TokenType::SUBSCRIPT;
+            case ',':
+                return TokenType::COMMA;
             case '(':
                 return TokenType::PARANTHESES_OPEN;
             case ')':

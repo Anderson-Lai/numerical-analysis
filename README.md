@@ -13,3 +13,20 @@ A command line tool to numerically approximate derivatives (at a point) and (fin
 
 ## Building
 Run `./scripts/debug.sh` for a debug build and `./scripts/release.sh` for a release build. Run `./debug/numerical_calculus < text.txt` to run the test suite. Examine the output to see if the program is running as expected.
+
+## Extending the Interpreter
+When adding ***new tokens***, ensure to add it to these places:
+- `token.hpp` in `TokenType` enum 
+- `lexer.hpp` in `Lexer::PrintTokens()` for **debugging purposes**
+- `lexer.hpp` in `NON_LETTER` member variable
+- `lexer.cpp` in `Lexer::Tokenize(const char character)` member function
+- `lexer.cpp` in `Lexer::ReadConsecutiveCharacter()` member function
+
+When adding ***new keywords***, ensure to add the first character of the keyword to:
+- `lexer.cpp` in `Lexer::Tokenize(const char character)` member function
+
+and the entire keyword to:
+
+- `lexer.cpp` in `Lexer::DeterminePossibleToken(const std::string& token)` member function
+
+Remember to implement `LogConcreteType()` if it is a child of the `Statement` class for **debugging purposes**.

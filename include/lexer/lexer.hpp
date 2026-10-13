@@ -25,9 +25,9 @@ private:
     Integrator m_integrator;
     Differentiator m_differentiator;
 private:
-    static constexpr std::array<char, 20> NON_LETTER =
+    static constexpr std::array<char, 21> NON_LETTER =
         {
-            '+', '-', '/', '*', '^', '_', '(', ')',
+            '+', '-', '/', '*', '^', '_', ',', '(', ')',
             '1', '2', '3', '4', '5', '6', '7', '8',
             '9', '0', ' ', '\n'
         };
@@ -74,6 +74,9 @@ private:
                     break;
                 case TokenType::SUBSCRIPT:
                     tokenTypeStr = "SUBSCRIPT";
+                    break;
+                case TokenType::COMMA:
+                    tokenTypeStr = "COMMA";
                     break;
                 case TokenType::PARANTHESES_OPEN:
                     tokenTypeStr = "PARANTHESES_OPEN";
