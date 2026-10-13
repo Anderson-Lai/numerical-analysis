@@ -238,69 +238,110 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                 case TokenType::SINE:
                 {
                     node->SetValue(std::make_shared<Sine>());
-                    auto arguments = ReadExpression(tokens, ++index, 0);
-                    if (!std::dynamic_pointer_cast<FunctionArgument>(arguments->GetValue()))
-                    {
-                        throw std::runtime_error("FunctionArgument expected for function call");
-                    }
+                    auto arguments = GetArguments(tokens, ++index);
 
                     node->SetChildren(arguments->GetChildren());
                     break;
                 }
                 case TokenType::COSINE:
+                {
                     node->SetValue(std::make_shared<Cosine>());
-                    node->AddChild(ReadExpression(tokens, ++index, 0));
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
                     break;
+                }
                 case TokenType::TANGENT:
+                {
                     node->SetValue(std::make_shared<Tangent>());
-                    node->AddChild(ReadExpression(tokens, ++index, 0));
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
                     break;
+                }
                 case TokenType::SECANT:
+                {
                     node->SetValue(std::make_shared<Secant>());
-                    node->AddChild(ReadExpression(tokens, ++index, 0));
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
                     break;
+                }
                 case TokenType::COSECANT:
+                {
                     node->SetValue(std::make_shared<Cosecant>());
-                    node->AddChild(ReadExpression(tokens, ++index, 0));
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
                     break;
+                }
                 case TokenType::COTANGENT:
+                {
                     node->SetValue(std::make_shared<Cotangent>());
-                    node->AddChild(ReadExpression(tokens, ++index, 0));
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
                     break;
+                }
                 case TokenType::ASINE:
+                {
                     node->SetValue(std::make_shared<Arcsine>());
-                    node->AddChild(ReadExpression(tokens, ++index, 0));
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
                     break;
+                }
                 case TokenType::ACOSINE:
+                {
                     node->SetValue(std::make_shared<Arccosine>());
-                    node->AddChild(ReadExpression(tokens, ++index, 0));
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
                     break;
+                }
                 case TokenType::ATANGENT:
+                {
                     node->SetValue(std::make_shared<Arctangent>());
-                    node->AddChild(ReadExpression(tokens, ++index, 0));
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
                     break;
+                }
                 case TokenType::ASECANT:
+                {
                     node->SetValue(std::make_shared<Arcsecant>());
-                    node->AddChild(ReadExpression(tokens, ++index, 0));
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
                     break;
+                }
                 case TokenType::ACOSECANT:
+                {
                     node->SetValue(std::make_shared<Arccosecant>());
-                    node->AddChild(ReadExpression(tokens, ++index, 0));
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
                     break;
+                }
                 case TokenType::ACOTANGENT:
+                {
                     node->SetValue(std::make_shared<Arccotangent>());
-                    node->AddChild(ReadExpression(tokens, ++index, 0));
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
                     break;
+                }
+
                 // --- LOGARITHMS ---
                 case TokenType::LOGARITHM:
+                {
                     node->SetValue(std::make_shared<Logarithm>());
 
-                    if (index + 1 < tokens.size() && std::holds_alternative<TokenType>(tokens[index + 1]) 
-                        && std::get<TokenType>(tokens[index + 1]) == TokenType::SUBSCRIPT)
+                    if (index + 1 < tokens.size() && std::holds_alternative<TokenType>(tokens[index + 1]) && std::get<TokenType>(tokens[index + 1]) == TokenType::SUBSCRIPT)
                     {
                         node->AddChild(ReadExpression(tokens, ++index, 0));
 
-                        /*  
+                        /*
                         since we just read a base that ended with a parantheses, we are currently
                         past the parantheses since there is an 'index++' when returning
                         from the parantheses parsing
@@ -310,8 +351,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                         the parser would have just treated the whole expression (including the supposed arguments)
                         as an expression for the base
                         */
-                        if (std::holds_alternative<TokenType>(tokens[index - 1])
-                            && std::get<TokenType>(tokens[index - 1]) == TokenType::PARANTHESES_CLOSE)
+                        if (std::holds_alternative<TokenType>(tokens[index - 1]) && std::get<TokenType>(tokens[index - 1]) == TokenType::PARANTHESES_CLOSE)
                         {
                             index--;
                         }
@@ -320,30 +360,51 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     else
                     {
                         node->AddChild(std::make_shared<TreeNode>(
-                            std::make_shared<StatementNumber>(10.0f)
-                        ));
+                            std::make_shared<StatementNumber>(10.0f)));
                     }
 
                     // '++index' is needed in case no base is specified
                     node->AddChild(ReadExpression(tokens, ++index, 0));
+
+                    auto arguments = GetArguments(tokens, index);
+                    for (const auto& arg : arguments->GetChildren())
+                    {
+                        node->AddChild(arg);
+                    }
                     break;
+                }
                 case TokenType::NATURAL_LOGARITHM:
+                {
                     node->AddChild(std::make_shared<TreeNode>(
-                        std::make_shared<StatementNumber>(std::exp(1.0f))
-                    ));
+                        std::make_shared<StatementNumber>(std::exp(1.0f))));
 
                     node->SetValue(std::make_shared<Logarithm>());
-                    node->AddChild(ReadExpression(tokens, ++index, 0));
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    for (const auto& arg : arguments->GetChildren())
+                    {
+                        node->AddChild(arg);
+                    }
                     break;
+                }
+                    
                 // --- ROOTS ---
                 case TokenType::SQUARE_ROOT:
+                {
                     node->SetValue(std::make_shared<SquareRoot>());
-                    node->AddChild(ReadExpression(tokens, ++index, 0));
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
                     break;
+                }
                 case TokenType::CUBE_ROOT:
+                {
                     node->SetValue(std::make_shared<CubeRoot>());
-                    node->AddChild(ReadExpression(tokens, ++index, 0));
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
                     break;
+                }
                 default:
                     throw std::runtime_error("Unexpected token");
             }
@@ -444,6 +505,16 @@ std::shared_ptr<TreeNode> Parser::ReadFullExpression(const std::vector<Token>& t
     }
 
     return child;
+}
+
+std::shared_ptr<TreeNode> Parser::GetArguments(const std::vector<Token>& tokens, size_t& index) const
+{
+    auto arguments = ReadExpression(tokens, index, 0);
+    if (!std::dynamic_pointer_cast<FunctionArgument>(arguments->GetValue()))
+    {
+        throw std::runtime_error("FunctionArgument expected for function call");
+    }
+    return arguments;
 }
 
 int Parser::GetOperatorBindingPower(const Token& tokenType) const
