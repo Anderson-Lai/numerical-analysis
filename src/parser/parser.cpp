@@ -400,7 +400,7 @@ std::shared_ptr<TreeNode> Parser::ReadFullExpression(const std::vector<Token>& t
         child = result;
 
         if (index >= tokens.size() || 
-            (!ownsParanthesis && std::holds_alternative<TokenType>(tokens[index]) 
+            (std::holds_alternative<TokenType>(tokens[index]) 
             && std::get<TokenType>(tokens[index]) == TokenType::PARANTHESES_CLOSE))
         {
             return child;
