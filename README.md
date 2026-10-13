@@ -10,3 +10,6 @@ A command line tool to numerically approximate derivatives (at a point) and (fin
 
 > [!WARNING]
 > Real numbers are represented using a `double`. Hence, results become increasingly more inaccurate for extremely large and small numbers.
+
+## Building
+Run `./scripts/debug.sh` for a debug build and `./scripts/release.sh` for a release build. Run `./debug/numerical_calculus < text.txt` to run the test suite. Examine the output to see if the program is running as expected.
