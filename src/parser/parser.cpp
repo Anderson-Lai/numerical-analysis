@@ -27,7 +27,7 @@ void Parser::Parse(const std::vector<Token>& tokens)
         // expression is over if 'result' is nullptr (e.g., the expression ended with a ')' token)
         if (!result)
         {
-            return;
+            throw std::runtime_error("Invalid expression detected");
         }
 
         result->AttachAtBottomLeft(m_root);
@@ -196,7 +196,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                         node->SetValue(std::make_shared<FunctionArgument>());
                         do
                         {
-                            auto child = ReadFullExpression(tokens, ++index, 0, true);
+                            auto child = ReadFullExpression(tokens, index, 0, true);
                             if (!child)
                             {
                                 throw std::runtime_error("Invalid expression detected");
@@ -406,6 +406,7 @@ std::shared_ptr<TreeNode> Parser::ReadFullExpression(const std::vector<Token>& t
 
     if ((!ownsParanthesis && isCurrentTokenClosingParanthesis) || isCurrentTokenComma)
     {
+        index++;
         return child;
     }
 
