@@ -11,7 +11,7 @@ public:
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
-        std::cout << "Function Argument";
+        std::cout << "FunctionArgument";
     }
 #endif
 };
