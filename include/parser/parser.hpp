@@ -32,13 +32,14 @@ public:
     std::shared_ptr<TreeNode> GetRoot() const;
 private:
     std::shared_ptr<TreeNode> ReadExpression(const std::vector<Token>& tokens,
-        size_t& index, const int minBindingPower) const;
+        size_t& index, const int minBindingPower, const bool fromFunctionCall = false) const;
 
     std::shared_ptr<TreeNode> ReadFullExpression(const std::vector<Token>& tokens, size_t& index, 
         const int operatorBindingPower, const bool fromFunctionCall) const;
 // helper functions for building AST
 private:
-    std::shared_ptr<TreeNode> GetArguments(const std::vector<Token>& tokens, size_t& index) const;
+    std::shared_ptr<TreeNode> GetArguments(const std::vector<Token>& tokens, size_t& index,
+        const bool fromFunctionCall = false) const;
     int GetOperatorBindingPower(const Token& tokenType) const;
     bool IsFunctionIdentifier(const Token& token) const;
 #ifdef DEBUG_BUILD

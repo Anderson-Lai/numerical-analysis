@@ -73,10 +73,16 @@ std::shared_ptr<TreeNode> Parser::GetRoot() const
     return m_root;
 }
 
-// will auto increment 'index' (i.e., there is no reason to call 'index++' after calling this function,
-// say, in a loop)
+/*
+    - will auto increment 'index' (i.e., there is no reason to call 'index++' after calling this function,
+        say, in a loop)
+    - 'fromFunctionCall' is used only for logarithms due to possibility of subscripts (for bases), and hence
+        IsFunctionIdentifier(tokens[index - 1]) will not return true even though it is 
+        'supposed' to be a function call 
+        (e.g., log_(2)(8) is a function call, IsFunctionIdentifier(tokens[index - 1]) will return false)
+*/
 std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& tokens, 
-    size_t& index, const int minBindingPower) const
+    size_t& index, const int minBindingPower, const bool fromFunctionCall) const
 {
 
     if (index >= tokens.size())
@@ -170,6 +176,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     node->AddChild(child);
                     break;
                 }
+
                 case TokenType::SUBSCRIPT:
                     node = ReadExpression(tokens, ++index, 0);
 
@@ -185,15 +192,12 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     }
                     return node;
 
-                // TO IMPLEMENT: 
-                // a) need to change based on if previous token was a function identifier
-                // b) potentially add parantheses checking
                 case TokenType::PARANTHESES_OPEN:
                     // possible issues when adding implicit multiplication
                     // since 'node->m_value' is ignored here
-                    if (index - 1 < tokens.size() && IsFunctionIdentifier(tokens[index - 1]))
+                    if ((index - 1 < tokens.size() && IsFunctionIdentifier(tokens[index - 1])) 
+                        || fromFunctionCall)
                     {
-                        // node = ReadFullExpression(tokens, index, 0, true);
                         node->SetValue(std::make_shared<FunctionArgument>());
                         do
                         {
@@ -224,6 +228,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                         return nullptr;
                     }
                     return node;
+                
                 // --- CONSTANTS ---
                 case TokenType::PI:
                     // std::acos(-1.0f) = pi since cos(pi) = -1.0
@@ -234,6 +239,8 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     node->SetValue(std::make_shared<StatementNumber>(std::exp(1.0f)));
                     index++;
                     break;
+                
+                // --- FUNCTIONS ---
                 // CONVENTION: subscripts (bases for logarithms) go before function arguments
                 // --- TRIG FUNCTIONS ---
                 case TokenType::SINE:
@@ -338,7 +345,8 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                 {
                     node->SetValue(std::make_shared<Logarithm>());
 
-                    if (index + 1 < tokens.size() && std::holds_alternative<TokenType>(tokens[index + 1]) && std::get<TokenType>(tokens[index + 1]) == TokenType::SUBSCRIPT)
+                    if (index + 1 < tokens.size() && std::holds_alternative<TokenType>(tokens[index + 1]) 
+                        && std::get<TokenType>(tokens[index + 1]) == TokenType::SUBSCRIPT)
                     {
                         node->AddChild(ReadExpression(tokens, ++index, 0));
 
@@ -352,7 +360,8 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                         the parser would have just treated the whole expression (including the supposed arguments)
                         as an expression for the base
                         */
-                        if (std::holds_alternative<TokenType>(tokens[index - 1]) && std::get<TokenType>(tokens[index - 1]) == TokenType::PARANTHESES_CLOSE)
+                        if (index - 1 < tokens.size() && std::holds_alternative<TokenType>(tokens[index - 1]) 
+                            && std::get<TokenType>(tokens[index - 1]) == TokenType::PARANTHESES_CLOSE)
                         {
                             index--;
                         }
@@ -365,9 +374,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     }
 
                     // '++index' is needed in case no base is specified
-                    node->AddChild(ReadExpression(tokens, ++index, 0));
-
-                    auto arguments = GetArguments(tokens, index);
+                    auto arguments = GetArguments(tokens, ++index, true);
                     for (const auto& arg : arguments->GetChildren())
                     {
                         node->AddChild(arg);
@@ -508,9 +515,16 @@ std::shared_ptr<TreeNode> Parser::ReadFullExpression(const std::vector<Token>& t
     return child;
 }
 
-std::shared_ptr<TreeNode> Parser::GetArguments(const std::vector<Token>& tokens, size_t& index) const
+// like 'ReadExpression()', 'fromFunctionCall' is used only for logarithms due to 
+// possibiliy of subscripts (for bases)
+std::shared_ptr<TreeNode> Parser::GetArguments(const std::vector<Token>& tokens, size_t& index, const bool fromFunctionCall) const
 {
-    auto arguments = ReadExpression(tokens, index, 0);
+    auto arguments = ReadExpression(tokens, index, 0, fromFunctionCall);
+    if (!arguments)
+    {
+        throw std::runtime_error("Invalid expression detected");
+    }
+
     if (!std::dynamic_pointer_cast<FunctionArgument>(arguments->GetValue()))
     {
         throw std::runtime_error("FunctionArgument expected for function call");

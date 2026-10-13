@@ -30,3 +30,6 @@ and the entire keyword to:
 - `lexer.cpp` in `Lexer::DeterminePossibleToken(const std::string& token)` member function
 
 Remember to implement `LogConcreteType()` if it is a child of the `Statement` class for **debugging purposes**.
+
+## To Do
+- implement parantheses checks (all opened parantheses are closed, no extraneous parantheses)
