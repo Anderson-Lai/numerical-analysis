@@ -73,6 +73,8 @@ std::shared_ptr<TreeNode> Parser::GetRoot() const
     return m_root;
 }
 
+// will auto increment 'index' (i.e., there is no reason to call 'index++' after calling this function,
+// say, in a loop)
 std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& tokens, 
     size_t& index, const int minBindingPower) const
 {
