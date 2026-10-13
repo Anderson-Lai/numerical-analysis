@@ -26,7 +26,7 @@ void Parser::Parse(const std::vector<Token>& tokens)
         // expression is over if 'result' is nullptr (e.g., the expression ended with a ')' token)
         if (!result)
         {
-            return;
+            throw std::runtime_error("Invalid expression detected");
         }
 
         result->AttachAtBottomLeft(m_root);
@@ -183,7 +183,15 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                 case TokenType::PARANTHESES_OPEN:
                     // possible issues when adding implicit multiplication
                     // since 'node->m_value' is ignored here
-                    node = ReadFullExpression(tokens, index, 0);
+                    if (index - 1 < tokens.size() && IsFunctionIdentifier(tokens[index - 1]))
+                    {
+                        node = ReadFullExpression(tokens, index, 0, true);
+                    }
+                    else
+                    {
+                        node = ReadFullExpression(tokens, index, 0);
+                    }
+
                     if (!node)
                     {
                         throw std::runtime_error("Invalid expression detected");
@@ -333,7 +341,7 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
 }
 
 std::shared_ptr<TreeNode> Parser::ReadFullExpression(const std::vector<Token>& tokens, size_t& index, 
-    const int operatorBindingPower) const
+    const int operatorBindingPower, const bool fromFunctionCall) const
 {
     if (index >= tokens.size())
     {
@@ -375,21 +383,13 @@ std::shared_ptr<TreeNode> Parser::ReadFullExpression(const std::vector<Token>& t
     if (isCurrentTokenClosingParanthesis)
     {
         ownsParanthesis = false;
+        index++;
 
-        if (index + 1 < tokens.size() && std::holds_alternative<TokenType>(tokens[index + 1]) 
-            && operatorBindingPower < GetOperatorBindingPower(tokens[index + 1]))
-        {
-            index++;
-        }
-        else
+        if (index >= tokens.size() || operatorBindingPower >= GetOperatorBindingPower(tokens[index]) 
+            || fromFunctionCall)
         {
             return child;
         }
-    }
-
-    if (index >= tokens.size())
-    {
-        return child;
     }
     
     int currentBindingPower = GetOperatorBindingPower(tokens[index]);
