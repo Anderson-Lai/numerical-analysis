@@ -1,6 +1,7 @@
 #include <cmath>
 
 #include "parser/operators/binary_operators.hpp"
+#include "parser/statements/functions/function_argument.hpp"
 #include "parser/statements/functions/logarithm.hpp"
 #include "parser/statements/functions/sqrt_cbrt.hpp"
 #include "parser/statements/functions/trigonometry.hpp"
@@ -26,7 +27,7 @@ void Parser::Parse(const std::vector<Token>& tokens)
         // expression is over if 'result' is nullptr (e.g., the expression ended with a ')' token)
         if (!result)
         {
-            throw std::runtime_error("Invalid expression detected");
+            return;
         }
 
         result->AttachAtBottomLeft(m_root);
@@ -176,6 +177,12 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                         return nullptr;
                     }
                     return node;
+                case TokenType::COMMA:
+                    if (!node->GetValue())
+                    {
+                        return nullptr;
+                    }
+                    return node;
 
                 // TO IMPLEMENT: 
                 // a) need to change based on if previous token was a function identifier
@@ -185,11 +192,23 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     // since 'node->m_value' is ignored here
                     if (index - 1 < tokens.size() && IsFunctionIdentifier(tokens[index - 1]))
                     {
-                        node = ReadFullExpression(tokens, index, 0, true);
+                        // node = ReadFullExpression(tokens, index, 0, true);
+                        node->SetValue(std::make_shared<FunctionArgument>());
+                        do
+                        {
+                            auto child = ReadFullExpression(tokens, ++index, 0, true);
+                            if (!child)
+                            {
+                                throw std::runtime_error("Invalid expression detected");
+                            }
+                            node->AddChild(child);
+                        }
+                        while (index < tokens.size() && std::holds_alternative<TokenType>(tokens[index]) 
+                            && std::get<TokenType>(tokens[index]) == TokenType::COMMA);
                     }
                     else
                     {
-                        node = ReadFullExpression(tokens, index, 0);
+                        node = ReadFullExpression(tokens, index, 0, false);
                     }
 
                     if (!node)
@@ -217,9 +236,17 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                 // CONVENTION: subscripts (bases for logarithms) go before function arguments
                 // --- TRIG FUNCTIONS ---
                 case TokenType::SINE:
+                {
                     node->SetValue(std::make_shared<Sine>());
-                    node->AddChild(ReadExpression(tokens, ++index, 0));
+                    auto arguments = ReadExpression(tokens, ++index, 0);
+                    if (!std::dynamic_pointer_cast<FunctionArgument>(arguments->GetValue()))
+                    {
+                        throw std::runtime_error("FunctionArgument expected for function call");
+                    }
+
+                    node->SetChildren(arguments->GetChildren());
                     break;
+                }
                 case TokenType::COSINE:
                     node->SetValue(std::make_shared<Cosine>());
                     node->AddChild(ReadExpression(tokens, ++index, 0));
@@ -371,10 +398,13 @@ std::shared_ptr<TreeNode> Parser::ReadFullExpression(const std::vector<Token>& t
 
     // return if:
     // we do not own the current (closing) paranthesis AND the current token is a closing paranthesis
+    // OR current token is a comma (e.g., for function arguments)
     const bool isCurrentTokenClosingParanthesis = std::holds_alternative<TokenType>(tokens[index]) 
         && std::get<TokenType>(tokens[index]) == TokenType::PARANTHESES_CLOSE;
+    const bool isCurrentTokenComma = std::holds_alternative<TokenType>(tokens[index]) 
+        && std::get<TokenType>(tokens[index]) == TokenType::COMMA;
 
-    if (!ownsParanthesis && isCurrentTokenClosingParanthesis)
+    if ((!ownsParanthesis && isCurrentTokenClosingParanthesis) || isCurrentTokenComma)
     {
         return child;
     }

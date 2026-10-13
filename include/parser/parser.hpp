@@ -35,7 +35,7 @@ private:
         size_t& index, const int minBindingPower) const;
 
     std::shared_ptr<TreeNode> ReadFullExpression(const std::vector<Token>& tokens, size_t& index, 
-        const int operatorBindingPower, const bool fromFunctionCall = false) const;
+        const int operatorBindingPower, const bool fromFunctionCall) const;
 
     int GetOperatorBindingPower(const Token& tokenType) const;
     bool IsFunctionIdentifier(const Token& token) const;
