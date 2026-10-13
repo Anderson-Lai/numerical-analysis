@@ -24,7 +24,6 @@ void Parser::Parse(const std::vector<Token>& tokens)
     while (index < tokens.size())
     {
         auto result = ReadExpression(tokens, index, 0);
-        // expression is over if 'result' is nullptr (e.g., the expression ended with a ')' token)
         if (!result)
         {
             throw std::runtime_error("Invalid expression detected");
