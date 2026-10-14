@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <variant>
-#include <array>
+#include <unordered_map>
 
 #include "lexer/types.hpp"
 #include "lexer/token.hpp"
@@ -16,12 +16,34 @@ class Lexer
 private:
     std::vector<Token> m_tokens;
 private:
-    static constexpr std::array<char, 21> NON_LETTER =
-        {
-            '+', '-', '/', '*', '^', '_', ',', '(', ')',
-            '1', '2', '3', '4', '5', '6', '7', '8',
-            '9', '0', ' ', '\n'
-        };
+    inline static const std::unordered_map<char, TokenType> NON_LETTER_TO_TOKEN_TYPE =
+    {
+        {'+', TokenType::ADDITION},
+        {'-', TokenType::SUBTRACTION},
+        {'/', TokenType::DIVISION},
+        {'*', TokenType::MULTIPLICATION},
+        {'^', TokenType::EXPONENTIATION},
+
+        {'_', TokenType::SUBSCRIPT},
+        {',', TokenType::COMMA},
+
+        {'1', TokenType::NUMBER},
+        {'2', TokenType::NUMBER},
+        {'3', TokenType::NUMBER},
+        {'4', TokenType::NUMBER},
+        {'5', TokenType::NUMBER},
+        {'6', TokenType::NUMBER},
+        {'7', TokenType::NUMBER},
+        {'8', TokenType::NUMBER},
+        {'9', TokenType::NUMBER},
+        {'0', TokenType::NUMBER},
+
+        {'(', TokenType::PARANTHESES_OPEN},
+        {')', TokenType::PARANTHESES_CLOSE},
+
+        {' ', TokenType::SPACE},
+        {'\n', TokenType::LINE_BREAK}
+    };
 public:
     Lexer() = default;
     void ReadTokens();
@@ -32,7 +54,7 @@ private:
     std::vector<Token> Tokenize(const char character) const;
 // helper functions
 private:
-    std::vector<Token> DeterminePossibleKeyword(const std::string& token) const;
+    Token DeterminePossibleKeyword(const std::string& token) const;
     // replaces getchar()
     std::variant<Token, char> ReadConsecutiveCharacter() const;
 #ifdef DEBUG_BUILD

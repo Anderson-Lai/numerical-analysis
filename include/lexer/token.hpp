@@ -47,6 +47,7 @@ enum class TokenType
     ROOT,
     SERIES,
 
+    NUMBER,
     SPACE,
     LINE_BREAK
 };

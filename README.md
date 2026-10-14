@@ -18,9 +18,8 @@ Run `./scripts/debug.sh` for a debug build and `./scripts/release.sh` for a rele
 When adding new *operators or symbols*, ensure to add it to these places:
 - `token.hpp` in `TokenType` enum 
 - `lexer.hpp` in `Lexer::PrintTokens()` for **debugging purposes**
-- `lexer.hpp` in `NON_LETTER` member variable
+- `lexer.hpp` in `NON_LETTER_TO_TOKEN_TYPE` member variable
 - `lexer.cpp` in `Lexer::Tokenize()` member function
-- `lexer.cpp` in `Lexer::ReadConsecutiveCharacter()` member function
 
 When adding new *keywords*, ensure to add the first character of the keyword to:
 - `lexer.cpp` in `Lexer::Tokenize()` member function

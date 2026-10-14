@@ -1,5 +1,3 @@
-#include <ranges>
-
 #include "lexer/lexer.hpp"
 
 #include "parser/statements/statement_number.hpp"
@@ -29,6 +27,10 @@ void Lexer::ReadTokens()
                 else if (stored == TokenType::SPACE)
                 {
                     continue;
+                }
+                else if (stored == TokenType::NUMBER)
+                {
+                    throw std::runtime_error("Lexer::ReadTokens() - unexpected TokenType::NUMBER");
                 }
             }
 
@@ -119,14 +121,23 @@ std::vector<Token> Lexer::Tokenize(const char character) const
     case '9':
     case '0':
         return std::vector<Token>{Number(std::stod(std::string{character}))};
-    case 'a':
-    case 's':
-    case 'c':
-    case 't':
-    case 'l':
     case 'e':
+        return std::vector<Token>{TokenType::EXPONENTIAL};
+    // inverse trig
+    case 'a':
+    // sine, secant, sqrt
+    case 's':
+    // cosine, cosecant, cotangent, cbrt
+    case 'c':
+    // tangent
+    case 't':
+    // log, ln, limit
+    case 'l':
+    // pi
     case 'p':
+    // derivative
     case 'd':
+    // integral
     case 'i':
         token += static_cast<char>(character);
 
@@ -140,13 +151,10 @@ std::vector<Token> Lexer::Tokenize(const char character) const
             {
                 // certainToken.front() could be a 'Variable' as well,
                 // not just a TokenType
-                const std::vector<Token> certainToken = DeterminePossibleKeyword(token);
-                for (const auto& tok : certainToken)
-                {
-                    result.push_back(tok);
-                }
-
+                const Token certainToken = DeterminePossibleKeyword(token);
+                result.push_back(certainToken);
                 result.push_back(std::get<Token>(nextCharacter));
+
                 return result;
             }
 
@@ -160,112 +168,104 @@ std::vector<Token> Lexer::Tokenize(const char character) const
     }
 }
 
-std::vector<Token> Lexer::DeterminePossibleKeyword(const std::string& token) const
+Token Lexer::DeterminePossibleKeyword(const std::string& token) const
 {
     switch (token.size())
     {
-    // e
-    case 1:
-        if (token == "e")
-        {
-            return std::vector<Token>{TokenType::EXPONENTIAL};
-        }
-
-        return std::vector<Token>{Variable(token)};
     // ln / pi
     case 2:
         if (token == "ln")
         {
-            return std::vector<Token>{TokenType::NATURAL_LOGARITHM};
+            return TokenType::NATURAL_LOGARITHM;
         }
         else if (token == "pi")
         {
-            return std::vector<Token>{TokenType::PI};
+            return TokenType::PI;
         }
 
-        return std::vector<Token>{Variable(token)};
+        return Variable(token);
     // trig / log
     case 3:
         if (token == "log")
         {
-            return std::vector<Token>{TokenType::LOGARITHM};
+            return TokenType::LOGARITHM;
         }
         else if (token == "sin")
         {
-            return std::vector<Token>{TokenType::SINE};
+            return TokenType::SINE;
         }
         else if (token == "cos")
         {
-            return std::vector<Token>{TokenType::COSINE};
+            return TokenType::COSINE;
         }
         else if (token == "tan")
         {
-            return std::vector<Token>{TokenType::TANGENT};
+            return TokenType::TANGENT;
         }
         else if (token == "csc")
         {
-            return std::vector<Token>{TokenType::COSECANT};
+            return TokenType::COSECANT;
         }
         else if (token == "sec")
         {
-            return std::vector<Token>{TokenType::SECANT};
+            return TokenType::SECANT;
         }
         else if (token == "cot")
         {
-            return std::vector<Token>{TokenType::COTANGENT};
+            return TokenType::COTANGENT;
         }
 
-        return std::vector<Token>{Variable(token)};
+        return Variable(token);
     // sqrt / cbrt
     case 4:
         if (token == "sqrt")
         {
-            return std::vector<Token>{TokenType::SQUARE_ROOT};
+            return TokenType::SQUARE_ROOT;
         }
         else if (token == "cbrt")
         {
-            return std::vector<Token>{TokenType::CUBE_ROOT};
+            return TokenType::CUBE_ROOT;
         }
 
-        return std::vector<Token>{Variable(token)};
+        return Variable(token);
     // limit
     case 5:
         if (token == "limit")
         {
-            return std::vector<Token>{TokenType::LIMIT};
+            return TokenType::LIMIT;
         }
 
-        return std::vector<Token>{Variable(token)};
+        return Variable(token);
     // inverse trig
     case 6:
         if (token == "arcsin")
         {
-            return std::vector<Token>{TokenType::ASINE};
+            return TokenType::ASINE;
         }
         else if (token == "arccos")
         {
-            return std::vector<Token>{TokenType::ACOSINE};
+            return TokenType::ACOSINE;
         }
         else if (token == "arctan")
         {
-            return std::vector<Token>{TokenType::ATANGENT};
+            return TokenType::ATANGENT;
         }
         else if (token == "arccsc")
         {
-            return std::vector<Token>{TokenType::ACOSECANT};
+            return TokenType::ACOSECANT;
         }
         else if (token == "arcsec")
         {
-            return std::vector<Token>{TokenType::ASECANT};
+            return TokenType::ASECANT;
         }
         else if (token == "arccot")
         {
-            return std::vector<Token>{TokenType::ACOTANGENT};
+            return TokenType::ACOTANGENT;
         }
 
-        return std::vector<Token>{Variable(token)};
+        return Variable(token);
     default:
-        return std::vector<Token>{Variable(token)};
+        return Variable(token);
     }
 }
 
@@ -273,44 +273,14 @@ std::variant<Token, char> Lexer::ReadConsecutiveCharacter() const
 {
     const char character = getchar();
 
-    if (std::ranges::find(NON_LETTER, character))
+    if (NON_LETTER_TO_TOKEN_TYPE.find(character) != NON_LETTER_TO_TOKEN_TYPE.end())
     {
-        switch (character)
+        if (NON_LETTER_TO_TOKEN_TYPE.at(character) == TokenType::NUMBER)
         {
-            case '+':
-                return TokenType::ADDITION;
-            case '-':
-                return TokenType::SUBTRACTION;
-            case '/':
-                return TokenType::DIVISION;
-            case '*':
-                return TokenType::MULTIPLICATION;
-            case '^':
-                return TokenType::EXPONENTIATION;
-            case '_':
-                return TokenType::SUBSCRIPT;
-            case ',':
-                return TokenType::COMMA;
-            case '(':
-                return TokenType::PARANTHESES_OPEN;
-            case ')':
-                return TokenType::PARANTHESES_CLOSE;
-            case ' ':
-                return TokenType::SPACE;
-            case '\n':
-                return TokenType::LINE_BREAK;
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-            case '0':
-                return Number(std::stod(std::string{character}));
+            return Number(std::stod(std::string{character}));
         }
+
+        return NON_LETTER_TO_TOKEN_TYPE.at(character);
     }
 
     return character;
