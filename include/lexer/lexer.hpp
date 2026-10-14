@@ -20,10 +20,6 @@ class Lexer
 {
 private:
     std::vector<Token> m_tokens;
-    std::vector<Token> m_cleanedTokens;
-    Parser m_parser;
-    Integrator m_integrator;
-    Differentiator m_differentiator;
 private:
     static constexpr std::array<char, 21> NON_LETTER =
         {
@@ -31,26 +27,26 @@ private:
             '1', '2', '3', '4', '5', '6', '7', '8',
             '9', '0', ' ', '\n'
         };
-private:
+
+public:
+    Lexer() = default;
     void ReadTokens();
+    std::vector<Token> GetTokens() const;
+private:
+    std::vector<Token> CleanTokens();
+private:
     std::vector<Token> Tokenize(const char character) const;
 // helper functions
 private:
     std::vector<Token> DeterminePossibleToken(const std::string& token) const;
     // replaces getchar()
     std::variant<Token, char> ReadConsecutiveCharacter() const;
-private:
-    void CleanTokens();
-public:
-    Lexer();
-    double Differentiation();
-    double Integration();
-    void Cleanup();
+
 #ifdef DEBUG_BUILD
-private:
+public:
     void PrintTokens()
     {
-        for (const auto& token : m_cleanedTokens)
+        for (const auto& token : m_tokens)
         {
             if (std::holds_alternative<TokenType>(token))
             {

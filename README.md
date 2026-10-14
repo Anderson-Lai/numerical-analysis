@@ -33,3 +33,6 @@ Remember to implement `LogConcreteType()` if it is a child of the `Statement` cl
 
 ## To Do
 - implement parantheses checks (all opened parantheses are closed, no extraneous parantheses)
+- implement check that only one variable is being used in each call
+- implement support `(sin(x))^(-1)`, `(sec(x))^(-1)`, etc. by implicitly converting them to `arcsin(x)`, `arcsec(x)`, etc. in the AST rather than literally evaluating them as `1/(sin(x))`, `1/(sec(x))`, etc.
+- implement implicit multiplication

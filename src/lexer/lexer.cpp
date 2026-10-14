@@ -8,11 +8,6 @@
 #include <iostream>
 #endif
 
-Lexer::Lexer() : m_integrator(Integrator()), m_differentiator(Differentiator()), m_parser(Parser())
-{
-
-}
-
 void Lexer::ReadTokens()
 {
     bool running = true;
@@ -40,6 +35,48 @@ void Lexer::ReadTokens()
             m_tokens.push_back(std::move(token));
         }
     };
+
+    m_tokens = CleanTokens();
+}
+
+std::vector<Token> Lexer::GetTokens() const
+{
+    return m_tokens;
+}
+
+std::vector<Token> Lexer::CleanTokens()
+{
+    std::vector<Token> cleanedTokens;
+    cleanedTokens.reserve(m_tokens.size());
+    Number runningNumber(0.0);
+
+    for (size_t i = 0; i < m_tokens.size(); i++)
+    {
+        // concatenate the consecutive number that were broken up during tokenization
+        if (std::holds_alternative<Number>(m_tokens[i]))
+        {
+            runningNumber = runningNumber.Concatenate(std::get<Number>(m_tokens[i]));
+            i++;
+            while (i < m_tokens.size() && std::holds_alternative<Number>(m_tokens[i]))
+            {
+                runningNumber = runningNumber.Concatenate(std::get<Number>(m_tokens[i]));
+                i++;
+            }
+            cleanedTokens.push_back(runningNumber);
+            runningNumber = Number(0.0);
+
+            if (i < m_tokens.size())
+            {
+                cleanedTokens.push_back(m_tokens[i]);
+            }
+        }
+        else
+        {
+            cleanedTokens.push_back(m_tokens[i]);
+        }
+    }
+
+    return cleanedTokens;
 }
 
 std::vector<Token> Lexer::Tokenize(const char character) const
@@ -296,75 +333,4 @@ std::variant<Token, char> Lexer::ReadConsecutiveCharacter() const
     }
 
     return character;
-}
-
-void Lexer::CleanTokens()
-{
-    m_cleanedTokens.reserve(m_tokens.size());
-    Number runningNumber(0.0);
-    
-    for (size_t i = 0; i < m_tokens.size(); i++)
-    {
-        if (std::holds_alternative<Number>(m_tokens[i]))
-        {
-            runningNumber = runningNumber.Concatenate(std::get<Number>(m_tokens[i]));
-            i++;
-            while (i < m_tokens.size() && std::holds_alternative<Number>(m_tokens[i]))
-            {
-                runningNumber = runningNumber.Concatenate(std::get<Number>(m_tokens[i]));
-                i++;
-            }
-            m_cleanedTokens.push_back(runningNumber);
-            runningNumber = Number(0.0);
-
-            if (i < m_tokens.size())
-            {
-                m_cleanedTokens.push_back(m_tokens[i]);
-            }
-        }
-        else
-        {
-            m_cleanedTokens.push_back(m_tokens[i]);
-        }
-    }
-}
-
-double Lexer::Differentiation()
-{
-    ReadTokens();
-    CleanTokens();
-#ifdef DEBUG_BUILD
-    std::cout << std::endl << "Tokens: " << std::endl;
-    PrintTokens();
-
-    m_parser.Parse(m_cleanedTokens);
-    std::cout << std::endl << "AST: " << std::endl;
-    m_parser.PrintAST();
-
-    double testInputs[] = { 3.1415, 2.71828, 1, -1, 0 , 13, -6, 5 };
-
-    for (const double input : testInputs)
-    {
-        std::cout << std::endl;
-        std::cout << "Input: " << input << std::endl;
-        std::cout << "Result: " << m_parser.EvaluateAST(m_parser.GetRoot(), StatementNumber(input)).GetValue() 
-            << std::endl;
-    }
-    std::cout << std::endl;
-#endif
-    return this->m_differentiator.Differentiate();
-}
-
-double Lexer::Integration()
-{
-    ReadTokens();
-    CleanTokens();
-    m_parser.Parse(m_cleanedTokens);
-    return this->m_integrator.Integrate();
-}
-
-void Lexer::Cleanup()
-{
-    m_tokens.clear();
-    m_cleanedTokens.clear();
 }

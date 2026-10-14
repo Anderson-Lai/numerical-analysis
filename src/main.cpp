@@ -8,28 +8,37 @@ int main(int argc, char* argv[])
 
     while (true)
     {
-        Lexer lexer;
+        try
+        {
+            Lexer lexer;
+            Parser parser;
+
+            lexer.ReadTokens();
+            parser.Parse(lexer.GetTokens());
 
 #ifdef DEBUG_BUILD
-        lexer.Differentiation();
-#endif
+            std::cout << std::endl << "Tokens: " << std::endl;
+            lexer.PrintTokens();
 
-#ifndef DEBUG_BUILD
-        std::cin >> input;
-        switch (std::stoi(input)) 
-        {
-            case 1:
-                lexer.Differentiation();
-                break;
-            case 2:
-                lexer.Integration();
-                break;
-            default:
-                std::cout << "Invalid input\n";
-                break;
-        }
-        lexer.Cleanup();
+            std::cout << std::endl << "AST: " << std::endl;
+            parser.PrintAST();
+
+            double testInputs[] = {3.1415, 2.71828, 1, -1, 0, 13, -6, 5};
+            for (const double input : testInputs)
+            {
+                std::cout << std::endl;
+                std::cout << "Input: " << input << std::endl;
+                std::cout << "Result: " << parser.EvaluateAST(parser.GetRoot(), StatementNumber(input)).GetValue()
+                          << std::endl;
+            }
+            
+            std::cout << std::endl;
 #endif
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
     }
 
     return 0;
