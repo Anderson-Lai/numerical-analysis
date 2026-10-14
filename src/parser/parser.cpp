@@ -24,9 +24,11 @@ void Parser::Parse(const std::vector<Token>& tokens)
     while (index < tokens.size())
     {
         auto result = ReadExpression(tokens, index, 0);
+
+        // if result is nullptr, then the entire expression is over
         if (!result)
         {
-            throw std::runtime_error("Invalid expression detected");
+            return;
         }
 
         result->AttachAtBottomLeft(m_root);
@@ -179,18 +181,9 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
 
                 case TokenType::SUBSCRIPT:
                     node = ReadExpression(tokens, ++index, 0);
-
-                    if (!node->GetValue())
-                    {
-                        return nullptr;
-                    }
-                    return node;
+                    return node->GetValue() ? node : nullptr;
                 case TokenType::COMMA:
-                    if (!node->GetValue())
-                    {
-                        return nullptr;
-                    }
-                    return node;
+                    return node->GetValue() ? node : nullptr;
 
                 case TokenType::PARANTHESES_OPEN:
                     // possible issues when adding implicit multiplication
@@ -199,7 +192,8 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                         || fromFunctionCall)
                     {
                         node->SetValue(std::make_shared<FunctionArgument>());
-                        do
+
+                        while (true)
                         {
                             auto child = ReadFullExpression(tokens, index, 0, true);
                             if (!child)
@@ -207,9 +201,26 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                                 throw std::runtime_error("Invalid expression detected");
                             }
                             node->AddChild(child);
+
+                            if (index < tokens.size() && std::holds_alternative<TokenType>(tokens[index]))
+                            {
+                                if (std::get<TokenType>(tokens[index]) == TokenType::COMMA)
+                                {
+                                    index++;
+                                    continue;
+                                }
+                                else if (std::get<TokenType>(tokens[index]) == TokenType::PARANTHESES_CLOSE)
+                                {
+                                    index++;
+                                    break;
+                                }
+                                else
+                                {
+                                    throw std::runtime_error("Invalid expression detected");
+                                }
+                            }
+                            throw std::runtime_error("Invalid expression detected");
                         }
-                        while (index < tokens.size() && std::holds_alternative<TokenType>(tokens[index]) 
-                            && std::get<TokenType>(tokens[index]) == TokenType::COMMA);
                     }
                     else
                     {
@@ -223,12 +234,8 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
 
                     return node;
                 case TokenType::PARANTHESES_CLOSE:
-                    if (!node->GetValue())
-                    {
-                        return nullptr;
-                    }
-                    return node;
-                
+                    return node->GetValue() ? node : nullptr;
+
                 // --- CONSTANTS ---
                 case TokenType::PI:
                     // std::acos(-1.0f) = pi since cos(pi) = -1.0
@@ -429,15 +436,13 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
         }
     }
 
-    if (!node->GetValue())
-    {
-        return nullptr;
-    }
-    return node;
+    return node->GetValue() ? node : nullptr;
 }
 
+// 'fromFunctionCall' is NOT only used for logarithms; it is used for all function calls since they all
+// should (must) have parantheses for their arguments
 std::shared_ptr<TreeNode> Parser::ReadFullExpression(const std::vector<Token>& tokens, size_t& index, 
-    const int operatorBindingPower, const bool fromFunctionCall) const
+    const int minBindingPower, const bool fromFunctionCall) const
 {
     if (index >= tokens.size())
     {
@@ -454,7 +459,7 @@ std::shared_ptr<TreeNode> Parser::ReadFullExpression(const std::vector<Token>& t
         index++;
     }
     
-    auto child = ReadExpression(tokens, index, operatorBindingPower);
+    auto child = ReadExpression(tokens, index, minBindingPower);
     if (!child)
     {
         throw std::runtime_error("Invalid expression detected");
@@ -475,27 +480,30 @@ std::shared_ptr<TreeNode> Parser::ReadFullExpression(const std::vector<Token>& t
 
     if ((!ownsParanthesis && isCurrentTokenClosingParanthesis) || isCurrentTokenComma)
     {
-        index++;
         return child;
     }
 
     // since we own the ')' token (if it is a ')' token)
     if (isCurrentTokenClosingParanthesis)
     {
+        if (fromFunctionCall)
+        {
+            return child;
+        }
+
         ownsParanthesis = false;
         index++;
 
-        if (index >= tokens.size() || operatorBindingPower >= GetOperatorBindingPower(tokens[index]) 
-            || fromFunctionCall)
+        if (index >= tokens.size() || minBindingPower >= GetOperatorBindingPower(tokens[index]))
         {
             return child;
         }
     }
     
     int currentBindingPower = GetOperatorBindingPower(tokens[index]);
-    while (index < tokens.size() && operatorBindingPower < currentBindingPower)
+    while (index < tokens.size() && minBindingPower < currentBindingPower)
     {
-        auto result = ReadExpression(tokens, index, operatorBindingPower);
+        auto result = ReadExpression(tokens, index, minBindingPower);
         result->AttachAtBottomLeft(child);
         child = result;
 

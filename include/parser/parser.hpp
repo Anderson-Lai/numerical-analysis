@@ -35,7 +35,7 @@ private:
         size_t& index, const int minBindingPower, const bool fromFunctionCall = false) const;
 
     std::shared_ptr<TreeNode> ReadFullExpression(const std::vector<Token>& tokens, size_t& index, 
-        const int operatorBindingPower, const bool fromFunctionCall) const;
+        const int minBindingPower, const bool fromFunctionCall) const;
 // helper functions for building AST
 private:
     std::shared_ptr<TreeNode> GetArguments(const std::vector<Token>& tokens, size_t& index,
