@@ -19,16 +19,18 @@ When adding new *operators or symbols*, ensure to add it to these places:
 - `token.hpp` in `TokenType` enum 
 - `lexer.hpp` in `Lexer::PrintTokens()` for **debugging purposes**
 - `lexer.hpp` in `NON_LETTER` member variable
-- `lexer.cpp` in `Lexer::Tokenize(const char character)` member function
+- `lexer.cpp` in `Lexer::Tokenize()` member function
 - `lexer.cpp` in `Lexer::ReadConsecutiveCharacter()` member function
 
 When adding new *keywords*, ensure to add the first character of the keyword to:
-- `lexer.cpp` in `Lexer::Tokenize(const char character)` member function
+- `lexer.cpp` in `Lexer::Tokenize()` member function
 
 and the entire keyword to:
 - `token.hpp` in `TokenType` enum
 - `lexer.hpp` in `Lexer::PrintTokens()` for **debugging purposes**
-- `lexer.cpp` in `Lexer::DeterminePossibleToken(const std::string& token)` member function
+- `lexer.cpp` in `Lexer::DeterminePossibleToken()` member function
+- `parser.cpp` in `Parser::ReadExpression()` member function
+- `parser.cpp` in `IsFunctionIdentifier()` member function
 
 Remember to implement `LogConcreteType()` if it is a child of the `Statement` class (which it normally should be) for **debugging purposes**.
 

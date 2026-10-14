@@ -1,5 +1,11 @@
 #include <cmath>
 
+#include "analysis/derivative.hpp"
+#include "analysis/integral.hpp"
+#include "analysis/limit.hpp"
+#include "analysis/root.hpp"
+#include "analysis/series.hpp"
+
 #include "parser/operators/binary_operators.hpp"
 #include "parser/statements/functions/function_argument.hpp"
 #include "parser/statements/functions/logarithm.hpp"
@@ -418,6 +424,48 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     node->SetChildren(arguments->GetChildren());
                     break;
                 }
+
+                // --- ANALYSIS FUNCTIONS ---
+                case TokenType::DERIVATIVE:
+                {
+                    node->SetValue(std::make_shared<Derivative>());
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
+                    break;
+                }
+                case TokenType::INTEGRAL:
+                {
+                    node->SetValue(std::make_shared<Integral>());
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
+                    break;
+                }
+                case TokenType::LIMIT:
+                {
+                    node->SetValue(std::make_shared<Limit>());
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
+                    break;
+                }
+                case TokenType::ROOT:
+                {
+                    node->SetValue(std::make_shared<Root>());
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
+                    break;
+                }
+                case TokenType::SERIES:
+                {
+                    node->SetValue(std::make_shared<Series>());
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
+                    break;
+                }
                 default:
                     throw std::runtime_error("Unexpected token");
             }
@@ -562,8 +610,14 @@ bool Parser::IsFunctionIdentifier(const Token& token) const
     const TokenType& tokenType = std::get<TokenType>(token);
     return (tokenType == TokenType::SINE || tokenType == TokenType::COSINE || tokenType == TokenType::TANGENT
         || tokenType == TokenType::COTANGENT || tokenType == TokenType::SECANT || tokenType == TokenType::COSECANT
+
         || tokenType == TokenType::ASINE || tokenType == TokenType::ACOSINE || tokenType == TokenType::ATANGENT
         || tokenType == TokenType::ACOTANGENT || tokenType == TokenType::ASECANT || tokenType == TokenType::ACOSECANT
+
+        || tokenType == TokenType::LOGARITHM || tokenType == TokenType::NATURAL_LOGARITHM
+
         || tokenType == TokenType::SQUARE_ROOT || tokenType == TokenType::CUBE_ROOT
-        || tokenType == TokenType::LOGARITHM || tokenType == TokenType::NATURAL_LOGARITHM);
+
+        || tokenType == TokenType::DERIVATIVE || tokenType == TokenType::INTEGRAL || tokenType == TokenType::LIMIT
+        || tokenType == TokenType::ROOT || tokenType == TokenType::SERIES);
 }
