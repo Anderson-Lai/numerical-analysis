@@ -32,7 +32,7 @@ private:
     std::vector<Token> Tokenize(const char character) const;
 // helper functions
 private:
-    std::vector<Token> DeterminePossibleToken(const std::string& token) const;
+    std::vector<Token> DeterminePossibleKeyword(const std::string& token) const;
     // replaces getchar()
     std::variant<Token, char> ReadConsecutiveCharacter() const;
 #ifdef DEBUG_BUILD
@@ -61,18 +61,28 @@ public:
                 case TokenType::EXPONENTIATION:
                     tokenTypeStr = "EXPONENTIATION";
                     break;
+
                 case TokenType::SUBSCRIPT:
                     tokenTypeStr = "SUBSCRIPT";
                     break;
                 case TokenType::COMMA:
                     tokenTypeStr = "COMMA";
                     break;
+
                 case TokenType::PARANTHESES_OPEN:
                     tokenTypeStr = "PARANTHESES_OPEN";
                     break;
                 case TokenType::PARANTHESES_CLOSE:
                     tokenTypeStr = "PARANTHESES_CLOSE";
                     break;
+
+                case TokenType::EXPONENTIAL:
+                    tokenTypeStr = "EXPONENTIAL";
+                    break;
+                case TokenType::PI:
+                    tokenTypeStr = "PI";
+                    break;
+
                 case TokenType::SINE:
                     tokenTypeStr = "SINE";
                     break;
@@ -109,33 +119,44 @@ public:
                 case TokenType::ACOSECANT:
                     tokenTypeStr = "ACOSECANT";
                     break;
+
                 case TokenType::SQUARE_ROOT:
                     tokenTypeStr = "SQUARE_ROOT";
                     break;
                 case TokenType::CUBE_ROOT:
                     tokenTypeStr = "CUBE_ROOT";
                     break;
-                case TokenType::DIFFERENTIATION:
-                    tokenTypeStr = "DIFFERENTIATION";
-                    break;
-                case TokenType::INTEGRATION:
-                    tokenTypeStr = "INTEGRATION";
-                    break;
-                case TokenType::DIFFERENTIAL:
-                    tokenTypeStr = "DIFFERENTIAL";
-                    break;
+
                 case TokenType::LOGARITHM:
                     tokenTypeStr = "LOGARITHM";
                     break;
                 case TokenType::NATURAL_LOGARITHM:
                     tokenTypeStr = "NATURAL_LOGARITHM";
                     break;
-                case TokenType::EXPONENTIAL:
-                    tokenTypeStr = "EXPONENTIAL";
+
+                case TokenType::DERIVATIVE:
+                    tokenTypeStr = "DERIVATIVE";
                     break;
-                case TokenType::PI:
-                    tokenTypeStr = "PI";
+                case TokenType::INTEGRAL:
+                    tokenTypeStr = "INTEGRAL";
                     break;
+                case TokenType::LIMIT:
+                    tokenTypeStr = "LIMIT";
+                    break;
+                case TokenType::ROOT:
+                    tokenTypeStr = "ROOT";
+                    break;
+                case TokenType::SERIES:
+                    tokenTypeStr = "SERIES";
+                    break;
+
+                case TokenType::SPACE:
+                    tokenTypeStr = "SPACE";
+                    break;
+                case TokenType::LINE_BREAK:
+                    tokenTypeStr = "LINE_BREAK";
+                    break;
+                
                 default:
                     tokenTypeStr = "UNKNOWN";
                 }

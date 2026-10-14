@@ -140,7 +140,7 @@ std::vector<Token> Lexer::Tokenize(const char character) const
             {
                 // certainToken.front() could be a 'Variable' as well,
                 // not just a TokenType
-                const std::vector<Token> certainToken = DeterminePossibleToken(token);
+                const std::vector<Token> certainToken = DeterminePossibleKeyword(token);
                 for (const auto& tok : certainToken)
                 {
                     result.push_back(tok);
@@ -160,7 +160,7 @@ std::vector<Token> Lexer::Tokenize(const char character) const
     }
 }
 
-std::vector<Token> Lexer::DeterminePossibleToken(const std::string& token) const
+std::vector<Token> Lexer::DeterminePossibleKeyword(const std::string& token) const
 {
     switch (token.size())
     {
@@ -184,15 +184,11 @@ std::vector<Token> Lexer::DeterminePossibleToken(const std::string& token) const
         }
 
         return std::vector<Token>{Variable(token)};
-    // trig / log / int(egral):
+    // trig / log
     case 3:
         if (token == "log")
         {
             return std::vector<Token>{TokenType::LOGARITHM};
-        }
-        else if (token == "int")
-        {
-            return std::vector<Token>{TokenType::INTEGRATION};
         }
         else if (token == "sin")
         {
@@ -230,12 +226,14 @@ std::vector<Token> Lexer::DeterminePossibleToken(const std::string& token) const
         {
             return std::vector<Token>{TokenType::CUBE_ROOT};
         }
-        // removed here since can not parse through the '/' symbol
-        // // derivative
-        //     if (std::string_view(token.c_str(), 3) == "d/d")
-        //     {
-        //         return std::vector<Token>{TokenType::DIFFERENTIATION, Variable(std::string{token.back()})};
-        //     }
+
+        return std::vector<Token>{Variable(token)};
+    // limit
+    case 5:
+        if (token == "limit")
+        {
+            return std::vector<Token>{TokenType::LIMIT};
+        }
 
         return std::vector<Token>{Variable(token)};
     // inverse trig

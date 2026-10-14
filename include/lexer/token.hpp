@@ -41,9 +41,11 @@ enum class TokenType
     EXPONENTIAL,
     PI,
 
-    DIFFERENTIATION,
+    DERIVATIVE,
     INTEGRATION,
-    DIFFERENTIAL,
+    LIMIT,
+    ROOT,
+    SERIES,
 
     SPACE,
     LINE_BREAK
