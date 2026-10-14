@@ -28,7 +28,7 @@ When adding new *keywords*, ensure to add the first character of the keyword to:
 and the entire keyword to:
 - `token.hpp` in `TokenType` enum
 - `lexer.hpp` in `Lexer::PrintTokens()` for **debugging purposes**
-- `lexer.cpp` in `Lexer::DeterminePossibleToken()` member function
+- `lexer.cpp` in `Lexer::DeterminePossibleKeyword()` member function
 - `parser.cpp` in `Parser::ReadExpression()` member function
 - `parser.cpp` in `IsFunctionIdentifier()` member function
 
