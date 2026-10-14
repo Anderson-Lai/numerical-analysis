@@ -214,10 +214,8 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                                     index++;
                                     break;
                                 }
-                                else
-                                {
-                                    throw std::runtime_error("Invalid expression detected");
-                                }
+                                
+                                throw std::runtime_error("Invalid expression detected");
                             }
                             throw std::runtime_error("Invalid expression detected");
                         }
