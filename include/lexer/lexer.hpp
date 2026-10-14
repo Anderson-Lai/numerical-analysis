@@ -4,13 +4,8 @@
 #include <variant>
 #include <array>
 
-#include "calculus/differentiator.hpp"
-#include "calculus/integrator.hpp"
-
 #include "lexer/types.hpp"
 #include "lexer/token.hpp"
-
-#include "parser/parser.hpp"
 
 #ifdef DEBUG_BUILD
 #include <iostream>
@@ -27,7 +22,6 @@ private:
             '1', '2', '3', '4', '5', '6', '7', '8',
             '9', '0', ' ', '\n'
         };
-
 public:
     Lexer() = default;
     void ReadTokens();
@@ -41,7 +35,6 @@ private:
     std::vector<Token> DeterminePossibleToken(const std::string& token) const;
     // replaces getchar()
     std::variant<Token, char> ReadConsecutiveCharacter() const;
-
 #ifdef DEBUG_BUILD
 public:
     void PrintTokens()

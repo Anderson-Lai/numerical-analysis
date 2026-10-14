@@ -11,8 +11,11 @@ add_executable(${PROJECT_NAME}
     ${CMAKE_CURRENT_SOURCE_DIR}/src/lexer/lexer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/lexer/types.cpp
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/calculus/differentiator.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/calculus/integrator.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/analysis/derivative.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/analysis/integral.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/analysis/limit.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/analysis/root.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/analysis/series.cpp
     
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/binary_operators.cpp
     
