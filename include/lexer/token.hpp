@@ -42,7 +42,7 @@ enum class TokenType
     PI,
 
     DERIVATIVE,
-    INTEGRATION,
+    INTEGRAL,
     LIMIT,
     ROOT,
     SERIES,
