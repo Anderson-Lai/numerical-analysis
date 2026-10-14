@@ -17,8 +17,8 @@ Run `./scripts/debug.sh` for a debug build and `./scripts/release.sh` for a rele
 ## Extending the Interpreter
 When adding new *operators or symbols*, ensure to add it to these places:
 - `token.hpp` in `TokenType` enum 
-- `lexer.hpp` in `Lexer::PrintTokens()` for **debugging purposes**
 - `lexer.hpp` in `NON_LETTER_TO_TOKEN_TYPE` member variable
+- `lexer.hpp` in `Lexer::PrintTokens()` for **debugging purposes**
 - `lexer.cpp` in `Lexer::Tokenize()` member function
 
 When adding new *keywords*, ensure to add the first character of the keyword to:
@@ -29,7 +29,7 @@ and the entire keyword to:
 - `lexer.hpp` in `Lexer::PrintTokens()` for **debugging purposes**
 - `lexer.cpp` in `Lexer::DeterminePossibleKeyword()` member function
 - `parser.cpp` in `Parser::ReadExpression()` member function
-- `parser.cpp` in `IsFunctionIdentifier()` member function
+- `parser.cpp` in `Parser::IsFunctionIdentifier()` member function
 
 Remember to implement `LogConcreteType()` if it is a child of the `Statement` class (which it normally should be) for **debugging purposes**.
 
