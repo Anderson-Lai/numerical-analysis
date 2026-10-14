@@ -132,30 +132,12 @@ std::vector<Token> Lexer::Tokenize(const char character) const
 
         while (true)
         {
-            const std::vector<Token> possibleToken = DeterminePossibleToken(token);
-            if (std::holds_alternative<TokenType>(possibleToken.front()))
-            {
-                for (const auto& tok : possibleToken)
-                {
-                    result.push_back(tok);
-                }
-                return result;
-            }
-
             const std::variant<Token, char> nextCharacter = ReadConsecutiveCharacter();
 
             // if typeof(nextCharacter) == Token, then an important character (e.g., ')', a number, etc.)
-            // was read and the keyword has ended
+            // was read and the (possible) keyword has ended
             if (std::holds_alternative<Token>(nextCharacter))
             {
-                // ex: 'cos(' : after 'cos' is turned into a token, 'token' is now "",
-                // so there is no point in determining if it is a possible token
-                if (token == "")
-                {
-                    result.push_back(std::get<Token>(nextCharacter));
-                    return result;
-                }
-
                 // certainToken.front() could be a 'Variable' as well,
                 // not just a TokenType
                 const std::vector<Token> certainToken = DeterminePossibleToken(token);
@@ -171,6 +153,7 @@ std::vector<Token> Lexer::Tokenize(const char character) const
             token += std::get<char>(nextCharacter);
         }
 
+        // should never be reached
         return std::vector<Token>{Variable(token)};
     default:
         return std::vector<Token>{Variable(std::string{character})};
