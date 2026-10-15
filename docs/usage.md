@@ -1,3 +1,5 @@
+# Documentation
+
 > [!NOTE]
 > - Only use single letter variable names.
 > - Do not use `e` as a variable name (`e` is reserved for Euler's number).
