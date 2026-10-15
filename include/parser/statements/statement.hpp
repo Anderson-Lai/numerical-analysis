@@ -18,7 +18,7 @@ public:
     Statement() = default;
     virtual ~Statement() = default;
     // avoid the use of 'rawArguments' where possible (only intended use is derivatives, integrals, limits, 
-    // series, etc., where the need of the raw argument (input function) is needed for evaluation / approximation))
+    // series, etc., where the need of the raw argument (input function) is needed for evaluation / approximation)
     virtual StatementNumber Evaluate(const std::vector<StatementNumber>& computedArguments,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const = 0;
 #ifdef DEBUG_BUILD
