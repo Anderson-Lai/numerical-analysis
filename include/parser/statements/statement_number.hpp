@@ -18,7 +18,8 @@ public:
     ~StatementNumber() override = default;
 public:
     double GetValue() const;
-    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
+        const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
 public:
     StatementNumber operator+(const StatementNumber& other) const;
     StatementNumber operator-(const StatementNumber& other) const;

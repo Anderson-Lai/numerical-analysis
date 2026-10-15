@@ -18,7 +18,8 @@ double StatementNumber::GetValue() const
     return m_value;
 }
 
-StatementNumber StatementNumber::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber StatementNumber::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     return StatementNumber(m_value);
 }

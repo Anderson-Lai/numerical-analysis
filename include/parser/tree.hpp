@@ -16,6 +16,8 @@ public:
     TreeNode(const std::shared_ptr<Statement>& value);
     ~TreeNode() = default;
 public:
+    StatementNumber EvaluateNode(const StatementNumber& value) const;
+public:
     void AttachAtBottomLeft(const std::shared_ptr<TreeNode>& child);
 public:
     void SetValue(const std::shared_ptr<Statement>& value);

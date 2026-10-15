@@ -1,6 +1,7 @@
 #include "parser/operators/binary_operators.hpp"
 
-StatementNumber AdditionOperator::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber AdditionOperator::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 2)
     {
@@ -10,7 +11,8 @@ StatementNumber AdditionOperator::Evaluate(const std::vector<StatementNumber>& p
     return parameters.front() + parameters.back();
 }
 
-StatementNumber SubtractionOperator::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber SubtractionOperator::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 2)
     {
@@ -20,7 +22,8 @@ StatementNumber SubtractionOperator::Evaluate(const std::vector<StatementNumber>
     return parameters.front() - parameters.back();
 }
 
-StatementNumber MultiplicationOperator::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber MultiplicationOperator::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 2)
     {
@@ -30,7 +33,8 @@ StatementNumber MultiplicationOperator::Evaluate(const std::vector<StatementNumb
     return parameters.front() * parameters.back();
 }
 
-StatementNumber DivisionOperator::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber DivisionOperator::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 2)
     {
@@ -40,7 +44,8 @@ StatementNumber DivisionOperator::Evaluate(const std::vector<StatementNumber>& p
     return parameters.front() / parameters.back();
 }
 
-StatementNumber ExponentiationOperator::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber ExponentiationOperator::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 2)
     {

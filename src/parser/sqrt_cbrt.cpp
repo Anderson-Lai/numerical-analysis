@@ -1,7 +1,8 @@
 #include "parser/statements/functions/sqrt_cbrt.hpp"
 #include "parser/statements/statement_number.hpp"
 
-StatementNumber SquareRoot::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber SquareRoot::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 1)
     {
@@ -18,7 +19,8 @@ StatementNumber SquareRoot::Evaluate(const std::vector<StatementNumber>& paramet
     return StatementNumber(std::sqrt(value));
 }
 
-StatementNumber CubeRoot::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber CubeRoot::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 1)
     {

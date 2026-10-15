@@ -3,7 +3,8 @@
 #include "parser/statements/functions/trigonometry.hpp"
 #include "parser/statements/statement_number.hpp"
 
-StatementNumber Sine::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber Sine::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 1)
     {
@@ -13,7 +14,8 @@ StatementNumber Sine::Evaluate(const std::vector<StatementNumber>& parameters) c
     return StatementNumber(std::sin(argumentValue.GetValue()));
 }
 
-StatementNumber Cosine::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber Cosine::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 1)
     {
@@ -23,7 +25,8 @@ StatementNumber Cosine::Evaluate(const std::vector<StatementNumber>& parameters)
     return StatementNumber(std::cos(argumentValue.GetValue()));
 }
 
-StatementNumber Tangent::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber Tangent::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 1)
     {
@@ -33,7 +36,8 @@ StatementNumber Tangent::Evaluate(const std::vector<StatementNumber>& parameters
     return StatementNumber(std::tan(argumentValue.GetValue()));
 }
 
-StatementNumber Cosecant::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber Cosecant::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 1)
     {
@@ -43,7 +47,8 @@ StatementNumber Cosecant::Evaluate(const std::vector<StatementNumber>& parameter
     return StatementNumber(1.0 / std::sin(argumentValue.GetValue()));
 }
 
-StatementNumber Secant::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber Secant::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 1)
     {
@@ -53,7 +58,8 @@ StatementNumber Secant::Evaluate(const std::vector<StatementNumber>& parameters)
     return StatementNumber(1.0 / std::cos(argumentValue.GetValue()));
 }
 
-StatementNumber Cotangent::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber Cotangent::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 1)
     {
@@ -63,7 +69,8 @@ StatementNumber Cotangent::Evaluate(const std::vector<StatementNumber>& paramete
     return StatementNumber(1.0 / std::tan(argumentValue.GetValue()));
 }
 
-StatementNumber Arcsine::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber Arcsine::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 1)
     {
@@ -73,7 +80,8 @@ StatementNumber Arcsine::Evaluate(const std::vector<StatementNumber>& parameters
     return StatementNumber(std::asin(argumentValue.GetValue()));
 }
 
-StatementNumber Arccosine::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber Arccosine::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 1)
     {
@@ -83,7 +91,8 @@ StatementNumber Arccosine::Evaluate(const std::vector<StatementNumber>& paramete
     return StatementNumber(std::acos(argumentValue.GetValue()));
 }
 
-StatementNumber Arctangent::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber Arctangent::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 1)
     {
@@ -93,7 +102,8 @@ StatementNumber Arctangent::Evaluate(const std::vector<StatementNumber>& paramet
     return StatementNumber(std::atan(argumentValue.GetValue()));
 }
 
-StatementNumber Arccosecant::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber Arccosecant::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 1)
     {
@@ -103,7 +113,8 @@ StatementNumber Arccosecant::Evaluate(const std::vector<StatementNumber>& parame
     return StatementNumber(std::asin(1.0 / argumentValue.GetValue()));
 }
 
-StatementNumber Arcsecant::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber Arcsecant::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 1)
     {
@@ -113,7 +124,8 @@ StatementNumber Arcsecant::Evaluate(const std::vector<StatementNumber>& paramete
     return StatementNumber(std::acos(1.0 / argumentValue.GetValue()));
 }
 
-StatementNumber Arccotangent::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber Arccotangent::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 1)
     {

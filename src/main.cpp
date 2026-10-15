@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
             {
                 std::cout << std::endl;
                 std::cout << "Input: " << input << std::endl;
-                std::cout << "Result: " << parser.EvaluateAST(parser.GetRoot(), StatementNumber(input)).GetValue()
+                std::cout << "Result: " << parser.EvaluateAST(StatementNumber(input)).GetValue()
                           << std::endl;
             }
             

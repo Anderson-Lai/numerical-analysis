@@ -7,7 +7,8 @@ class Logarithm : public Function
 public:
     Logarithm() = default;
     ~Logarithm() override = default;
-    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
+        const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {

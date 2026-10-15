@@ -14,7 +14,8 @@ public:
     StatementVariable(const Variable& variable);
     StatementVariable(const std::string& name);
     ~StatementVariable() override = default;
-    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
+        const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
 #ifdef DEBUG_BUILD
     void LogConcreteType() const override
     {

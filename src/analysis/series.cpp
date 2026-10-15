@@ -2,7 +2,8 @@
 
 #include "parser/statements/statement_number.hpp"
 
-StatementNumber Series::Evaluate(const std::vector<StatementNumber>& parameters) const
+StatementNumber Series::Evaluate(const std::vector<StatementNumber>& parameters,
+    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (parameters.size() != 3)
     {

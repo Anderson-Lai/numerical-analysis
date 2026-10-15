@@ -1,3 +1,4 @@
+#include "parser/statements/statement_number.hpp"
 #include "parser/tree.hpp"
 
 TreeNode::TreeNode(const std::shared_ptr<Statement>& value, const std::vector<std::shared_ptr<TreeNode>>& children) 
@@ -10,6 +11,30 @@ TreeNode::TreeNode(const std::shared_ptr<Statement>& value)
     : TreeNode(value, std::vector<std::shared_ptr<TreeNode>>{})
 {
 
+}
+
+StatementNumber TreeNode::EvaluateNode(const StatementNumber& value) const
+{
+    // should only be for unary operators since their left(most) child EXISTS but their left child's value
+    // (m_value) is nullptr
+    if (!m_value)
+    {
+        return StatementNumber(0.0);
+    }
+
+    // for 'variables' and 'numbers' since they are leaf nodes
+    if (m_children.empty())
+    {
+        return m_value->Evaluate(std::vector<StatementNumber>{value}, m_children);
+    }
+
+    std::vector<StatementNumber> parameters;
+    for (const auto& child : m_children)
+    {
+        parameters.push_back(child->EvaluateNode(value));
+    }
+
+    return m_value->Evaluate(parameters, m_children);
 }
 
 void TreeNode::AttachAtBottomLeft(const std::shared_ptr<TreeNode>& child)

@@ -26,8 +26,7 @@ public:
     Parser() = default;
     ~Parser() = default;
     void Parse(const std::vector<Token>& tokens);
-    StatementNumber EvaluateAST(const std::shared_ptr<TreeNode> currentNode,
-        const StatementNumber& value) const;
+    StatementNumber EvaluateAST(const StatementNumber& value) const;
 public:
     std::shared_ptr<TreeNode> GetRoot() const;
 private:

@@ -9,7 +9,8 @@ class Function : public Statement
 public:
     Function() = default;
     virtual ~Function() = default;
-    virtual StatementNumber Evaluate(const std::vector<StatementNumber>& parameters) const override = 0;
+    virtual StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
+        const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override = 0;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
