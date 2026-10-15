@@ -1,19 +1,32 @@
 # Numerical Analysis
-A command line tool to numerically approximate finite limits, derivatives at a point, finite definite integrals, and to compute finite sums and products and functions at a point. It also contains a custom interpreter that tokenizes and parses inputted math expressions.
+A command line tool to numerically evaluate finite limits, derivatives at a point, finite definite integrals, finite sums, finite products, and functions at a point. It also contains a custom interpreter that tokenizes and parses inputted math expressions from `stdin`.
 
-> [!NOTE]
-> - Only use single letter variable names.
-> - Do not use `e` as a variable name (`e` is reserved for Euler's number).
-> - Use `arcsin(x)` instead of `sin^(-1)(x)` and `(sin(x))^(-1)`, `arccsc(x)` instead of `csc^(-1)(x)` and `(csc(x))^(-1)`, etc. for the inverse trig functions.
-> - Put parantheses around all function calls and subscripts (for logarithm bases). For example: `log_(32)(sin(x))`.
-> - `log` defaults to base-10 without a subscript (base) and `ln` is always base-e (do not include a subscript for `ln`).
-> - Implicit multiplication is not yet supported. Thus, ensure to explicitly add multiplication signs (e.g., `42 * sin(5 / x)`).
+## Documentation
+See [usage.md](./docs/usage.md) for the full documentation. Below are some examples.
 
-> [!WARNING]
-> Real numbers are represented using a `double`. Hence, results become increasingly more inaccurate for extremely large and small numbers.
+[TO INSERT EXAMPLES]
+
+To evaluate multiple expressions from a file, say from `expressions.txt`, redirect the file to be `stdin` by running `./release/numerical_analysis < expressions.txt`. Ensure that each expression in the file is separated by a line break and that each expression is at most one line (i.e., the expression itself can not have any line breaks).
 
 ## Building
-Run `./scripts/debug.sh` for a debug build and `./scripts/release.sh` for a release build. Run `./debug/numerical_calculus < text.txt` to run the test suite. Examine the output to see if the program is running as expected.
+Run `./scripts/debug.sh` for a debug build and `./scripts/release.sh` for a release build. Run `./debug/numerical_analysis < tests.txt` to run the test suite. Examine the output to see if the program is running as expected.
+
+## Features
+- [x] implement limits
+- [ ] implement derivatives
+- [ ] implement integrals
+- [ ] implement sums
+- [ ] implement products
+- [ ] implement function evaluation at a point
+- [ ] implement root finding of functions
+- [ ] add support for decimals in inputted expressions
+- [ ] implement the absolute value function (either as abs(x), |x|, or both)
+- [ ] implement parantheses checks
+  - [ ] all opened parantheses are closed
+  - [ ] no extraneous parantheses
+- [ ] implement check that only one variable is used in each function call provided by the api
+- [ ] implement support `(sin(x))^(-1)`, `(sec(x))^(-1)`, etc. by implicitly converting them to `arcsin(x)`, `arcsec(x)`, etc. in the AST rather than literally evaluating them as `1/(sin(x))`, `1/(sec(x))`, etc.
+- [ ] implement implicit multiplication
 
 ## Extending the Interpreter
 When adding new *operators or symbols*, ensure to add it to these places:
@@ -33,11 +46,3 @@ and the entire keyword to:
 - `parser.cpp` in `Parser::IsFunctionIdentifier()` member function
 
 Remember to implement `LogConcreteType()` if it is a child of the `Statement` class (which it normally should be) for **debugging purposes**.
-
-## To Do
-- implement decimals in inputted expressions
-- implement absolute value function (either as abs(x), |x|, or both)
-- implement parantheses checks (all opened parantheses are closed, no extraneous parantheses)
-- implement check that only one variable is being used in each call
-- implement support `(sin(x))^(-1)`, `(sec(x))^(-1)`, etc. by implicitly converting them to `arcsin(x)`, `arcsec(x)`, etc. in the AST rather than literally evaluating them as `1/(sin(x))`, `1/(sec(x))`, etc.
-- implement implicit multiplication
