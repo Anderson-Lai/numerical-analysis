@@ -5,7 +5,7 @@
 StatementNumber Derivative::Evaluate(const std::vector<StatementNumber>& parameters,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
-    if (parameters.size() != 2)
+    if (rawArguments.size() != 2)
     {
         throw std::invalid_argument("Derivative requires exactly 2 parameters");
     }

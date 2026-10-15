@@ -5,7 +5,7 @@
 StatementNumber Series::Evaluate(const std::vector<StatementNumber>& parameters,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
-    if (parameters.size() != 3)
+    if (rawArguments.size() != 3)
     {
         throw std::invalid_argument("Series requires exactly 3 parameters");
     }

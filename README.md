@@ -1,5 +1,5 @@
 # Numerical Analysis
-A command line tool to numerically approximate finite limits, derivatives at a point, finite definite integrals, and to compute finite series and functions at a point. It also contains a custom interpreter that tokenizes and parses inputted math expressions.
+A command line tool to numerically approximate finite limits, derivatives at a point, finite definite integrals, and to compute finite sums and products and functions at a point. It also contains a custom interpreter that tokenizes and parses inputted math expressions.
 
 > [!NOTE]
 > - Only use single letter variable names.
@@ -35,6 +35,8 @@ and the entire keyword to:
 Remember to implement `LogConcreteType()` if it is a child of the `Statement` class (which it normally should be) for **debugging purposes**.
 
 ## To Do
+- implement decimals in inputted expressions
+- implement absolute value function (either as abs(x), |x|, or both)
 - implement parantheses checks (all opened parantheses are closed, no extraneous parantheses)
 - implement check that only one variable is being used in each call
 - implement support `(sin(x))^(-1)`, `(sec(x))^(-1)`, etc. by implicitly converting them to `arcsin(x)`, `arcsec(x)`, etc. in the AST rather than literally evaluating them as `1/(sin(x))`, `1/(sec(x))`, etc.

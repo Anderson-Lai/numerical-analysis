@@ -49,7 +49,10 @@ StatementNumber Parser::EvaluateAST(const StatementNumber& value) const
         throw std::runtime_error("Parser::EvaluateAST() - AST is empty");
     }
 
-    return m_root->EvaluateNode(value);
+    // we (should) assert that the root node is a function api (i.e., a limit, derivative, integral, etc.),
+    // which is why we can pass an empty '{}' for the 'parameters' argument to 'Evalute()' since these functions
+    // are expected to use the 'rawArguments' argument instead and handle evaluation of the AST themselves
+    return m_root->GetValue()->Evaluate(std::vector<StatementNumber>{}, m_root->GetChildren());
 }
 
 std::shared_ptr<TreeNode> Parser::GetRoot() const
