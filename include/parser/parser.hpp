@@ -43,11 +43,10 @@ private:
     bool IsFunctionIdentifier(const Token& token) const;
 #ifdef DEBUG_BUILD
 public:
-    void PrintAST() const
+    static void PrintAST(const std::shared_ptr<TreeNode>& root)
     {
         std::vector<std::vector<std::shared_ptr<TreeNode>>> res;
-        auto curr = m_root;
-        PrintASTHelper(curr, 0, res);
+        PrintASTHelper(root, 0, res);
         for (int i = 0; i < res.size(); i++)
         {
             std::cout << "Depth: " << i << std::endl;
@@ -67,8 +66,8 @@ public:
         }
     }
 private:
-    void PrintASTHelper(std::shared_ptr<TreeNode> curr, int level, 
-        std::vector<std::vector<std::shared_ptr<TreeNode>>>& res) const
+    static void PrintASTHelper(const std::shared_ptr<TreeNode>& curr, const int level, 
+        std::vector<std::vector<std::shared_ptr<TreeNode>>>& res)
     {
         if (!curr)
             return;

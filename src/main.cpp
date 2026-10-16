@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
             lexer.PrintTokens();
 
             std::cout << std::endl << "AST: " << std::endl;
-            parser.PrintAST();
+            Parser::PrintAST(parser.GetRoot());
 
             double testInputs[] = {3.1415, 2.71828, 1, -1, 0, 13, -6, 5};
             for (const double input : testInputs)

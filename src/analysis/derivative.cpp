@@ -94,13 +94,6 @@ StatementNumber Derivative::VerifyExistence(const StatementNumber& point,
     );
 
     return limitNode->GetValue()->Evaluate(std::vector<StatementNumber>{}, limitNode->GetChildren());
-
-    // return std::dynamic_pointer_cast<Limit>(limitNode->GetValue()) 
-    // ? 
-    //     std::dynamic_pointer_cast<Limit>(limitNode->GetValue())->Evaluate(
-    //     std::vector<StatementNumber>{}, limitNode->GetChildren()) 
-    // :
-    //     throw std::runtime_error("Derivative::VerifyExistence() - Limit node expected");
 }
 
 /*
@@ -169,13 +162,6 @@ StatementNumber Derivative::ApproximateDerivative(const StatementNumber& point,
     );
 
     return limitNode->GetValue()->Evaluate(std::vector<StatementNumber>{}, limitNode->GetChildren());
-
-    // return std::dynamic_pointer_cast<Limit>(limitNode->GetValue())
-    // ? 
-    //     std::dynamic_pointer_cast<Limit>(limitNode->GetValue())->Evaluate(
-    //     std::vector<StatementNumber>{}, limitNode->GetChildren())
-    // :
-    //     throw std::runtime_error("Derivative::ApproximateDerivative() - Limit node expected");
 }
 
 void Derivative::ReplaceVariableWith(const std::shared_ptr<TreeNode>& node, 
