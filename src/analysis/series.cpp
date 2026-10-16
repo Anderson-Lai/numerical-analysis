@@ -12,3 +12,8 @@ StatementNumber Series::Evaluate(const std::vector<StatementNumber>& parameters,
 
     throw std::runtime_error("Series evaluation not implemented yet");
 }
+
+std::unique_ptr<Statement> Series::DeepCopy() const
+{
+    return std::make_unique<Series>(*this);
+}

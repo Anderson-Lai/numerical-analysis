@@ -125,20 +125,20 @@ std::vector<Token> Lexer::Tokenize(const char character) const
         return std::vector<Token>{TokenType::EXPONENTIAL};
     // inverse trig
     case 'a':
-    // sine, secant, sqrt
-    case 's':
     // cosine, cosecant, cotangent, cbrt
     case 'c':
-    // tangent
-    case 't':
-    // log, ln, limit
-    case 'l':
-    // pi
-    case 'p':
     // derivative
     case 'd':
     // integral
     case 'i':
+    // log, ln, limit
+    case 'l':
+    // pi
+    case 'p':
+    // sine, secant, sqrt
+    case 's':
+    // tangent
+    case 't':
         token += static_cast<char>(character);
 
         while (true)
@@ -261,6 +261,14 @@ Token Lexer::DeterminePossibleKeyword(const std::string& token) const
         else if (token == "arccot")
         {
             return TokenType::ACOTANGENT;
+        }
+
+        return Variable(token);
+    // derivative
+    case 10:
+        if (token == "derivative")
+        {
+            return TokenType::DERIVATIVE;
         }
 
         return Variable(token);

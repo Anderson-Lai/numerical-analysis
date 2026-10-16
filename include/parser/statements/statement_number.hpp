@@ -20,6 +20,7 @@ public:
     double GetValue() const;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 public:
     StatementNumber operator+(const StatementNumber& other) const;
     StatementNumber operator-(const StatementNumber& other) const;

@@ -27,6 +27,11 @@ StatementNumber Limit::Evaluate(const std::vector<StatementNumber>& parameters,
     return StatementNumber((leftValues.back().GetValue() + rightValues.back().GetValue()) / 2.0);
 }
 
+std::unique_ptr<Statement> Limit::DeepCopy() const
+{
+    return std::make_unique<Limit>(*this);
+}
+
 std::vector<StatementNumber> Limit::LeftLimit(const StatementNumber& approachingValue,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
@@ -85,7 +90,7 @@ bool Limit::CheckExistence(const std::vector<StatementNumber>& leftValues,
         differences.emplace_back(std::abs(leftValues[i].GetValue() - rightValues[i].GetValue()));
     }
 
-    return IsDecreasing(differences);
+    return IsDifferenceWithinThreshold(differences);
 }
 
 bool Limit::CheckStability(const std::vector<StatementNumber>& sideValues) const
@@ -100,10 +105,10 @@ bool Limit::CheckStability(const std::vector<StatementNumber>& sideValues) const
         differences.emplace_back(std::abs(sideValues[i].GetValue() - targetValue.GetValue()));
     }
 
-    return IsDecreasing(differences);
+    return IsDifferenceWithinThreshold(differences);
 }
 
-bool Limit::IsDecreasing(const std::vector<StatementNumber> &values) const
+bool Limit::IsDifferenceWithinThreshold(const std::vector<StatementNumber>& values) const
 {
     StatementNumber pastValue = values.front();
 
@@ -111,7 +116,7 @@ bool Limit::IsDecreasing(const std::vector<StatementNumber> &values) const
     {
         const StatementNumber& currentValue = values[i];
 
-        if (currentValue.GetValue() > pastValue.GetValue())
+        if (std::abs(currentValue.GetValue() - pastValue.GetValue()) > STABILITY_THRESHOLD)
         {
             return false;
         }

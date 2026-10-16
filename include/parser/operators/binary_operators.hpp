@@ -12,6 +12,7 @@ public:
     ~AdditionOperator() = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -27,6 +28,7 @@ public:
     ~SubtractionOperator() = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -42,6 +44,7 @@ public:
     ~MultiplicationOperator() = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -57,6 +60,7 @@ public:
     ~DivisionOperator() = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -72,6 +76,7 @@ public:
     ~ExponentiationOperator() = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {

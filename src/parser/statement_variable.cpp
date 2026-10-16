@@ -23,3 +23,8 @@ StatementNumber StatementVariable::Evaluate(const std::vector<StatementNumber>& 
 
     return parameters.front();
 }
+
+std::unique_ptr<Statement> StatementVariable::DeepCopy() const
+{
+    return std::make_unique<StatementVariable>(*this);
+}

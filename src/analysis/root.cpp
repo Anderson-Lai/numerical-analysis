@@ -12,3 +12,8 @@ StatementNumber Root::Evaluate(const std::vector<StatementNumber>& parameters,
 
     throw std::runtime_error("Root evaluation not implemented yet");
 }
+
+std::unique_ptr<Statement> Root::DeepCopy() const
+{
+    return std::make_unique<Root>(*this);
+}

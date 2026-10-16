@@ -11,6 +11,11 @@ StatementNumber AdditionOperator::Evaluate(const std::vector<StatementNumber>& p
     return parameters.front() + parameters.back();
 }
 
+std::unique_ptr<Statement> AdditionOperator::DeepCopy() const
+{
+    return std::make_unique<AdditionOperator>(*this);
+}
+
 StatementNumber SubtractionOperator::Evaluate(const std::vector<StatementNumber>& parameters,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
@@ -20,6 +25,11 @@ StatementNumber SubtractionOperator::Evaluate(const std::vector<StatementNumber>
     }
 
     return parameters.front() - parameters.back();
+}
+
+std::unique_ptr<Statement> SubtractionOperator::DeepCopy() const
+{
+    return std::make_unique<SubtractionOperator>(*this);
 }
 
 StatementNumber MultiplicationOperator::Evaluate(const std::vector<StatementNumber>& parameters,
@@ -33,6 +43,11 @@ StatementNumber MultiplicationOperator::Evaluate(const std::vector<StatementNumb
     return parameters.front() * parameters.back();
 }
 
+std::unique_ptr<Statement> MultiplicationOperator::DeepCopy() const
+{
+    return std::make_unique<MultiplicationOperator>(*this);
+}
+
 StatementNumber DivisionOperator::Evaluate(const std::vector<StatementNumber>& parameters,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
@@ -44,6 +59,11 @@ StatementNumber DivisionOperator::Evaluate(const std::vector<StatementNumber>& p
     return parameters.front() / parameters.back();
 }
 
+std::unique_ptr<Statement> DivisionOperator::DeepCopy() const
+{
+    return std::make_unique<DivisionOperator>(*this);
+}
+
 StatementNumber ExponentiationOperator::Evaluate(const std::vector<StatementNumber>& parameters,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
@@ -53,4 +73,9 @@ StatementNumber ExponentiationOperator::Evaluate(const std::vector<StatementNumb
     }
 
     return std::pow(parameters.front().GetValue(), parameters.back().GetValue());
+}
+
+std::unique_ptr<Statement> ExponentiationOperator::DeepCopy() const
+{
+    return std::make_unique<ExponentiationOperator>(*this);
 }

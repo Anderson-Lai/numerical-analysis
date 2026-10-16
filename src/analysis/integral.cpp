@@ -12,3 +12,8 @@ StatementNumber Integral::Evaluate(const std::vector<StatementNumber>& parameter
 
     throw std::runtime_error("Integral evaluation not implemented yet");
 }
+
+std::unique_ptr<Statement> Integral::DeepCopy() const
+{
+    return std::make_unique<Integral>(*this);
+}

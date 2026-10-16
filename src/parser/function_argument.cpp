@@ -6,3 +6,8 @@ StatementNumber FunctionArgument::Evaluate(const std::vector<StatementNumber>& p
 {
     throw std::runtime_error("FunctionArgument::Evaluate() should never be called directly");
 }
+
+std::unique_ptr<Statement> FunctionArgument::DeepCopy() const
+{
+    return std::make_unique<FunctionArgument>(*this);
+}

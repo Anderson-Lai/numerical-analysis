@@ -9,6 +9,7 @@ public:
     virtual ~Trigonometry() = default;
     virtual StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override = 0;
+    virtual std::unique_ptr<Statement> DeepCopy() const override = 0;
 #ifdef DEBUG_BUILD
     virtual void LogConcreteType() const override
     {
@@ -24,6 +25,7 @@ public:
     ~Sine() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     void LogConcreteType() const override
     {
@@ -39,6 +41,7 @@ public:
     ~Cosine() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     void LogConcreteType() const override
     {
@@ -54,6 +57,7 @@ public:
     ~Tangent() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     void LogConcreteType() const override
     {
@@ -69,6 +73,7 @@ public:
     ~Cosecant() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     void LogConcreteType() const override
     {
@@ -84,6 +89,7 @@ public:
     ~Secant() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     void LogConcreteType() const override
     {
@@ -99,6 +105,7 @@ public:
     ~Cotangent() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     void LogConcreteType() const override
     {
@@ -114,6 +121,7 @@ public:
     ~Arcsine() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     void LogConcreteType() const override
     {
@@ -129,6 +137,7 @@ public:
     ~Arccosine() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     void LogConcreteType() const override
     {
@@ -144,6 +153,7 @@ public:
     ~Arctangent() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     void LogConcreteType() const override
     {
@@ -159,6 +169,7 @@ public:
     ~Arccosecant() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     void LogConcreteType() const override
     {
@@ -174,6 +185,7 @@ public:
     ~Arcsecant() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     void LogConcreteType() const override
     {
@@ -189,6 +201,7 @@ public:
     ~Arccotangent() override = default;
     StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
     void LogConcreteType() const override
     {

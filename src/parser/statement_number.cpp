@@ -24,6 +24,11 @@ StatementNumber StatementNumber::Evaluate(const std::vector<StatementNumber>& pa
     return StatementNumber(m_value);
 }
 
+std::unique_ptr<Statement> StatementNumber::DeepCopy() const
+{
+    return std::make_unique<StatementNumber>(*this);
+}
+
 StatementNumber StatementNumber::operator+(const StatementNumber& other) const
 {
     return StatementNumber(m_value + other.m_value);

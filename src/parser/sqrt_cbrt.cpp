@@ -19,6 +19,11 @@ StatementNumber SquareRoot::Evaluate(const std::vector<StatementNumber>& paramet
     return StatementNumber(std::sqrt(value));
 }
 
+std::unique_ptr<Statement> CubeRoot::DeepCopy() const
+{
+    return std::make_unique<CubeRoot>(*this);
+}
+
 StatementNumber CubeRoot::Evaluate(const std::vector<StatementNumber>& parameters,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
@@ -29,4 +34,9 @@ StatementNumber CubeRoot::Evaluate(const std::vector<StatementNumber>& parameter
 
     const double value = parameters.front().GetValue();
     return StatementNumber(std::cbrt(value));
+}
+
+std::unique_ptr<Statement> SquareRoot::DeepCopy() const
+{
+    return std::make_unique<SquareRoot>(*this);
 }

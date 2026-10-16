@@ -24,3 +24,8 @@ StatementNumber Logarithm::Evaluate(const std::vector<StatementNumber>& paramete
     double result = std::log(value) / std::log(base);
     return StatementNumber(result);
 }
+
+std::unique_ptr<Statement> Logarithm::DeepCopy() const
+{
+    return std::make_unique<Logarithm>(*this);
+}

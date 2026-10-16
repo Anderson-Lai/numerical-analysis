@@ -14,6 +14,11 @@ StatementNumber Sine::Evaluate(const std::vector<StatementNumber>& parameters,
     return StatementNumber(std::sin(argumentValue.GetValue()));
 }
 
+std::unique_ptr<Statement> Sine::DeepCopy() const
+{
+    return std::make_unique<Sine>(*this);
+}
+
 StatementNumber Cosine::Evaluate(const std::vector<StatementNumber>& parameters,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
@@ -23,6 +28,11 @@ StatementNumber Cosine::Evaluate(const std::vector<StatementNumber>& parameters,
     }
     const StatementNumber argumentValue = parameters.front();
     return StatementNumber(std::cos(argumentValue.GetValue()));
+}
+
+std::unique_ptr<Statement> Cosine::DeepCopy() const
+{
+    return std::make_unique<Cosine>(*this);
 }
 
 StatementNumber Tangent::Evaluate(const std::vector<StatementNumber>& parameters,
@@ -36,6 +46,11 @@ StatementNumber Tangent::Evaluate(const std::vector<StatementNumber>& parameters
     return StatementNumber(std::tan(argumentValue.GetValue()));
 }
 
+std::unique_ptr<Statement> Tangent::DeepCopy() const
+{
+    return std::make_unique<Tangent>(*this);
+}
+
 StatementNumber Cosecant::Evaluate(const std::vector<StatementNumber>& parameters,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
@@ -45,6 +60,11 @@ StatementNumber Cosecant::Evaluate(const std::vector<StatementNumber>& parameter
     }
     const StatementNumber argumentValue = parameters.front();
     return StatementNumber(1.0 / std::sin(argumentValue.GetValue()));
+}
+
+std::unique_ptr<Statement> Cosecant::DeepCopy() const
+{
+    return std::make_unique<Cosecant>(*this);
 }
 
 StatementNumber Secant::Evaluate(const std::vector<StatementNumber>& parameters,
@@ -58,6 +78,11 @@ StatementNumber Secant::Evaluate(const std::vector<StatementNumber>& parameters,
     return StatementNumber(1.0 / std::cos(argumentValue.GetValue()));
 }
 
+std::unique_ptr<Statement> Secant::DeepCopy() const
+{
+    return std::make_unique<Secant>(*this);
+}
+
 StatementNumber Cotangent::Evaluate(const std::vector<StatementNumber>& parameters,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
@@ -67,6 +92,11 @@ StatementNumber Cotangent::Evaluate(const std::vector<StatementNumber>& paramete
     }
     const StatementNumber argumentValue = parameters.front();
     return StatementNumber(1.0 / std::tan(argumentValue.GetValue()));
+}
+
+std::unique_ptr<Statement> Cotangent::DeepCopy() const
+{
+    return std::make_unique<Cotangent>(*this);
 }
 
 StatementNumber Arcsine::Evaluate(const std::vector<StatementNumber>& parameters,
@@ -80,6 +110,11 @@ StatementNumber Arcsine::Evaluate(const std::vector<StatementNumber>& parameters
     return StatementNumber(std::asin(argumentValue.GetValue()));
 }
 
+std::unique_ptr<Statement> Arcsine::DeepCopy() const
+{
+    return std::make_unique<Arcsine>(*this);
+}
+
 StatementNumber Arccosine::Evaluate(const std::vector<StatementNumber>& parameters,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
@@ -89,6 +124,11 @@ StatementNumber Arccosine::Evaluate(const std::vector<StatementNumber>& paramete
     }
     const StatementNumber argumentValue = parameters.front();
     return StatementNumber(std::acos(argumentValue.GetValue()));
+}
+
+std::unique_ptr<Statement> Arccosine::DeepCopy() const
+{
+    return std::make_unique<Arccosine>(*this);
 }
 
 StatementNumber Arctangent::Evaluate(const std::vector<StatementNumber>& parameters,
@@ -102,6 +142,11 @@ StatementNumber Arctangent::Evaluate(const std::vector<StatementNumber>& paramet
     return StatementNumber(std::atan(argumentValue.GetValue()));
 }
 
+std::unique_ptr<Statement> Arctangent::DeepCopy() const
+{
+    return std::make_unique<Arctangent>(*this);
+}
+
 StatementNumber Arccosecant::Evaluate(const std::vector<StatementNumber>& parameters,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
@@ -111,6 +156,11 @@ StatementNumber Arccosecant::Evaluate(const std::vector<StatementNumber>& parame
     }
     const StatementNumber argumentValue = parameters.front();
     return StatementNumber(std::asin(1.0 / argumentValue.GetValue()));
+}
+
+std::unique_ptr<Statement> Arccosecant::DeepCopy() const
+{
+    return std::make_unique<Arccosecant>(*this);
 }
 
 StatementNumber Arcsecant::Evaluate(const std::vector<StatementNumber>& parameters,
@@ -124,6 +174,11 @@ StatementNumber Arcsecant::Evaluate(const std::vector<StatementNumber>& paramete
     return StatementNumber(std::acos(1.0 / argumentValue.GetValue()));
 }
 
+std::unique_ptr<Statement> Arcsecant::DeepCopy() const
+{
+    return std::make_unique<Arcsecant>(*this);
+}
+
 StatementNumber Arccotangent::Evaluate(const std::vector<StatementNumber>& parameters,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
@@ -133,4 +188,9 @@ StatementNumber Arccotangent::Evaluate(const std::vector<StatementNumber>& param
     }
     const StatementNumber argumentValue = parameters.front();
     return StatementNumber(std::atan(1.0 / argumentValue.GetValue()));
+}
+
+std::unique_ptr<Statement> Arccotangent::DeepCopy() const
+{
+    return std::make_unique<Arccotangent>(*this);
 }
