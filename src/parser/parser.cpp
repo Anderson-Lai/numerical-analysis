@@ -42,7 +42,7 @@ void Parser::Parse(const std::vector<Token>& tokens)
     }
 }
 
-StatementNumber Parser::EvaluateAST(const StatementNumber& value) const
+StatementNumber Parser::EvaluateAST() const
 {
     if (!m_root)
     {
@@ -54,6 +54,18 @@ StatementNumber Parser::EvaluateAST(const StatementNumber& value) const
     // are expected to use the 'rawArguments' argument instead and handle evaluation of the AST themselves
     return m_root->GetValue()->Evaluate(std::vector<StatementNumber>{}, m_root->GetChildren());
 }
+
+#ifdef DEBUG_EXPRESSIONS
+StatementNumber Parser::EvaluateAST(const StatementNumber& value) const
+{
+    if (!m_root)
+    {
+        throw std::runtime_error("Parser::EvaluateAST() - AST is empty");
+    }
+
+    return m_root->EvaluateNode(value);
+}
+#endif
 
 std::shared_ptr<TreeNode> Parser::GetRoot() const
 {
@@ -180,7 +192,10 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
 
                         while (true)
                         {
-                            auto child = ReadFullExpression(tokens, index, 0, true);
+                            // since not all arguments are functions themselves
+                            auto child = ReadFullExpression(tokens, index, 0, 
+                                IsFunctionIdentifier(tokens[index - 1]) || fromFunctionCall);
+                            
                             if (!child)
                             {
                                 throw std::runtime_error("Invalid expression detected");

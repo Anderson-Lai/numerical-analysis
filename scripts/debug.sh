@@ -3,5 +3,5 @@
 mkdir -p debug
 cd debug
 
-cmake -D CMAKE_BUILD_TYPE=Debug ..
+cmake -DCMAKE_BUILD_TYPE=Debug -DDEBUG_EXPRESSIONS=OFF -DDEBUG_NEGATIVE_NUMBERS=OFF ..
 cmake --build . --config Debug

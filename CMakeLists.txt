@@ -35,6 +35,14 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include/
 )
 
+if(DEBUG_EXPRESSIONS)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE DEBUG_EXPRESSIONS)
+endif()
+
+if(DEBUG_NEGATIVE_NUMBERS)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE DEBUG_NEGATIVE_NUMBERS)
+endif()
+
 # define DEBUG_BUILD macro for Debug build type and also add address sanitizer
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_definitions(${PROJECT_NAME} PRIVATE DEBUG_BUILD)

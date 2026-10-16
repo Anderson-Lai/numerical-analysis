@@ -1,12 +1,11 @@
 #include <iostream>
+#include <iomanip> 
 
 #include "lexer/lexer.hpp"
 #include "parser/parser.hpp"
 
 int main(int argc, char* argv[])
 {
-    std::string input;
-
     while (true)
     {
         try
@@ -23,8 +22,19 @@ int main(int argc, char* argv[])
 
             std::cout << std::endl << "AST: " << std::endl;
             Parser::PrintAST(parser.GetRoot());
+#endif
 
-            double testInputs[] = {3.1415, 2.71828, 1, -1, 0, 13, -6, 5};
+#ifndef DEBUG_EXPRESSIONS
+            std::cout << std::fixed << std::setprecision(9) 
+                << "\nResult: " << parser.EvaluateAST().GetValue() 
+            << std::endl;
+#else
+            double testInputs[] =
+    #ifdef DEBUG_NEGATIVE_NUMBERS
+             {3.1415, 2.71828, 1, -1, 0, 13, -6, 5};
+    #else
+            {3.1415, 2.71828, 1, 0, 13, 6, 5};
+    #endif
             for (const double input : testInputs)
             {
                 std::cout << std::endl;
