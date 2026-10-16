@@ -23,17 +23,16 @@ int main(int argc, char* argv[])
             std::cout << std::endl << "AST: " << std::endl;
             Parser::PrintAST(parser.GetRoot());
 #endif
+            std::cout << std::fixed << std::setprecision(9);
 
 #ifndef DEBUG_EXPRESSIONS
-            std::cout << std::fixed << std::setprecision(9) 
-                << "\nResult: " << parser.EvaluateAST().GetValue() 
-            << std::endl;
+            std::cout << "\nResult: " << parser.EvaluateAST().GetValue() << std::endl;
 #else
             double testInputs[] =
     #ifdef DEBUG_NEGATIVE_NUMBERS
-             {3.1415, 2.71828, 1, -1, 0, 13, -6, 5};
+            {3.1415, 2.71828, 1, -1, 0, 13, -6, 5};
     #else
-            {3.1415, 2.71828, 1, 0, 13, 6, 5};
+            {3.1415, 2.71828, 1, 0.001, 13, 6, 5};
     #endif
             for (const double input : testInputs)
             {
