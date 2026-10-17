@@ -190,39 +190,85 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     {
                         node->SetValue(std::make_shared<FunctionArgument>());
 
-                        while (true)
+                        bool running = true;
+                        while (running)
                         {
-                            // since not all arguments are functions themselves
-                            auto child = ReadFullExpression(tokens, index, 0, 
-                                IsFunctionIdentifier(tokens[index - 1]) || fromFunctionCall);
-                            
+                            const bool isFunctionCall = fromFunctionCall || IsFunctionIdentifier(tokens[index - 1]);
+                            if (isFunctionCall)
+                            {
+                                // skip the '(' token since it is 'owned' by the function call,
+                                // and not the argument itself
+                                index++;
+                            }
+
+                            auto child = ReadFullExpression(tokens, index, 0);
                             if (!child)
                             {
                                 throw std::runtime_error("Invalid expression detected");
                             }
-                            node->AddChild(child);
 
                             if (index < tokens.size() && std::holds_alternative<TokenType>(tokens[index]))
                             {
                                 if (std::get<TokenType>(tokens[index]) == TokenType::COMMA)
                                 {
+                                    node->AddChild(child);
                                     index++;
                                     continue;
                                 }
                                 else if (std::get<TokenType>(tokens[index]) == TokenType::PARANTHESES_CLOSE)
                                 {
+                                    node->AddChild(child);
                                     index++;
                                     break;
                                 }
-                                
+
+                                // to handle if 'ReadFullExpression()' returned early from an arithmetic expression
+                                // involving parantheses (e.g., 1/(x + 1) - 1)
+                                while (index < tokens.size())
+                                {
+                                    auto nextNode = ReadExpression(tokens, index, 0);
+                                    if (!nextNode)
+                                    {
+                                        throw std::runtime_error("Invalid expression detected");
+                                    }
+
+                                    if (!std::holds_alternative<TokenType>(tokens[index]))
+                                    {
+                                        throw std::runtime_error("Invalid expression detected");
+                                    }
+
+                                    if (std::get<TokenType>(tokens[index]) == TokenType::COMMA)
+                                    {
+                                        nextNode->AttachAtBottomLeft(std::make_shared<TreeNode>(*child));
+                                        node->AddChild(nextNode);
+
+                                        index++;
+                                        break;
+                                    }
+                                    else if (std::get<TokenType>(tokens[index]) == TokenType::PARANTHESES_CLOSE)
+                                    {
+                                        nextNode->AttachAtBottomLeft(std::make_shared<TreeNode>(*child));
+                                        node->AddChild(nextNode);
+
+                                        index++;
+                                        running = false;
+                                        break;
+                                    }
+
+                                    nextNode->AttachAtBottomLeft(std::make_shared<TreeNode>(*child));
+                                    child = nextNode;
+                                    index++;
+                                }
+                            }
+                            else
+                            {
                                 throw std::runtime_error("Invalid expression detected");
                             }
-                            throw std::runtime_error("Invalid expression detected");
                         }
                     }
                     else
                     {
-                        node = ReadFullExpression(tokens, index, 0, false);
+                        node = ReadFullExpression(tokens, index, 0);
                     }
 
                     if (!node)
@@ -479,10 +525,8 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
     return node->GetValue() ? node : nullptr;
 }
 
-// 'fromFunctionCall' is NOT only used for logarithms; it is used for all function calls since they all
-// should (must) have parantheses for their arguments
 std::shared_ptr<TreeNode> Parser::ReadFullExpression(const std::vector<Token>& tokens, size_t& index, 
-    const int minBindingPower, const bool fromFunctionCall) const
+    const int minBindingPower) const
 {
     if (index >= tokens.size())
     {
@@ -526,40 +570,41 @@ std::shared_ptr<TreeNode> Parser::ReadFullExpression(const std::vector<Token>& t
     // since we own the ')' token (if it is a ')' token)
     if (isCurrentTokenClosingParanthesis)
     {
-        if (fromFunctionCall)
-        {
-            return child;
-        }
-
         ownsParanthesis = false;
         index++;
 
-        if (index >= tokens.size() || minBindingPower >= GetOperatorBindingPower(tokens[index]))
+        // return if:
+        // node->m_value is an operator or function, AND
+        // next token is not an exponentiation operator
+        if (index >= tokens.size())
         {
             return child;
         }
+
+        if (std::dynamic_pointer_cast<Operator>(child->GetValue()) 
+            || std::dynamic_pointer_cast<Function>(child->GetValue()))
+        {
+            if (!std::holds_alternative<TokenType>(tokens[index]))
+            {
+                return child;
+            }
+
+            const TokenType& nextTokenType = std::get<TokenType>(tokens[index]);
+            if (nextTokenType != TokenType::EXPONENTIATION)
+            {
+                return child;
+            }
+        }
     }
-    
-    int currentBindingPower = GetOperatorBindingPower(tokens[index]);
-    while (index < tokens.size() && minBindingPower < currentBindingPower)
+
+    auto node = ReadExpression(tokens, index, 0);
+    if (!node)
     {
-        auto result = ReadExpression(tokens, index, minBindingPower);
-        result->AttachAtBottomLeft(child);
-        child = result;
-
-        if (index >= tokens.size() || 
-            (std::holds_alternative<TokenType>(tokens[index]) 
-            && std::get<TokenType>(tokens[index]) == TokenType::PARANTHESES_CLOSE))
-        {
-            return child;
-        }
-
-        if (index < tokens.size())
-        {
-            currentBindingPower = GetOperatorBindingPower(tokens[index]);
-        }
+        throw std::runtime_error("Invalid expression detected");
     }
 
+    node->AttachAtBottomLeft(std::make_shared<TreeNode>(*child));
+    child = node;
     return child;
 }
 

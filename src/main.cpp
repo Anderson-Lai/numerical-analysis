@@ -8,6 +8,7 @@ int main(int argc, char* argv[])
 {
     while (true)
     {
+        std::cout << "Expression: ";
         try
         {
             Lexer lexer;
@@ -26,7 +27,8 @@ int main(int argc, char* argv[])
             std::cout << std::fixed << std::setprecision(9);
 
 #ifndef DEBUG_EXPRESSIONS
-            std::cout << "\nResult: " << parser.EvaluateAST().GetValue() << std::endl;
+            const StatementNumber result = parser.EvaluateAST();
+            std::cout << "Result: " << result.GetValue() << std::endl;
 #else
             double testInputs[] =
     #ifdef DEBUG_NEGATIVE_NUMBERS
@@ -49,6 +51,8 @@ int main(int argc, char* argv[])
         {
             std::cerr << "Error: " << e.what() << std::endl;
         }
+
+        std::cout << std::endl;
     }
 
     return 0;
