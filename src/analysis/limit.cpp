@@ -1,4 +1,5 @@
 #include <cmath>
+#include <stdint.h>
 
 #include "analysis/limit.hpp"
 
@@ -23,8 +24,19 @@ StatementNumber Limit::Evaluate(const std::vector<StatementNumber>& parameters,
         throw std::runtime_error("Limit does not exist");
     }
 
-    // return average of the 'closest' left and right values to the approaching value
-    return StatementNumber((leftValues.back().GetValue() + rightValues.back().GetValue()) / 2.0);
+    size_t minIndex = 0;
+    int minError = INT32_MAX;
+    for (size_t i = 0; i < leftValues.size(); i++)
+    {
+        const double error = std::abs(leftValues[i].GetValue() - rightValues[i].GetValue());
+        if (error < minError)
+        {
+            minError = error;
+            minIndex = i;
+        }
+    }
+
+    return StatementNumber((leftValues[minIndex].GetValue() + rightValues[minIndex].GetValue()) / 2.0);
 }
 
 std::unique_ptr<Statement> Limit::DeepCopy() const
@@ -69,11 +81,7 @@ std::vector<StatementNumber> Limit::RightLimit(const StatementNumber& approachin
 bool Limit::CheckExistence(const std::vector<StatementNumber>& leftValues,
     const std::vector<StatementNumber>& rightValues) const
 {
-    if (!CheckStability(leftValues) || !CheckStability(rightValues))
-    {
-        return false;
-    }
-
+    std::vector<double> errors;
     if (leftValues.size() != rightValues.size())
     {
 #ifdef DEBUG_BUILD
@@ -82,41 +90,48 @@ bool Limit::CheckExistence(const std::vector<StatementNumber>& leftValues,
         return false;
     }
 
-    std::vector<StatementNumber> differences;
-    differences.reserve(leftValues.size());
-
     for (size_t i = 0; i < leftValues.size(); i++)
     {
-        differences.emplace_back(std::abs(leftValues[i].GetValue() - rightValues[i].GetValue()));
+        errors.emplace_back(std::abs(leftValues[i].GetValue() - rightValues[i].GetValue()));
     }
 
-    return IsDifferenceWithinThreshold(differences);
+    // as discretization approaches 0, we expect error to be decreasing (minus some floating point error)
+    return IsDecreasingWithinThreshold(errors);
+
+//     if (!CheckStability(leftValues) || !CheckStability(rightValues))
+//     {
+//         return false;
+//     }
+
+//     if (leftValues.size() != rightValues.size())
+//     {
+// #ifdef DEBUG_BUILD
+//         throw std::runtime_error("Left and right limit values must have the same size");
+// #endif
+//         return false;
+//     }
+
+//     std::vector<StatementNumber> differences;
+//     differences.reserve(leftValues.size());
+
+//     for (size_t i = 0; i < leftValues.size(); i++)
+//     {
+//         differences.emplace_back(std::abs(leftValues[i].GetValue() - rightValues[i].GetValue()));
+//     }
+
+//     return IsDifferenceWithinThreshold(differences);
 }
 
-bool Limit::CheckStability(const std::vector<StatementNumber>& sideValues) const
+bool Limit::IsDecreasingWithinThreshold(const std::vector<double>& values) const
 {
-    const StatementNumber& targetValue = sideValues.back();
-
-    std::vector<StatementNumber> differences;
-    differences.reserve(sideValues.size() - 1);
-
-    for (size_t i = 0; i < sideValues.size() - 1; i++)
-    {
-        differences.emplace_back(std::abs(sideValues[i].GetValue() - targetValue.GetValue()));
-    }
-
-    return IsDifferenceWithinThreshold(differences);
-}
-
-bool Limit::IsDifferenceWithinThreshold(const std::vector<StatementNumber>& values) const
-{
-    StatementNumber pastValue = values.front();
+    double pastValue = values.front();
 
     for (size_t i = 1; i < values.size(); i++)
     {
-        const StatementNumber& currentValue = values[i];
+        const double& currentValue = values[i];
 
-        if (std::abs(currentValue.GetValue() - pastValue.GetValue()) > STABILITY_THRESHOLD)
+        // ideally, currentValue - pastValue < 0, but we allow for some floating point error
+        if (currentValue - pastValue > STABILITY_THRESHOLD)
         {
             return false;
         }
@@ -126,3 +141,37 @@ bool Limit::IsDifferenceWithinThreshold(const std::vector<StatementNumber>& valu
 
     return true;
 }
+
+// bool Limit::IsDifferenceWithinThreshold(const std::vector<StatementNumber> &values) const
+// {
+//     StatementNumber pastValue = values.front();
+
+//     for (size_t i = 1; i < values.size(); i++)
+//     {
+//         const StatementNumber &currentValue = values[i];
+
+//         if (std::abs(currentValue.GetValue() - pastValue.GetValue()) > STABILITY_THRESHOLD)
+//         {
+//             return false;
+//         }
+
+//         pastValue = currentValue;
+//     }
+
+//     return true;
+// }
+
+// bool Limit::CheckStability(const std::vector<StatementNumber>& sideValues) const
+// {
+//     const StatementNumber& targetValue = sideValues.back();
+
+//     std::vector<StatementNumber> differences;
+//     differences.reserve(sideValues.size() - 1);
+
+//     for (size_t i = 0; i < sideValues.size() - 1; i++)
+//     {
+//         differences.emplace_back(std::abs(sideValues[i].GetValue() - targetValue.GetValue()));
+//     }
+
+//     return IsDifferenceWithinThreshold(differences);
+// }

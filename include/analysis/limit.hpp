@@ -22,14 +22,16 @@ private:
         const std::vector<StatementNumber>& rightValues) const;
 // helper functions
 private:
-    bool CheckStability(const std::vector<StatementNumber>& sideValues) const;
-    bool IsDifferenceWithinThreshold(const std::vector<StatementNumber>& values) const;
+    bool IsDecreasingWithinThreshold(const std::vector<double>& values) const;
+    // bool CheckStability(const std::vector<StatementNumber>& sideValues) const;
+    // bool IsDifferenceWithinThreshold(const std::vector<StatementNumber>& values) const;
 private:
-    static constexpr double DISCRETIZATION_SIZE = 1e-12;
-    static constexpr int STEPS = 1000;
-    // note that threshold is set to 1e-6, which is 3 order of magnitudes greater than maximum discretization size
+    // square root of machine epsilon for approximate best discretization size
+    static constexpr double DISCRETIZATION_SIZE = 1e-8;
+    static constexpr int STEPS = 1e2;
+    // note that threshold is set to 1e-3, which is 6 order of magnitudes greater than maximum discretization size
     // from the approaching value
-    static constexpr double STABILITY_THRESHOLD = 1e-6;
+    static constexpr double STABILITY_THRESHOLD = 1e-3;
 #ifdef DEBUG_BUILD
 public:
     virtual void LogConcreteType() const override
