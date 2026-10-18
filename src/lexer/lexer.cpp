@@ -264,6 +264,14 @@ Token Lexer::DeterminePossibleKeyword(const std::string& token) const
         }
 
         return Variable(token);
+    // integral
+    case 8:
+        if (token == "integral")
+        {
+            return TokenType::INTEGRAL;
+        }
+
+        return Variable(token);
     // derivative
     case 10:
         if (token == "derivative")
