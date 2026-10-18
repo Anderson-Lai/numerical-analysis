@@ -15,8 +15,8 @@ Run `./scripts/debug.sh` for a debug build and `./scripts/release.sh` for a rele
 - [x] implement limits
 - [x] implement derivatives
 - [x] implement integrals
-- [ ] implement sums
-- [ ] implement products
+- [x] implement sums
+- [x] implement products
 - [ ] implement function evaluation at a point
 - [ ] implement root finding of functions
 - [ ] add support for decimals in inputted expressions
