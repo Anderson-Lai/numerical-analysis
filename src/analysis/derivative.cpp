@@ -6,8 +6,6 @@
 #include "parser/statements/statement_variable.hpp"
 #include "parser/tree.hpp"
 
-#include "parser/parser.hpp"
-
 StatementNumber Derivative::Evaluate(const std::vector<StatementNumber>& parameters,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
