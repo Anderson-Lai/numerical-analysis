@@ -36,7 +36,10 @@ private:
     std::shared_ptr<TreeNode> ReadExpression(const std::vector<Token>& tokens,
         size_t& index, const int minBindingPower, const bool fromFunctionCall = false) const;
 
-    std::shared_ptr<TreeNode> ReadFullExpression(const std::vector<Token>& tokens, size_t& index, 
+    std::shared_ptr<TreeNode> OpenParanthesisHelper(const std::vector<Token>& tokens, 
+        size_t& index, const bool fromFunctionCall) const;
+
+    std::shared_ptr<TreeNode> ReadParantheticalExpression(const std::vector<Token>& tokens, size_t& index, 
         const int minBindingPower) const;
 // helper functions for building AST
 private:

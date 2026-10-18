@@ -93,7 +93,8 @@ StatementNumber Derivative::VerifyExistence(const StatementNumber& point,
         }
     );
 
-    return limitNode->GetValue()->Evaluate(std::vector<StatementNumber>{}, limitNode->GetChildren());
+    return limitNode->EvaluateNode(point);
+    // return limitNode->GetValue()->Evaluate(std::vector<StatementNumber>{}, limitNode->GetChildren());
 }
 
 /*
