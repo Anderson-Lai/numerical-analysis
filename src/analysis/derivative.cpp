@@ -6,6 +6,8 @@
 #include "parser/statements/statement_variable.hpp"
 #include "parser/tree.hpp"
 
+#include "parser/parser.hpp"
+
 StatementNumber Derivative::Evaluate(const std::vector<StatementNumber>& parameters,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
@@ -88,13 +90,12 @@ StatementNumber Derivative::VerifyExistence(const StatementNumber& point,
     const std::shared_ptr<TreeNode> limitNode = std::make_shared<TreeNode>(
         std::make_shared<Limit>(), 
         std::vector<std::shared_ptr<TreeNode>>{
-            std::make_shared<TreeNode>(std::make_shared<StatementNumber>(point)), 
+            std::make_shared<TreeNode>(std::make_shared<StatementNumber>(0.0)), 
             limitArgument
         }
     );
 
-    return limitNode->EvaluateNode(point);
-    // return limitNode->GetValue()->Evaluate(std::vector<StatementNumber>{}, limitNode->GetChildren());
+    return limitNode->GetValue()->Evaluate(std::vector<StatementNumber>{}, limitNode->GetChildren());
 }
 
 /*
@@ -157,7 +158,7 @@ StatementNumber Derivative::ApproximateDerivative(const StatementNumber& point,
     const std::shared_ptr<TreeNode> limitNode = std::make_shared<TreeNode>(
         std::make_shared<Limit>(), 
         std::vector<std::shared_ptr<TreeNode>>{
-            std::make_shared<TreeNode>(std::make_shared<StatementNumber>(point)), 
+            std::make_shared<TreeNode>(std::make_shared<StatementNumber>(0.0)), 
             limitArgument
         }
     );
