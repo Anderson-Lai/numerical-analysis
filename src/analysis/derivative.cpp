@@ -206,5 +206,5 @@ std::shared_ptr<TreeNode> Derivative::CopyAST(const std::shared_ptr<TreeNode>& n
         copiedChildren.emplace_back(CopyAST(child));
     }
 
-    return std::make_shared<TreeNode>(node->GetValue()->DeepCopy(), copiedChildren);
+    return std::make_shared<TreeNode>(node->GetValue() ? node->GetValue()->DeepCopy() : nullptr, copiedChildren);
 }
