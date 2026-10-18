@@ -4,7 +4,7 @@ A command line tool to numerically evaluate finite limits, derivatives at a poin
 ## Documentation
 See [usage.md](./docs/usage.md) for the full documentation. Below are some examples.
 
-[TO INSERT EXAMPLES]
+![Examples](./docs/examples.png)
 
 To evaluate multiple expressions from a file, say from `expressions.txt`, redirect the file to be `stdin` by running `./release/numerical_analysis < expressions.txt`. Ensure that each expression in the file is separated by a line break and that each expression is at most one line (i.e., the expression itself can not have any line breaks).
 
