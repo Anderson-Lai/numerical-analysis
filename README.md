@@ -14,7 +14,7 @@ Run `./scripts/debug.sh` for a debug build and `./scripts/release.sh` for a rele
 ## Features
 - [x] implement limits
 - [x] implement derivatives
-- [ ] implement integrals
+- [x] implement integrals
 - [ ] implement sums
 - [ ] implement products
 - [ ] implement function evaluation at a point
