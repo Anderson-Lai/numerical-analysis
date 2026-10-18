@@ -21,7 +21,7 @@ private:
         const StatementNumber& upperBound) const;
 private:
     // temporary value
-    static constexpr int SUBINTERVALS = 1e7;
+    static constexpr int SUBINTERVALS = 1e8;
 #ifdef DEBUG_BUILD
 public:
     virtual void LogConcreteType() const override

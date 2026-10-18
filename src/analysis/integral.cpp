@@ -1,3 +1,5 @@
+#include <future>
+
 #include "analysis/integral.hpp"
 
 #include "parser/statements/statement_number.hpp"
@@ -36,6 +38,67 @@ StatementNumber Integral::SimpsonsRule(const int subintervals, const StatementNu
     StatementNumber sum = inputFunction->EvaluateNode(lowerBound.GetValue()) +
         inputFunction->EvaluateNode(upperBound.GetValue());
 
+#ifndef DEBUG_SINGLE_THREAD
+    int split = subintervals / 2;
+    if (split % 2 != 0)
+    {
+        split++;
+    }
+    
+    auto lowerEven = std::async(std::launch::async, 
+        [this, subintervals, lowerBound, upperBound, inputFunction, split]()
+        {
+            StatementNumber evenSum = StatementNumber(0.0);
+            for (int i = 2; i < split; i += 2)
+            {
+                const StatementNumber x = IthX(subintervals, lowerBound, upperBound, i);
+                evenSum = evenSum + inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(2.0);
+            }
+            return evenSum;
+        }
+    );
+
+    auto upperEven = std::async(std::launch::async, 
+        [this, subintervals, lowerBound, upperBound, inputFunction, split]() 
+        {
+            StatementNumber evenSum = StatementNumber(0.0);
+            for (int i = split; i < subintervals; i += 2)
+            {
+                const StatementNumber x = IthX(subintervals, lowerBound, upperBound, i);
+                evenSum = evenSum + inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(2.0);
+            }
+            return evenSum;
+        }
+    );
+
+    auto lowerOdd = std::async(std::launch::async, 
+        [this, subintervals, lowerBound, upperBound, inputFunction, split]() 
+        {
+            StatementNumber oddSum = StatementNumber(0.0);
+            for (int i = 1; i < split; i += 2)
+            {
+                const StatementNumber x = IthX(subintervals, lowerBound, upperBound, i);
+                oddSum = oddSum + inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(4.0);
+            }
+            return oddSum;
+        }
+    );
+
+    auto upperOdd = std::async(std::launch::async, 
+        [this, subintervals, lowerBound, upperBound, inputFunction, split]() 
+        {
+            StatementNumber oddSum = StatementNumber(0.0);
+            for (int i = split; i < subintervals; i += 2)
+            {
+                const StatementNumber x = IthX(subintervals, lowerBound, upperBound, i);
+                oddSum = oddSum + inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(4.0);
+            }
+            return oddSum;
+        }
+    );
+
+    sum = sum + lowerEven.get() + upperEven.get() + lowerOdd.get() + upperOdd.get();
+#else
     for (int i = 1; i < subintervals; i++)
     {
         const StatementNumber x = IthX(subintervals, lowerBound, upperBound, i);
@@ -48,6 +111,7 @@ StatementNumber Integral::SimpsonsRule(const int subintervals, const StatementNu
             sum = sum + inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(4.0);
         }
     }
+#endif
 
     return sum * StepSize(subintervals, lowerBound, upperBound) / StatementNumber(3.0);
 }

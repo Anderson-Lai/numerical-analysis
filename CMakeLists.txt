@@ -7,10 +7,11 @@ set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:Progra
 project(numerical_analysis LANGUAGES CXX)
 
 # ---------------- Options ----------------
-option(ENABLE_ASAN                             "Enable AddressSanitizer in Debug builds"         ON)
-option(ENABLE_UBSAN                            "Enable UBSan in Debug builds (GCC/Clang)"        ON)
+option(ENABLE_ASAN                             "Enable AddressSanitizer in Debug builds"        ON)
+option(ENABLE_UBSAN                            "Enable UBSan in Debug builds (GCC/Clang)"       ON)
 option(DEBUG_EXPRESSIONS                       "Define DEBUG_EXPRESSIONS"                       OFF)
 option(DEBUG_EXPRESSIONS_WITH_NEGATIVE_NUMBERS "Define DEBUG_EXPRESSIONS_WITH_NEGATIVE_NUMBERS" OFF)
+option(DEBUG_SINGLE_THREAD                     "Define DEBUG_SINGLE_THREAD"                     OFF)
 
 # ---------------- Language standard ----------------
 set(CMAKE_CXX_STANDARD 20)
@@ -57,6 +58,7 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
     $<$<CONFIG:Debug>:DEBUG_BUILD>
     $<$<BOOL:${DEBUG_EXPRESSIONS}>:DEBUG_EXPRESSIONS>
     $<$<BOOL:${DEBUG_EXPRESSIONS_WITH_NEGATIVE_NUMBERS}>:DEBUG_EXPRESSIONS_WITH_NEGATIVE_NUMBERS>
+    $<$<BOOL:${DEBUG_SINGLE_THREAD}>:DEBUG_SINGLE_THREAD>
 )
 
 # ---------------- Link-time optimization (Release) ----------------
