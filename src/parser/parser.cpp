@@ -1,4 +1,5 @@
 #include "analysis/derivative.hpp"
+#include "analysis/eval.hpp"
 #include "analysis/integral.hpp"
 #include "analysis/limit.hpp"
 #include "analysis/root.hpp"
@@ -421,6 +422,15 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     node->SetChildren(arguments->GetChildren());
                     break;
                 }
+                case TokenType::EVAL:
+                {
+                    node->SetValue(std::make_shared<Eval>());
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
+                    break;
+                }
+
                 default:
                     throw std::runtime_error("Unexpected token");
             }
@@ -685,5 +695,6 @@ bool Parser::IsFunctionIdentifier(const Token& token) const
         || tokenType == TokenType::SQUARE_ROOT || tokenType == TokenType::CUBE_ROOT
 
         || tokenType == TokenType::DERIVATIVE || tokenType == TokenType::INTEGRAL || tokenType == TokenType::LIMIT
-        || tokenType == TokenType::ROOT || tokenType == TokenType::SUM || tokenType == TokenType::PRODUCT);
+        || tokenType == TokenType::ROOT || tokenType == TokenType::SUM || tokenType == TokenType::PRODUCT
+        || tokenType == TokenType::EVAL);
 }

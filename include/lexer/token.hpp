@@ -44,9 +44,10 @@ enum class TokenType
     DERIVATIVE,
     INTEGRAL,
     LIMIT,
-    ROOT,
     SUM,
     PRODUCT,
+    EVAL,
+    ROOT,
 
     NUMBER,
     SPACE,

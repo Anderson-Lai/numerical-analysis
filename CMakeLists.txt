@@ -31,6 +31,7 @@ add_executable(${PROJECT_NAME}
     src/lexer/types.cpp
 
     src/analysis/derivative.cpp
+    src/analysis/eval.cpp
     src/analysis/integral.cpp
     src/analysis/limit.cpp
     src/analysis/root.cpp

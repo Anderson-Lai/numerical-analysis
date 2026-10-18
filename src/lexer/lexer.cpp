@@ -121,14 +121,14 @@ std::vector<Token> Lexer::Tokenize(const char character) const
     case '9':
     case '0':
         return std::vector<Token>{Number(std::stod(std::string{character}))};
-    case 'e':
-        return std::vector<Token>{TokenType::EXPONENTIAL};
     // inverse trig
     case 'a':
     // cosine, cosecant, cotangent, cbrt
     case 'c':
     // derivative
     case 'd':
+    // e, eval
+    case 'e':
     // integral
     case 'i':
     // log, ln, limit
@@ -172,6 +172,14 @@ Token Lexer::DeterminePossibleKeyword(const std::string& token) const
 {
     switch (token.size())
     {
+    // e
+    case 1:
+        if (token == "e")
+        {
+            return TokenType::EXPONENTIAL;
+        }
+
+        return Variable(token);
     // ln / pi
     case 2:
         if (token == "ln")
@@ -220,7 +228,7 @@ Token Lexer::DeterminePossibleKeyword(const std::string& token) const
         }
 
         return Variable(token);
-    // sqrt / cbrt
+    // sqrt / cbrt, eval
     case 4:
         if (token == "sqrt")
         {
@@ -229,6 +237,10 @@ Token Lexer::DeterminePossibleKeyword(const std::string& token) const
         else if (token == "cbrt")
         {
             return TokenType::CUBE_ROOT;
+        }
+        else if (token == "eval")
+        {
+            return TokenType::EVAL;
         }
 
         return Variable(token);

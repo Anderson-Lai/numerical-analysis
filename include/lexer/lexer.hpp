@@ -174,7 +174,13 @@ public:
                 case TokenType::PRODUCT:
                     tokenTypeStr = "PRODUCT";
                     break;
+                case TokenType::EVAL:
+                    tokenTypeStr = "EVAL";
+                    break;
 
+                case TokenType::NUMBER:
+                    tokenTypeStr = "NUMBER";
+                    break;
                 case TokenType::SPACE:
                     tokenTypeStr = "SPACE";
                     break;

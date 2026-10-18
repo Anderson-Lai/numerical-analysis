@@ -17,7 +17,7 @@ Run `./scripts/debug.sh` for a debug build and `./scripts/release.sh` for a rele
 - [x] implement integrals
 - [x] implement sums
 - [x] implement products
-- [ ] implement function evaluation at a point
+- [x] implement function evaluation at a point
 - [ ] implement root finding of functions
 - [ ] add support for decimals in inputted expressions
 - [ ] implement the absolute value function (either as abs(x), |x|, or both)
