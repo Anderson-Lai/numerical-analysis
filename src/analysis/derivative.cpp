@@ -6,7 +6,7 @@
 #include "parser/statements/statement_variable.hpp"
 #include "parser/tree.hpp"
 
-StatementNumber Derivative::Evaluate(const std::vector<StatementNumber>& parameters,
+StatementNumber Derivative::Evaluate(const std::vector<StatementNumber>&,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (rawArguments.size() != 2)

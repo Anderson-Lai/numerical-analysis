@@ -1,5 +1,3 @@
-#include <cmath>
-
 #include "analysis/derivative.hpp"
 #include "analysis/integral.hpp"
 #include "analysis/limit.hpp"
@@ -192,12 +190,11 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
 
                 // --- CONSTANTS ---
                 case TokenType::PI:
-                    // std::acos(-1.0f) = pi since cos(pi) = -1.0
-                    node->SetValue(std::make_shared<StatementNumber>(std::acos(-1.0f)));
+                    node->SetValue(std::make_shared<StatementNumber>(CONSTANTS_PI));
                     index++;
                     break;
                 case TokenType::EXPONENTIAL:
-                    node->SetValue(std::make_shared<StatementNumber>(std::exp(1.0f)));
+                    node->SetValue(std::make_shared<StatementNumber>(CONSTANTS_E));
                     index++;
                     break;
                 

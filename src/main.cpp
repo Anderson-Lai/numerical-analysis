@@ -4,7 +4,7 @@
 #include "lexer/lexer.hpp"
 #include "parser/parser.hpp"
 
-int main(int argc, char* argv[])
+int main(int, char**)
 {
     while (true)
     {
@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
             std::cout << "Result: " << result.GetValue() << std::endl;
 #else
             double testInputs[] =
-    #ifdef DEBUG_NEGATIVE_NUMBERS
+    #ifdef DEBUG_EXPRESSIONS_WITH_NEGATIVE_NUMBERS
             {3.1415, 2.71828, 1, -1, 0, 13, -6, 5};
     #else
             {3.1415, 2.71828, 1, 0.001, 13, 6, 5};

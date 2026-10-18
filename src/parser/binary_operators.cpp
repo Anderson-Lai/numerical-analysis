@@ -1,7 +1,7 @@
 #include "parser/operators/binary_operators.hpp"
 
 StatementNumber AdditionOperator::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 2)
     {
@@ -17,7 +17,7 @@ std::unique_ptr<Statement> AdditionOperator::DeepCopy() const
 }
 
 StatementNumber SubtractionOperator::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 2)
     {
@@ -33,7 +33,7 @@ std::unique_ptr<Statement> SubtractionOperator::DeepCopy() const
 }
 
 StatementNumber MultiplicationOperator::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 2)
     {
@@ -49,7 +49,7 @@ std::unique_ptr<Statement> MultiplicationOperator::DeepCopy() const
 }
 
 StatementNumber DivisionOperator::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 2)
     {
@@ -65,7 +65,7 @@ std::unique_ptr<Statement> DivisionOperator::DeepCopy() const
 }
 
 StatementNumber ExponentiationOperator::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 2)
     {

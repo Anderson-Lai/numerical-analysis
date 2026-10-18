@@ -1,8 +1,8 @@
 #include "parser/statements/functions/function_argument.hpp"
 #include "parser/statements/statement_number.hpp"
 
-StatementNumber FunctionArgument::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+StatementNumber FunctionArgument::Evaluate(const std::vector<StatementNumber>&,
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     throw std::runtime_error("FunctionArgument::Evaluate() should never be called directly");
 }

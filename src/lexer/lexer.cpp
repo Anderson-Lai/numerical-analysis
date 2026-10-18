@@ -11,7 +11,7 @@ void Lexer::ReadTokens()
     bool running = true;
     while (running)
     {
-        const std::vector<Token> returnedToken = Tokenize(getchar());
+        const std::vector<Token> returnedToken = Tokenize(static_cast<char>(getchar()));
 
         for (const Token& token : returnedToken)
         {
@@ -287,7 +287,7 @@ Token Lexer::DeterminePossibleKeyword(const std::string& token) const
 
 std::variant<Token, char> Lexer::ReadConsecutiveCharacter() const
 {
-    const char character = getchar();
+    const char character = static_cast<char>(getchar());
 
     if (NON_LETTER_TO_TOKEN_TYPE.find(character) != NON_LETTER_TO_TOKEN_TYPE.end())
     {

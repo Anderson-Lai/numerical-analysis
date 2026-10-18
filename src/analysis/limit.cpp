@@ -6,7 +6,7 @@
 #include "parser/statements/statement_number.hpp"
 #include "parser/tree.hpp"
 
-StatementNumber Limit::Evaluate(const std::vector<StatementNumber>& parameters,
+StatementNumber Limit::Evaluate(const std::vector<StatementNumber>&,
     const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
 {
     if (rawArguments.size() != 2)
@@ -25,7 +25,7 @@ StatementNumber Limit::Evaluate(const std::vector<StatementNumber>& parameters,
     }
 
     size_t minIndex = 0;
-    int minError = INT32_MAX;
+    double minError = INT32_MAX;
     for (size_t i = 0; i < leftValues.size(); i++)
     {
         const double error = std::abs(leftValues[i].GetValue() - rightValues[i].GetValue());

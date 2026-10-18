@@ -22,6 +22,8 @@ private:
         {TokenType::SUBSCRIPT, 30},
         {TokenType::EXPONENTIATION, 40}
     };
+    static constexpr double CONSTANTS_PI = 3.14159265358979323846;
+    static constexpr double CONSTANTS_E = 2.71828182845904523536;
 public:
     Parser() = default;
     ~Parser() = default;
@@ -53,10 +55,10 @@ public:
     {
         std::vector<std::vector<std::shared_ptr<TreeNode>>> res;
         PrintASTHelper(root, 0, res);
-        for (int i = 0; i < res.size(); i++)
+        for (size_t i = 0; i < res.size(); i++)
         {
             std::cout << "Depth: " << i << std::endl;
-            for (int j = 0; j < res[i].size(); j++)
+            for (size_t j = 0; j < res[i].size(); j++)
             {
                 if (res[i][j]->GetValue())
                 {
@@ -72,7 +74,7 @@ public:
         }
     }
 private:
-    static void PrintASTHelper(const std::shared_ptr<TreeNode>& curr, const int level, 
+    static void PrintASTHelper(const std::shared_ptr<TreeNode>& curr, const size_t level, 
         std::vector<std::vector<std::shared_ptr<TreeNode>>>& res)
     {
         if (!curr)

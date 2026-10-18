@@ -4,7 +4,7 @@
 #include "parser/statements/statement_number.hpp"
 
 StatementNumber Sine::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 1)
     {
@@ -20,7 +20,7 @@ std::unique_ptr<Statement> Sine::DeepCopy() const
 }
 
 StatementNumber Cosine::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 1)
     {
@@ -36,7 +36,7 @@ std::unique_ptr<Statement> Cosine::DeepCopy() const
 }
 
 StatementNumber Tangent::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 1)
     {
@@ -52,7 +52,7 @@ std::unique_ptr<Statement> Tangent::DeepCopy() const
 }
 
 StatementNumber Cosecant::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 1)
     {
@@ -68,7 +68,7 @@ std::unique_ptr<Statement> Cosecant::DeepCopy() const
 }
 
 StatementNumber Secant::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 1)
     {
@@ -84,7 +84,7 @@ std::unique_ptr<Statement> Secant::DeepCopy() const
 }
 
 StatementNumber Cotangent::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 1)
     {
@@ -100,7 +100,7 @@ std::unique_ptr<Statement> Cotangent::DeepCopy() const
 }
 
 StatementNumber Arcsine::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 1)
     {
@@ -116,7 +116,7 @@ std::unique_ptr<Statement> Arcsine::DeepCopy() const
 }
 
 StatementNumber Arccosine::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 1)
     {
@@ -132,7 +132,7 @@ std::unique_ptr<Statement> Arccosine::DeepCopy() const
 }
 
 StatementNumber Arctangent::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 1)
     {
@@ -148,7 +148,7 @@ std::unique_ptr<Statement> Arctangent::DeepCopy() const
 }
 
 StatementNumber Arccosecant::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 1)
     {
@@ -164,7 +164,7 @@ std::unique_ptr<Statement> Arccosecant::DeepCopy() const
 }
 
 StatementNumber Arcsecant::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 1)
     {
@@ -180,7 +180,7 @@ std::unique_ptr<Statement> Arcsecant::DeepCopy() const
 }
 
 StatementNumber Arccotangent::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 1)
     {

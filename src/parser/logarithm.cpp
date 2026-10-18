@@ -2,7 +2,7 @@
 #include "parser/statements/statement_number.hpp"
 
 StatementNumber Logarithm::Evaluate(const std::vector<StatementNumber>& parameters,
-    const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const
+    const std::vector<std::shared_ptr<TreeNode>>&) const
 {
     if (parameters.size() != 2)
     {
