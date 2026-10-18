@@ -49,6 +49,7 @@ enum class TokenType
     EVAL,
     ROOT,
 
+    DECIMAL_POINT,
     NUMBER,
     SPACE,
     LINE_BREAK

@@ -19,7 +19,7 @@ Run `./scripts/debug.sh` for a debug build and `./scripts/release.sh` for a rele
 - [x] implement products
 - [x] implement function evaluation at a point
 - [ ] implement root finding of functions
-- [ ] add support for decimals in inputted expressions
+- [x] add support for decimals in inputted expressions
 - [ ] implement the absolute value function (either as abs(x), |x|, or both)
 - [ ] implement parantheses checks
   - [ ] all opened parantheses are closed
@@ -31,17 +31,18 @@ Run `./scripts/debug.sh` for a debug build and `./scripts/release.sh` for a rele
 ## Extending the Interpreter
 When adding new *operators or symbols*, ensure to add it to these places:
 - `token.hpp` in `TokenType` enum 
-- `lexer.hpp` in `NON_LETTER_TO_TOKEN_TYPE` member variable
 - `lexer.hpp` in `Lexer::PrintTokens()` for **debugging purposes**
+- `lexer.hpp` in `NON_LETTER_TO_TOKEN_TYPE` member variable
 - `lexer.cpp` in `Lexer::Tokenize()` member function
+- `parser.cpp` in `Parser::ReadExpression()` member function
 
 When adding new *keywords*, ensure to add the first character of the keyword to:
 - `lexer.cpp` in `Lexer::Tokenize()` member function
 
 and the entire keyword to:
-- `token.hpp` in `TokenType` enum
-- `lexer.hpp` in `Lexer::PrintTokens()` for **debugging purposes**
 - `lexer.cpp` in `Lexer::DeterminePossibleKeyword()` member function
+- `lexer.hpp` in `Lexer::PrintTokens()` for **debugging purposes**
+- `token.hpp` in `TokenType` enum
 - `parser.cpp` in `Parser::ReadExpression()` member function
 - `parser.cpp` in `Parser::IsFunctionIdentifier()` member function
 

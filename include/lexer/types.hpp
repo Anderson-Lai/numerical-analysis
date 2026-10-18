@@ -10,6 +10,7 @@ public:
     Number(const double value);
     double GetValue() const;
     Number Concatenate(const Number& other) const;
+    Number InsertDecimalPlace(const Number& other, const int decimalPlace) const;
 };
 
 class Variable

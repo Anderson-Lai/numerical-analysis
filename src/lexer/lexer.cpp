@@ -54,19 +54,54 @@ std::vector<Token> Lexer::CleanTokens()
 
     for (size_t i = 0; i < m_tokens.size(); i++)
     {
-        // concatenate the consecutive number that were broken up during tokenization
-        if (std::holds_alternative<Number>(m_tokens[i]))
+        const Token& currentToken = m_tokens[i];
+        if (std::holds_alternative<Number>(currentToken) || (std::holds_alternative<TokenType>(currentToken) 
+            && std::get<TokenType>(currentToken) == TokenType::DECIMAL_POINT))
         {
-            runningNumber = runningNumber.Concatenate(std::get<Number>(m_tokens[i]));
-            i++;
-            while (i < m_tokens.size() && std::holds_alternative<Number>(m_tokens[i]))
+            bool inDecimalRegime = std::holds_alternative<TokenType>(currentToken) 
+                && std::get<TokenType>(currentToken) == TokenType::DECIMAL_POINT;
+            if (!inDecimalRegime)
             {
-                runningNumber = runningNumber.Concatenate(std::get<Number>(m_tokens[i]));
+                runningNumber = std::get<Number>(currentToken);
+            }
+            else
+            {
+                runningNumber = Number(0.0);
+            }
+
+            i++;
+            int decimalPlace = 1;
+            while (i < m_tokens.size() && (std::holds_alternative<Number>(m_tokens[i]) 
+                    || (std::holds_alternative<TokenType>(m_tokens[i]) 
+                        && std::get<TokenType>(m_tokens[i]) == TokenType::DECIMAL_POINT)))
+            {
+                if (std::holds_alternative<TokenType>(m_tokens[i]) && std::get<TokenType>(m_tokens[i]) == TokenType::DECIMAL_POINT)
+                {
+                    if (inDecimalRegime)
+                    {
+                        throw std::runtime_error("Multiple decimal points in one number");
+                    }
+                    inDecimalRegime = true;
+                    i++;
+                    continue;
+                }
+
+                const Number& nextNumber = std::get<Number>(m_tokens[i]);
+                if (inDecimalRegime)
+                {
+                    runningNumber = runningNumber.InsertDecimalPlace(nextNumber, decimalPlace);
+                    decimalPlace++;
+                }
+                else
+                {
+                    runningNumber = runningNumber.Concatenate(nextNumber);
+                }
+
                 i++;
             }
+
             cleanedTokens.push_back(runningNumber);
             runningNumber = Number(0.0);
-
             if (i < m_tokens.size())
             {
                 cleanedTokens.push_back(m_tokens[i]);
@@ -74,7 +109,7 @@ std::vector<Token> Lexer::CleanTokens()
         }
         else
         {
-            cleanedTokens.push_back(m_tokens[i]);
+            cleanedTokens.emplace_back(std::move(currentToken));
         }
     }
 
@@ -106,6 +141,8 @@ std::vector<Token> Lexer::Tokenize(const char character) const
         return std::vector<Token>{TokenType::PARANTHESES_OPEN};
     case ')':
         return std::vector<Token>{TokenType::PARANTHESES_CLOSE};
+    case '.':
+        return std::vector<Token>{TokenType::DECIMAL_POINT};
     case ' ':
         return std::vector<Token>{TokenType::SPACE};
     case '\n':

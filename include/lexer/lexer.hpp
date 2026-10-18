@@ -41,6 +41,7 @@ private:
         {'(', TokenType::PARANTHESES_OPEN},
         {')', TokenType::PARANTHESES_CLOSE},
 
+        {'.', TokenType::DECIMAL_POINT},
         {' ', TokenType::SPACE},
         {'\n', TokenType::LINE_BREAK}
     };
@@ -178,6 +179,9 @@ public:
                     tokenTypeStr = "EVAL";
                     break;
 
+                case TokenType::DECIMAL_POINT:
+                    tokenTypeStr = "DECIMAL_POINT";
+                    break;
                 case TokenType::NUMBER:
                     tokenTypeStr = "NUMBER";
                     break;
