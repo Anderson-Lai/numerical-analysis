@@ -52,7 +52,7 @@ StatementNumber Integral::SimpsonsRule(const int subintervals, const StatementNu
             for (int i = 2; i < split; i += 2)
             {
                 const StatementNumber x = IthX(subintervals, lowerBound, upperBound, i);
-                evenSum = evenSum + inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(2.0);
+                evenSum += inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(2.0);
             }
             return evenSum;
         }
@@ -65,7 +65,7 @@ StatementNumber Integral::SimpsonsRule(const int subintervals, const StatementNu
             for (int i = split; i <= subintervals - 2; i += 2)
             {
                 const StatementNumber x = IthX(subintervals, lowerBound, upperBound, i);
-                evenSum = evenSum + inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(2.0);
+                evenSum += inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(2.0);
             }
             return evenSum;
         }
@@ -78,7 +78,7 @@ StatementNumber Integral::SimpsonsRule(const int subintervals, const StatementNu
             for (int i = 1; i < split; i += 2)
             {
                 const StatementNumber x = IthX(subintervals, lowerBound, upperBound, i);
-                oddSum = oddSum + inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(4.0);
+                oddSum += inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(4.0);
             }
             return oddSum;
         }
@@ -91,24 +91,24 @@ StatementNumber Integral::SimpsonsRule(const int subintervals, const StatementNu
             for (int i = split + 1; i <= subintervals - 1; i += 2)
             {
                 const StatementNumber x = IthX(subintervals, lowerBound, upperBound, i);
-                oddSum = oddSum + inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(4.0);
+                oddSum += inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(4.0);
             }
             return oddSum;
         }
     );
 
-    sum = sum + lowerEven.get() + upperEven.get() + lowerOdd.get() + upperOdd.get();
+    sum += lowerEven.get() + upperEven.get() + lowerOdd.get() + upperOdd.get();
 #else
     for (int i = 1; i < subintervals; i++)
     {
         const StatementNumber x = IthX(subintervals, lowerBound, upperBound, i);
         if (i % 2 == 0)
         {
-            sum = sum + inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(2.0);
+            sum += inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(2.0);
         }
         else
         {
-            sum = sum + inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(4.0);
+            sum += inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(4.0);
         }
     }
 #endif

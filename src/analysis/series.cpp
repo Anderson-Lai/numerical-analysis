@@ -27,6 +27,7 @@ StatementNumber Sum::Evaluate(const std::vector<StatementNumber>&,
         rawArguments.front()->EvaluateNode(StatementNumber(0.0)) : StatementNumber(0.0);
     const StatementNumber& upperBound = rawArguments[1] ?
         rawArguments[1]->EvaluateNode(StatementNumber(0.0)) : StatementNumber(0.0);
+    const std::shared_ptr<TreeNode>& inputFunction = rawArguments.back();
     
     if (!Series::IsNaturalNumber(lowerBound) || !Series::IsNaturalNumber(upperBound))
     {
@@ -38,7 +39,7 @@ StatementNumber Sum::Evaluate(const std::vector<StatementNumber>&,
     StatementNumber result(0.0);
     for (int i = lowerBoundValue; i <= upperBoundValue; i++)
     {
-        result += rawArguments.back()->EvaluateNode(StatementNumber(static_cast<double>(i)));
+        result += inputFunction->EvaluateNode(StatementNumber(static_cast<double>(i)));
     }
 
     return result;
@@ -66,6 +67,7 @@ StatementNumber Product::Evaluate(const std::vector<StatementNumber>&,
         rawArguments.front()->EvaluateNode(StatementNumber(0.0)) : StatementNumber(0.0);
     const StatementNumber& upperBound = rawArguments[1] ?
         rawArguments[1]->EvaluateNode(StatementNumber(0.0)) : StatementNumber(0.0);
+    const std::shared_ptr<TreeNode>& inputFunction = rawArguments.back();
 
     if (!Series::IsNaturalNumber(lowerBound) || !Series::IsNaturalNumber(upperBound))
     {
@@ -77,7 +79,7 @@ StatementNumber Product::Evaluate(const std::vector<StatementNumber>&,
     StatementNumber result(1.0);
     for (int i = lowerBoundValue; i <= upperBoundValue; i++)
     {
-        result *= rawArguments.back()->EvaluateNode(StatementNumber(static_cast<double>(i)));
+        result *= inputFunction->EvaluateNode(StatementNumber(static_cast<double>(i)));
     }
 
     return result;
