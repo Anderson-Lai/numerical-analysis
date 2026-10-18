@@ -13,7 +13,7 @@ Run `./scripts/debug.sh` for a debug build and `./scripts/release.sh` for a rele
 
 ## Features
 - [x] implement limits
-- [ ] implement derivatives
+- [x] implement derivatives
 - [ ] implement integrals
 - [ ] implement sums
 - [ ] implement products
