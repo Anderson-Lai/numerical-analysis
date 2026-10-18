@@ -405,9 +405,17 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                     node->SetChildren(arguments->GetChildren());
                     break;
                 }
-                case TokenType::SERIES:
+                case TokenType::SUM:
                 {
-                    node->SetValue(std::make_shared<Series>());
+                    node->SetValue(std::make_shared<Sum>());
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
+                    break;
+                }
+                case TokenType::PRODUCT:
+                {
+                    node->SetValue(std::make_shared<Product>());
                     auto arguments = GetArguments(tokens, ++index);
 
                     node->SetChildren(arguments->GetChildren());
@@ -677,5 +685,5 @@ bool Parser::IsFunctionIdentifier(const Token& token) const
         || tokenType == TokenType::SQUARE_ROOT || tokenType == TokenType::CUBE_ROOT
 
         || tokenType == TokenType::DERIVATIVE || tokenType == TokenType::INTEGRAL || tokenType == TokenType::LIMIT
-        || tokenType == TokenType::ROOT || tokenType == TokenType::SERIES);
+        || tokenType == TokenType::ROOT || tokenType == TokenType::SUM || tokenType == TokenType::PRODUCT);
 }

@@ -133,9 +133,9 @@ std::vector<Token> Lexer::Tokenize(const char character) const
     case 'i':
     // log, ln, limit
     case 'l':
-    // pi
+    // pi, product
     case 'p':
-    // sine, secant, sqrt
+    // sine, secant, sqrt, sum
     case 's':
     // tangent
     case 't':
@@ -184,11 +184,15 @@ Token Lexer::DeterminePossibleKeyword(const std::string& token) const
         }
 
         return Variable(token);
-    // trig / log
+    // trig / log / sum
     case 3:
         if (token == "log")
         {
             return TokenType::LOGARITHM;
+        }
+        else if (token == "sum")
+        {
+            return TokenType::SUM;
         }
         else if (token == "sin")
         {
@@ -261,6 +265,14 @@ Token Lexer::DeterminePossibleKeyword(const std::string& token) const
         else if (token == "arccot")
         {
             return TokenType::ACOTANGENT;
+        }
+
+        return Variable(token);
+    // product
+    case 7:
+        if (token == "product")
+        {
+            return TokenType::PRODUCT;
         }
 
         return Variable(token);

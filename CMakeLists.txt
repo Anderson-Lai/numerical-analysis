@@ -81,6 +81,7 @@ if(MSVC)
         /Zc:preprocessor # standards-conforming preprocessor
         /MP              # parallel compilation
 
+        $<$<CONFIG:Debug>:/Od> 
         $<$<CONFIG:Release>:/O2>
         $<$<CONFIG:Release>:/Gy>   # function-level linking (needed for /OPT:REF)
     )
@@ -113,7 +114,7 @@ else()
         -Wshadow
         -Wconversion
 
-        $<$<CONFIG:Debug>:-Og>
+        $<$<CONFIG:Debug>:-O0>
         $<$<CONFIG:Debug>:-g>
         $<$<CONFIG:Debug>:-ggdb>
         $<$<CONFIG:Debug>:-fno-omit-frame-pointer>

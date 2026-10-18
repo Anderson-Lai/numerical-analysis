@@ -168,8 +168,11 @@ public:
                 case TokenType::ROOT:
                     tokenTypeStr = "ROOT";
                     break;
-                case TokenType::SERIES:
-                    tokenTypeStr = "SERIES";
+                case TokenType::SUM:
+                    tokenTypeStr = "SUM";
+                    break;
+                case TokenType::PRODUCT:
+                    tokenTypeStr = "PRODUCT";
                     break;
 
                 case TokenType::SPACE:

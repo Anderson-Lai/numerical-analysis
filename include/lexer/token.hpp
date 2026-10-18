@@ -45,7 +45,8 @@ enum class TokenType
     INTEGRAL,
     LIMIT,
     ROOT,
-    SERIES,
+    SUM,
+    PRODUCT,
 
     NUMBER,
     SPACE,

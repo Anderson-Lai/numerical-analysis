@@ -2,19 +2,54 @@
 
 #include "parser/statements/statement.hpp"
 
-class Series final : public Statement
+class Series : public Statement
 {
 public:
     Series() = default;
     ~Series() override = default;
     virtual StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
+        const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override = 0;
+    std::unique_ptr<Statement> DeepCopy() const override = 0;
+    static bool IsNaturalNumber(const StatementNumber& number);
+#ifdef DEBUG_BUILD
+public:
+    virtual void LogConcreteType() const override
+    {
+        std::cout << "Series";
+    }
+#endif
+};
+
+class Sum final : public Series
+{
+public:
+    Sum() = default;
+    ~Sum() override = default;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
         const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
     std::unique_ptr<Statement> DeepCopy() const override;
 #ifdef DEBUG_BUILD
 public:
     virtual void LogConcreteType() const override
     {
-        std::cout << "Series";
+        std::cout << "Sum";
+    }
+#endif
+};
+
+class Product final : public Series
+{
+public:
+    Product() = default;
+    ~Product() override = default;
+    StatementNumber Evaluate(const std::vector<StatementNumber>& parameters,
+        const std::vector<std::shared_ptr<TreeNode>>& rawArguments) const override;
+    std::unique_ptr<Statement> DeepCopy() const override;
+#ifdef DEBUG_BUILD
+public:
+    virtual void LogConcreteType() const override
+    {
+        std::cout << "Product";
     }
 #endif
 };

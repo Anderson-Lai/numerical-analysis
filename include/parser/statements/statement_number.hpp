@@ -27,6 +27,9 @@ public:
     StatementNumber operator*(const StatementNumber& other) const;
     StatementNumber operator/(const StatementNumber& other) const;
     StatementNumber operator^(const StatementNumber& other) const;
+
+    StatementNumber operator+=(const StatementNumber& other);
+    StatementNumber operator*=(const StatementNumber& other);
 #ifdef DEBUG_BUILD
     void LogConcreteType() const override
     {

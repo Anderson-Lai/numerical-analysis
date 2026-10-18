@@ -57,3 +57,15 @@ StatementNumber StatementNumber::operator^(const StatementNumber& other) const
 {
     return StatementNumber(std::pow(m_value, other.m_value));
 }
+
+StatementNumber StatementNumber::operator+=(const StatementNumber& other)
+{
+    this->m_value += other.m_value;
+    return *this;
+}
+
+StatementNumber StatementNumber::operator*=(const StatementNumber& other)
+{
+    this->m_value *= other.m_value;
+    return *this;
+}
