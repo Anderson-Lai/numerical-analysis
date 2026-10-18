@@ -439,94 +439,94 @@ std::shared_ptr<TreeNode> Parser::OpenParanthesisHelper(const std::vector<Token>
     size_t& index, const bool fromFunctionCall) const
 {
     auto node = std::make_shared<TreeNode>(nullptr);
-    
-    if ((index - 1 < tokens.size() && IsFunctionIdentifier(tokens[index - 1])) || fromFunctionCall)
-    {
-        node->SetValue(std::make_shared<FunctionArgument>());
 
-        bool running = true;
-        while (running)
-        {
-            const bool isFunctionCall = fromFunctionCall || IsFunctionIdentifier(tokens[index - 1]);
-            if (isFunctionCall)
-            {
-                // skip the '(' token since it is 'owned' by the function call,
-                // and not the argument itself
-                index++;
-            }
-
-            auto child = ReadParantheticalExpression(tokens, index, 0);
-            if (!child)
-            {
-                throw std::runtime_error("Invalid expression detected");
-            }
-
-            if (index < tokens.size() && std::holds_alternative<TokenType>(tokens[index]))
-            {
-                if (std::get<TokenType>(tokens[index]) == TokenType::COMMA)
-                {
-                    node->AddChild(child);
-                    index++;
-                    continue;
-                }
-                else if (std::get<TokenType>(tokens[index]) == TokenType::PARANTHESES_CLOSE)
-                {
-                    node->AddChild(child);
-                    index++;
-                    break;
-                }
-
-                // to handle if 'ReadParantheticalExpression()' returned early from an arithmetic expression
-                // involving parantheses (e.g., 1/(x + 1) - 1)
-                while (index < tokens.size())
-                {
-                    auto nextNode = ReadExpression(tokens, index, 0);
-                    if (!nextNode)
-                    {
-                        throw std::runtime_error("Invalid expression detected");
-                    }
-
-                    if (!std::holds_alternative<TokenType>(tokens[index]))
-                    {
-                        throw std::runtime_error("Invalid expression detected");
-                    }
-
-                    if (std::get<TokenType>(tokens[index]) == TokenType::COMMA)
-                    {
-                        nextNode->AttachAtBottomLeft(std::make_shared<TreeNode>(*child));
-                        node->AddChild(nextNode);
-
-                        index++;
-                        break;
-                    }
-                    // this is a function call, not arithmetic expression, since if it were an
-                    // arithmetic expression, then it would not end with ')' since the arithmetic expression
-                    // would have consumed the ')' token
-                    else if (std::get<TokenType>(tokens[index]) == TokenType::PARANTHESES_CLOSE)
-                    {
-                        nextNode->AttachAtBottomLeft(std::make_shared<TreeNode>(*child));
-                        node->AddChild(nextNode);
-
-                        index++;
-                        running = false;
-                        break;
-                    }
-
-                    nextNode->AttachAtBottomLeft(std::make_shared<TreeNode>(*child));
-                    child = nextNode;
-                    index++;
-                }
-            }
-            else
-            {
-                throw std::runtime_error("Invalid expression detected");
-            }
-        }
-    }
-    else
+    if (!fromFunctionCall && !(index - 1 < tokens.size() && IsFunctionIdentifier(tokens[index - 1])))
     {
         const int bindingPower = index - 1 < tokens.size() ? GetOperatorBindingPower(tokens[index - 1]) : 0;
         node = ReadParantheticalExpression(tokens, index, bindingPower);
+        
+        if (!node)
+        {
+            throw std::runtime_error("Invalid expression detected");
+        }
+        return node;
+    }
+    
+    node->SetValue(std::make_shared<FunctionArgument>());
+    bool running = true;
+    while (running)
+    {
+        const bool isFunctionCall = fromFunctionCall || IsFunctionIdentifier(tokens[index - 1]);
+        if (isFunctionCall)
+        {
+            // skip the '(' token since it is 'owned' by the function call,
+            // and not the argument itself
+            index++;
+        }
+
+        auto child = ReadParantheticalExpression(tokens, index, 0);
+        if (!child)
+        {
+            throw std::runtime_error("Invalid expression detected");
+        }
+        if (index >= tokens.size() || !std::holds_alternative<TokenType>(tokens[index]))
+        {
+            throw std::runtime_error("Invalid expression detected");
+        }
+
+        if (std::get<TokenType>(tokens[index]) == TokenType::COMMA)
+        {
+            node->AddChild(child);
+            index++;
+            continue;
+        }
+        else if (std::get<TokenType>(tokens[index]) == TokenType::PARANTHESES_CLOSE)
+        {
+            node->AddChild(child);
+            index++;
+            break;
+        }
+
+        // to handle if 'ReadParantheticalExpression()' returned early from an arithmetic expression
+        // involving parantheses (e.g., 1/(x + 1) - 1)
+        while (index < tokens.size())
+        {
+            auto nextNode = ReadExpression(tokens, index, 0);
+            if (!nextNode)
+            {
+                throw std::runtime_error("Invalid expression detected");
+            }
+
+            if (!std::holds_alternative<TokenType>(tokens[index]))
+            {
+                throw std::runtime_error("Invalid expression detected");
+            }
+
+            if (std::get<TokenType>(tokens[index]) == TokenType::COMMA)
+            {
+                nextNode->AttachAtBottomLeft(std::make_shared<TreeNode>(*child));
+                node->AddChild(nextNode);
+
+                index++;
+                break;
+            }
+            // this is a function call, not arithmetic expression, since if it were an
+            // arithmetic expression, then it would not end with ')' since the arithmetic expression
+            // would have consumed the ')' token
+            else if (std::get<TokenType>(tokens[index]) == TokenType::PARANTHESES_CLOSE)
+            {
+                nextNode->AttachAtBottomLeft(std::make_shared<TreeNode>(*child));
+                node->AddChild(nextNode);
+
+                index++;
+                running = false;
+                break;
+            }
+
+            nextNode->AttachAtBottomLeft(std::make_shared<TreeNode>(*child));
+            child = nextNode;
+            index++;
+        }
     }
 
     if (!node)
