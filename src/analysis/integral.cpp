@@ -62,7 +62,7 @@ StatementNumber Integral::SimpsonsRule(const int subintervals, const StatementNu
         [this, subintervals, lowerBound, upperBound, inputFunction, split]() 
         {
             StatementNumber evenSum = StatementNumber(0.0);
-            for (int i = split; i < subintervals; i += 2)
+            for (int i = split; i <= subintervals - 2; i += 2)
             {
                 const StatementNumber x = IthX(subintervals, lowerBound, upperBound, i);
                 evenSum = evenSum + inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(2.0);
@@ -88,7 +88,7 @@ StatementNumber Integral::SimpsonsRule(const int subintervals, const StatementNu
         [this, subintervals, lowerBound, upperBound, inputFunction, split]() 
         {
             StatementNumber oddSum = StatementNumber(0.0);
-            for (int i = split; i < subintervals; i += 2)
+            for (int i = split + 1; i <= subintervals - 1; i += 2)
             {
                 const StatementNumber x = IthX(subintervals, lowerBound, upperBound, i);
                 oddSum = oddSum + inputFunction->EvaluateNode(x.GetValue()) * StatementNumber(4.0);
