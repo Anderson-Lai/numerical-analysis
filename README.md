@@ -2,7 +2,7 @@
 A command line tool to numerically evaluate finite limits, derivatives at a point, finite definite integrals, finite sums, finite products, and functions at a point. It also contains a custom interpreter that tokenizes and parses inputted math expressions from `stdin`.
 
 ## Documentation
-See [usage.md](./docs/usage.md) for the full documentation. Below are some examples.
+See [usage.md](./docs/usage.md) for the full documentation. Below are some examples:
 
 ![Examples](./docs/examples.png)
 
