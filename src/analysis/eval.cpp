@@ -20,5 +20,5 @@ StatementNumber Eval::Evaluate(const std::vector<StatementNumber>&,
 
 std::unique_ptr<Statement> Eval::DeepCopy() const
 {
-    return std::make_unique<Eval>();
+    return std::make_unique<Eval>(*this);
 }

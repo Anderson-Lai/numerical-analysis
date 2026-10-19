@@ -6,6 +6,7 @@
 
 int main(int, char**)
 {
+    std::cout << std::fixed << std::setprecision(9);
     while (true)
     {
         std::cout << "Expression: ";
@@ -24,8 +25,6 @@ int main(int, char**)
             std::cout << std::endl << "AST: " << std::endl;
             Parser::PrintAST(parser.GetRoot());
 #endif
-            std::cout << std::fixed << std::setprecision(9);
-
 #ifndef DEBUG_EXPRESSIONS
             const StatementNumber result = parser.EvaluateAST();
             std::cout << "Result: " << result.GetValue() << std::endl;

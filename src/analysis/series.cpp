@@ -47,7 +47,7 @@ StatementNumber Sum::Evaluate(const std::vector<StatementNumber>&,
 
 std::unique_ptr<Statement> Sum::DeepCopy() const
 {
-    return std::make_unique<Sum>();
+    return std::make_unique<Sum>(*this);
 }
 
 StatementNumber Product::Evaluate(const std::vector<StatementNumber>&,
@@ -87,5 +87,5 @@ StatementNumber Product::Evaluate(const std::vector<StatementNumber>&,
 
 std::unique_ptr<Statement> Product::DeepCopy() const
 {
-    return std::make_unique<Product>();
+    return std::make_unique<Product>(*this);
 }
