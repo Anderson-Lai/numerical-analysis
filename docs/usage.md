@@ -25,6 +25,7 @@ The following functions are provided:
 Below are the functions in conventional mathematical notation:
 
 Let $c \in \mathbb{R}$ be [point] in all these expressions, $a \in \mathbb{R}$ be [lower bound], $b \in \mathbb{R}$ be [upper bound], and $f : \mathbb{R} \to \mathbb{R}$ be a function of $x$ for [function]. The functions listed above are equivalent to the following mathematical expressions:
+
 $$
 \begin{align}
     \lim_{x \to c} f(x) \\
