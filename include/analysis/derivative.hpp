@@ -19,6 +19,8 @@ private:
     void ReplaceVariableWith(const std::shared_ptr<TreeNode>& node, 
         const std::shared_ptr<TreeNode>& replacement) const;
     std::shared_ptr<TreeNode> CopyAST(const std::shared_ptr<TreeNode>& node) const;
+private:
+    static constexpr double ACCEPTABLE_APPROACH_OFFSET = 1e-2;
 #ifdef DEBUG_BUILD
 public:
     virtual void LogConcreteType() const override

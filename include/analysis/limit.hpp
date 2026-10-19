@@ -20,16 +20,14 @@ private:
 private:
     bool CheckExistence(const std::vector<StatementNumber>& leftValues,
         const std::vector<StatementNumber>& rightValues) const;
-// helper functions
+// helper function
 private:
     bool IsDecreasingWithinThreshold(const std::vector<double>& values) const;
-    // bool CheckStability(const std::vector<StatementNumber>& sideValues) const;
-    // bool IsDifferenceWithinThreshold(const std::vector<StatementNumber>& values) const;
 private:
     // square root of machine epsilon for approximate best discretization size
     static constexpr double DISCRETIZATION_SIZE = 1e-8;
     static constexpr int STEPS = 1e2;
-    // note that threshold is set to 1e-3, which is 6 order of magnitudes greater than maximum discretization size
+    // note that threshold is set to 1e-3, which is 3 orders of magnitudes greater than maximum discretization size
     // from the approaching value
     static constexpr double STABILITY_THRESHOLD = 1e-3;
 #ifdef DEBUG_BUILD

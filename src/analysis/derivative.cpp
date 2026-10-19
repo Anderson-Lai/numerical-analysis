@@ -27,7 +27,8 @@ StatementNumber Derivative::Evaluate(const std::vector<StatementNumber>&,
         const StatementNumber derivativeApproximation = ApproximateDerivative(point, inputFunction);
 
         // quick sanity check that everything has gone right
-        if (std::abs(existenceCheck.GetValue() - derivativeApproximation.GetValue()) > 1e-6)
+        if (std::abs(existenceCheck.GetValue() - derivativeApproximation.GetValue()) > 
+            ACCEPTABLE_APPROACH_OFFSET)
         {
             throw std::runtime_error("Derivative does not exist");
         }

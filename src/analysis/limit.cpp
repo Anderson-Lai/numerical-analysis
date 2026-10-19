@@ -97,29 +97,6 @@ bool Limit::CheckExistence(const std::vector<StatementNumber>& leftValues,
 
     // as discretization approaches 0, we expect error to be decreasing (minus some floating point error)
     return IsDecreasingWithinThreshold(errors);
-
-//     if (!CheckStability(leftValues) || !CheckStability(rightValues))
-//     {
-//         return false;
-//     }
-
-//     if (leftValues.size() != rightValues.size())
-//     {
-// #ifdef DEBUG_BUILD
-//         throw std::runtime_error("Left and right limit values must have the same size");
-// #endif
-//         return false;
-//     }
-
-//     std::vector<StatementNumber> differences;
-//     differences.reserve(leftValues.size());
-
-//     for (size_t i = 0; i < leftValues.size(); i++)
-//     {
-//         differences.emplace_back(std::abs(leftValues[i].GetValue() - rightValues[i].GetValue()));
-//     }
-
-//     return IsDifferenceWithinThreshold(differences);
 }
 
 bool Limit::IsDecreasingWithinThreshold(const std::vector<double>& values) const
@@ -141,37 +118,3 @@ bool Limit::IsDecreasingWithinThreshold(const std::vector<double>& values) const
 
     return true;
 }
-
-// bool Limit::IsDifferenceWithinThreshold(const std::vector<StatementNumber> &values) const
-// {
-//     StatementNumber pastValue = values.front();
-
-//     for (size_t i = 1; i < values.size(); i++)
-//     {
-//         const StatementNumber &currentValue = values[i];
-
-//         if (std::abs(currentValue.GetValue() - pastValue.GetValue()) > STABILITY_THRESHOLD)
-//         {
-//             return false;
-//         }
-
-//         pastValue = currentValue;
-//     }
-
-//     return true;
-// }
-
-// bool Limit::CheckStability(const std::vector<StatementNumber>& sideValues) const
-// {
-//     const StatementNumber& targetValue = sideValues.back();
-
-//     std::vector<StatementNumber> differences;
-//     differences.reserve(sideValues.size() - 1);
-
-//     for (size_t i = 0; i < sideValues.size() - 1; i++)
-//     {
-//         differences.emplace_back(std::abs(sideValues[i].GetValue() - targetValue.GetValue()));
-//     }
-
-//     return IsDifferenceWithinThreshold(differences);
-// }
