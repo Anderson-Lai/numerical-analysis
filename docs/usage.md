@@ -18,21 +18,21 @@ The following functions are provided:
 - limit([point], [function])
 - derivative([point], [function])
 - integral([lower bound], [upper bound], [function])
-- sum([lower bound], [upper bound], [function])
-- product([lower bound], [upper bound], [function])
+- sum([lower bound], [upper bound], [sequence])
+- product([lower bound], [upper bound], [sequence])
 - eval([point], [function])
 
 Below are the functions in conventional mathematical notation:
 
-Let $c \in \mathbb{R}$ be [point] in all these expressions, $a \in \mathbb{R}$ be [lower bound], $b \in \mathbb{R}$ be [upper bound], and $f : \mathbb{R} \to \mathbb{R}$ be a function of $x$ for [function]. The functions listed above are equivalent to the following mathematical expressions:
+Let $c \in \mathbb{R}$ be [point] in all these expressions, $a \in \mathbb{R}$ be [lower bound], $b \in \mathbb{R}$ be [upper bound], and $f : I \to \mathbb{R}$, $I \subseteq \mathbb{R}$, be [function]. The functions listed above are equivalent to the following mathematical expressions:
 
 $$
 \begin{align}
     \lim_{x \to c} f(x) \\
-    \left.\frac{d}{dx}\ f(x) \right|_{x=c} \\
+    f'(c) \\
     \int_a^b f(x)\ dx \\
-    \sum_{i = a}^b f(x_i) \\
-    \prod_{i = a}^b f(x_i) \\
+    \sum_{n = a}^{b} f(n) \\
+    \prod_{n = a}^{b} f(n) \\
     f(c)
 \end{align}
 $$
