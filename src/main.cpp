@@ -1,5 +1,5 @@
+#include <iomanip>
 #include <iostream>
-#include <iomanip> 
 
 #include "lexer/lexer.hpp"
 #include "parser/parser.hpp"
