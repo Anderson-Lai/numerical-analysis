@@ -29,7 +29,7 @@ Let $c \in \mathbb{R}$ be [point] in all these expressions, $a \in \mathbb{R}$ b
 $$
 \begin{align}
     \lim_{x \to c} f(x) \\
-    \left.\frac{d}{dx} f(x) \right|_{x=c} \\
+    \left.\frac{d}{dx}\ f(x) \right|_{x=c} \\
     \int_a^b f(x)\ dx \\
     \sum_{i = a}^b f(x_i) \\
     \prod_{i = a}^b f(x_i) \\
@@ -38,4 +38,5 @@ $$
 $$
 
 Below are some examples:
+
 ![Examples](./examples.png)
