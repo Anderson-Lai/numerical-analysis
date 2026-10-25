@@ -1,3 +1,5 @@
+#include <ranges>
+
 #include "analysis/derivative.hpp"
 #include "analysis/eval.hpp"
 #include "analysis/integral.hpp"
@@ -6,6 +8,7 @@
 #include "analysis/series.hpp"
 
 #include "parser/operators/binary_operators.hpp"
+#include "parser/statements/functions/absolute_value.hpp"
 #include "parser/statements/functions/function_argument.hpp"
 #include "parser/statements/functions/logarithm.hpp"
 #include "parser/statements/functions/sqrt_cbrt.hpp"
@@ -201,6 +204,17 @@ std::shared_ptr<TreeNode> Parser::ReadExpression(const std::vector<Token>& token
                 
                 // --- FUNCTIONS ---
                 // CONVENTION: subscripts (bases for logarithms) go before function arguments
+
+                // --- ABSOLUTE VALUE ---
+                case TokenType::ABSOLUTE_VALUE:
+                {
+                    node->SetValue(std::make_shared<AbsoluteValue>());
+                    auto arguments = GetArguments(tokens, ++index);
+
+                    node->SetChildren(arguments->GetChildren());
+                    break;
+                }
+
                 // --- TRIG FUNCTIONS ---
                 case TokenType::SINE:
                 {
@@ -684,17 +698,5 @@ bool Parser::IsFunctionIdentifier(const Token& token) const
     }
 
     const TokenType& tokenType = std::get<TokenType>(token);
-    return (tokenType == TokenType::SINE || tokenType == TokenType::COSINE || tokenType == TokenType::TANGENT
-        || tokenType == TokenType::COTANGENT || tokenType == TokenType::SECANT || tokenType == TokenType::COSECANT
-
-        || tokenType == TokenType::ASINE || tokenType == TokenType::ACOSINE || tokenType == TokenType::ATANGENT
-        || tokenType == TokenType::ACOTANGENT || tokenType == TokenType::ASECANT || tokenType == TokenType::ACOSECANT
-
-        || tokenType == TokenType::LOGARITHM || tokenType == TokenType::NATURAL_LOGARITHM
-
-        || tokenType == TokenType::SQUARE_ROOT || tokenType == TokenType::CUBE_ROOT
-
-        || tokenType == TokenType::DERIVATIVE || tokenType == TokenType::INTEGRAL || tokenType == TokenType::LIMIT
-        || tokenType == TokenType::ROOT || tokenType == TokenType::SUM || tokenType == TokenType::PRODUCT
-        || tokenType == TokenType::EVAL);
+    return std::ranges::find(FUNCTION_IDENTIFIERS, tokenType) != FUNCTION_IDENTIFIERS.end();
 }

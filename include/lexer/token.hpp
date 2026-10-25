@@ -18,6 +18,8 @@ enum class TokenType
     PARANTHESES_OPEN,
     PARANTHESES_CLOSE,
 
+    ABSOLUTE_VALUE,
+
     SINE,
     COSINE,
     TANGENT,

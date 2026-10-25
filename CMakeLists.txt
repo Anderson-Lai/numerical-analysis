@@ -38,6 +38,7 @@ add_executable(${PROJECT_NAME}
     src/analysis/series.cpp
 
     src/parser/binary_operators.cpp
+    src/parser/absolute_value.cpp
     src/parser/function_argument.cpp
     src/parser/trigonometry.cpp
     src/parser/logarithm.cpp

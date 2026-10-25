@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <vector>
 #include <unordered_map>
 
@@ -21,6 +22,37 @@ private:
         {TokenType::MULTIPLICATION, 20},
         {TokenType::SUBSCRIPT, 30},
         {TokenType::EXPONENTIATION, 40}
+    };
+    static constexpr std::array<TokenType, 23> FUNCTION_IDENTIFIERS =
+    {
+        TokenType::ABSOLUTE_VALUE,
+
+        TokenType::SINE,
+        TokenType::COSINE,
+        TokenType::TANGENT,
+        TokenType::COTANGENT,
+        TokenType::SECANT,
+        TokenType::COSECANT,
+
+        TokenType::ASINE,
+        TokenType::ACOSINE,
+        TokenType::ATANGENT,
+        TokenType::ACOTANGENT,
+        TokenType::ASECANT,
+        TokenType::ACOSECANT,
+
+        TokenType::SQUARE_ROOT,
+        TokenType::CUBE_ROOT,
+
+        TokenType::LOGARITHM,
+        TokenType::NATURAL_LOGARITHM,
+
+        TokenType::DERIVATIVE,
+        TokenType::INTEGRAL,
+        TokenType::LIMIT,
+        TokenType::SUM,
+        TokenType::PRODUCT,
+        TokenType::EVAL
     };
     static constexpr double CONSTANTS_PI = 3.14159265358979323846;
     static constexpr double CONSTANTS_E = 2.71828182845904523536;

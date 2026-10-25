@@ -105,6 +105,10 @@ public:
                 case TokenType::PI:
                     tokenTypeStr = "PI";
                     break;
+                
+                case TokenType::ABSOLUTE_VALUE:
+                    tokenTypeStr = "ABSOLUTE_VALUE";
+                    break;
 
                 case TokenType::SINE:
                     tokenTypeStr = "SINE";

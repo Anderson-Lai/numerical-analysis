@@ -158,7 +158,7 @@ std::vector<Token> Lexer::Tokenize(const char character) const
     case '9':
     case '0':
         return std::vector<Token>{Number(std::stod(std::string{character}))};
-    // inverse trig
+    // inverse trig, abs(olute value)
     case 'a':
     // cosine, cosecant, cotangent, cbrt
     case 'c':
@@ -229,7 +229,7 @@ Token Lexer::DeterminePossibleKeyword(const std::string& token) const
         }
 
         return Variable(token);
-    // trig / log / sum
+    // trig / log / sum / abs(olute value)
     case 3:
         if (token == "log")
         {
@@ -262,6 +262,10 @@ Token Lexer::DeterminePossibleKeyword(const std::string& token) const
         else if (token == "cot")
         {
             return TokenType::COTANGENT;
+        }
+        else if (token == "abs")
+        {
+            return TokenType::ABSOLUTE_VALUE;
         }
 
         return Variable(token);

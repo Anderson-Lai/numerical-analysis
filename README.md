@@ -20,7 +20,7 @@ Run `./scripts/debug.sh` for a debug build and `./scripts/release.sh` for a rele
 - [x] implement function evaluation at a point
 - [ ] implement root finding of functions
 - [x] add support for decimals in inputted expressions
-- [ ] implement the absolute value function (either as abs(x), |x|, or both)
+- [x] implement the absolute value function (either as abs(x), |x|, or both)
 - [ ] implement parantheses checks
   - [ ] all opened parantheses are closed
   - [ ] no extraneous parantheses
@@ -43,7 +43,7 @@ and the entire keyword to:
 - `lexer.cpp` in `Lexer::DeterminePossibleKeyword()` member function
 - `lexer.hpp` in `Lexer::PrintTokens()` for **debugging purposes**
 - `token.hpp` in `TokenType` enum
+- `parser.hpp` in `FUNCTION_IDENTIFIERS` member variable
 - `parser.cpp` in `Parser::ReadExpression()` member function
-- `parser.cpp` in `Parser::IsFunctionIdentifier()` member function
 
 Remember to implement `LogConcreteType()` if it is a child of the `Statement` class (which it normally should be) for **debugging purposes**.
