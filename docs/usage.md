@@ -13,6 +13,30 @@
 > [!WARNING]
 > Real numbers are represented using a `double`. Hence, results become increasingly more inaccurate for extremely large and small numbers.
 
+## Supported Mathematical Functions
+The following mathematical functions are supported:
+- `sin([argument])`
+- `cos([argument])`
+- `tan([argument])`
+- `csc([argument])`
+- `sec([argument])`
+- `cot([argument])`
+
+- `arcsin([argument])`
+- `arccos([argument])`
+- `arctan([argument])`
+- `arccsc([argument])`
+- `arcsec([argument])`
+- `arccot([argument])`
+
+- `ln([argument])`
+- `log_([base])([argument])`
+
+- `sqrt([argument])`
+- `cbrt([argument])`
+
+- `abs([argument])`
+
 ## API Documentation
 The following functions are provided:
 - limit([point], [function])

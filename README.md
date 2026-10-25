@@ -20,7 +20,8 @@ Run `./scripts/debug.sh` for a debug build and `./scripts/release.sh` for a rele
 - [x] implement function evaluation at a point
 - [ ] implement root finding of functions
 - [x] add support for decimals in inputted expressions
-- [x] implement the absolute value function (either as abs(x), |x|, or both)
+- [x] implement the absolute value function
+  - implement support for absolute value function as `|x|`
 - [ ] implement parantheses checks
   - [ ] all opened parantheses are closed
   - [ ] no extraneous parantheses
