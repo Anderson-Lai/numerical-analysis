@@ -46,7 +46,7 @@ std::vector<Token> Lexer::GetTokens() const
     return m_tokens;
 }
 
-std::vector<Token> Lexer::CleanTokens()
+std::vector<Token> Lexer::CleanTokens() const
 {
     std::vector<Token> cleanedTokens;
     cleanedTokens.reserve(m_tokens.size());
@@ -113,7 +113,40 @@ std::vector<Token> Lexer::CleanTokens()
         }
     }
 
+    if (!IsValidParantheses(cleanedTokens))
+    {
+        throw std::runtime_error("Invalid parantheses detected");
+    }
+
     return cleanedTokens;
+}
+
+bool Lexer::IsValidParantheses(const std::vector<Token>& cleanedTokens) const
+{
+    int paranthesesCount = 0;
+    for (const Token& token : cleanedTokens)
+    {
+        if (!std::holds_alternative<TokenType>(token))
+        {
+            continue;
+        }
+
+        const TokenType& tokenType = std::get<TokenType>(token);
+        if (tokenType == TokenType::PARANTHESES_OPEN)
+        {
+            paranthesesCount++;
+        }
+        else if (tokenType == TokenType::PARANTHESES_CLOSE)
+        {
+            paranthesesCount--;
+            if (paranthesesCount < 0)
+            {
+                return false;
+            }
+        }
+    }
+
+    return paranthesesCount == 0;
 }
 
 std::vector<Token> Lexer::Tokenize(const char character) const

@@ -50,7 +50,8 @@ public:
     void ReadTokens();
     std::vector<Token> GetTokens() const;
 private:
-    std::vector<Token> CleanTokens();
+    std::vector<Token> CleanTokens() const;
+    bool IsValidParantheses(const std::vector<Token>& cleanedTokens) const;
 private:
     std::vector<Token> Tokenize(const char character) const;
 // helper functions
