@@ -21,7 +21,7 @@ Run `./scripts/debug.sh` for a debug build and `./scripts/release.sh` for a rele
 - [ ] implement root finding of functions
 - [x] add support for decimals in inputted expressions
 - [x] implement the absolute value function
-  - implement support for absolute value function as `|x|`
+  - [ ] implement support for absolute value function as `|x|`
 - [ ] implement parantheses checks
   - [ ] all opened parantheses are closed
   - [ ] no extraneous parantheses
