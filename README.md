@@ -22,9 +22,9 @@ Run `./scripts/debug.sh` for a debug build and `./scripts/release.sh` for a rele
 - [x] add support for decimals in inputted expressions
 - [x] implement the absolute value function
   - [ ] implement support for absolute value function as `|x|`
-- [ ] implement parantheses checks
-  - [ ] all opened parantheses are closed
-  - [ ] no extraneous parantheses
+- [x] implement parantheses checks
+  - [x] all opened parantheses are closed
+  - [x] no extraneous parantheses
 - [ ] implement check that only one variable is used in each function call provided by the api
 - [ ] implement support `(sin(x))^(-1)`, `(sec(x))^(-1)`, etc. by implicitly converting them to `arcsin(x)`, `arcsec(x)`, etc. in the AST rather than literally evaluating them as `1/(sin(x))`, `1/(sec(x))`, etc.
 - [ ] implement implicit multiplication
