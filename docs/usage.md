@@ -15,6 +15,8 @@
 
 ## Supported Mathematical Functions
 The following mathematical functions are supported:
+
+**Trigonometry:**
 - `sin([argument])`
 - `cos([argument])`
 - `tan([argument])`
@@ -22,6 +24,7 @@ The following mathematical functions are supported:
 - `sec([argument])`
 - `cot([argument])`
 
+**Inverse Trigonometry:**
 - `arcsin([argument])`
 - `arccos([argument])`
 - `arctan([argument])`
@@ -29,12 +32,15 @@ The following mathematical functions are supported:
 - `arcsec([argument])`
 - `arccot([argument])`
 
+**Logarithms:**
 - `ln([argument])`
 - `log_([base])([argument])`
 
+**Roots:**
 - `sqrt([argument])`
 - `cbrt([argument])`
 
+**Piecewise Functions:**
 - `abs([argument])`
 
 ## API Documentation
